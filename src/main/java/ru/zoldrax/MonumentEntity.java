@@ -18,10 +18,24 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.*;
 import net.minecraft.world.World;
+import net.minecraft.registry.tag.DamageTypeTags;
 
 public class MonumentEntity extends BlockEntity {
  public int stage=0;
  private long lastOffering=-1;
+ // Transient attribution, scoped to this altar; entries expire or are removed after death.
+ private final Map<UUID,Long> burningVictims=new HashMap<>();
+ private final Map<UUID,Long> nextItemOffering=new HashMap<>();
+ public Box brazierBounds() {
+  // The figure is decorative: dropped items settle at ground level under the bowl.
+  return new Box(pos.getX()-.45,pos.getY()-.1,pos.getZ()+.75,
+    pos.getX()+1.45,pos.getY()+1.8,pos.getZ()+2.1);
+ }
+ private PlayerEntity recipient(Entity owner) {
+  if(owner instanceof PlayerEntity p && p.isAlive() && !p.isSpectator() && p.squaredDistanceTo(Vec3d.ofCenter(pos))<=256) return p;
+  return world.getClosestPlayer(pos.getX()+.5,pos.getY(),pos.getZ()+1.25,16,false);
+ }
+
  private final Map<UUID,Long> devotees=new HashMap<>();
  private static final Item[][] MATERIALS={{Items.OBSIDIAN,Items.POLISHED_BLACKSTONE_BRICKS,Items.REDSTONE},{Items.OBSIDIAN,Items.POLISHED_BLACKSTONE_BRICKS,Items.REDSTONE,Items.REDSTONE_BLOCK}};
  private static final int[][] COUNTS={{32,24,8},{24,16,12,4}};
@@ -50,7 +64,7 @@ public class MonumentEntity extends BlockEntity {
   return count;
  }
  public net.minecraft.text.Text status() {
-  if(stage==2) return Text.literal("Золдракс: бросьте алмаз, изумруд, золото или незерит в южную жаровню. Подношение нужно раз в игровой день.");
+  if(stage==2) return Text.literal("Золдракс: активен. Бросьте алмаз, изумруд, золото или незерит в жаровню с пламенем (+Z, юг). Один предмет из стопки в секунду. Подожжённый здесь моб тоже считается жертвой. Последнее подношение: "+(lastOffering<0?"ещё не было":((world.getTime()-lastOffering)/20)+" сек. назад"));
   List<Inventory> chests=constructionChests();
   var text=Text.literal("Этап "+(stage+1)+"/3. Найдено сундуков: "+chests.size()+". Радиус: 3 блока, высота ±1.\n");
   for(int i=0;i<MATERIALS[stage].length;i++) {
@@ -63,28 +77,41 @@ public class MonumentEntity extends BlockEntity {
  }
  private void sync() { markDirty(); if(world!=null) world.updateListeners(pos,getCachedState(),getCachedState(),3); }
  public static void tick(World world,BlockPos pos,BlockState state,MonumentEntity m) {
-  if(world.getTime()%20!=0) return;
-  if(m.stage<2) { m.build(); return; }
+  if(m.stage<2) { if(world.getTime()%20==0) m.build(); return; }
   ServerWorld sw=(ServerWorld)world;
-  Box fire=new Box(pos.getX()-.35,pos.getY()+.3,pos.getZ()+.7,pos.getX()+1.35,pos.getY()+1.7,pos.getZ()+1.9);
-  sw.spawnParticles(ParticleTypes.FLAME,pos.getX()+.5,pos.getY()+.9,pos.getZ()+1.25,8,.45,.2,.25,.015);
+  long now=world.getTime();
+  Box fire=m.brazierBounds();
+  if(now%4==0) sw.spawnParticles(ParticleTypes.FLAME,pos.getX()+.5,pos.getY()+.9,pos.getZ()+1.4,5,.45,.15,.25,.015);
+  // Scan every tick: a thrown item can pass through the bowl in less than a second.
+  m.nextItemOffering.entrySet().removeIf(entry -> entry.getValue()+100<now);
   for(ItemEntity item:world.getEntitiesByClass(ItemEntity.class,fire,e->!e.isRemoved())) {
    ItemStack stack=item.getStack();
-   if(stack.isOf(Items.DIAMOND)||stack.isOf(Items.EMERALD)||stack.isOf(Items.GOLD_INGOT)||stack.isOf(Items.NETHERITE_INGOT)) {
-    PlayerEntity p=world.getClosestPlayer(pos.getX()+.5,pos.getY(),pos.getZ()+.5,16,false);
-    if(p!=null && p.squaredDistanceTo(Vec3d.ofCenter(pos))<=256) {stack.decrement(1); if(stack.isEmpty()) item.discard(); m.offer(p);}
+   if((stack.isOf(Items.DIAMOND)||stack.isOf(Items.EMERALD)||stack.isOf(Items.GOLD_INGOT)||stack.isOf(Items.NETHERITE_INGOT))
+      && now>=m.nextItemOffering.getOrDefault(item.getUuid(),Long.MIN_VALUE)) {
+    PlayerEntity p=m.recipient(item.getOwner());
+    if(p!=null) {
+     stack.decrement(1); if(stack.isEmpty()) item.discard();
+     m.nextItemOffering.put(item.getUuid(),now+20);m.offer(p);
+    }
    }
   }
-  for(MobEntity mob:world.getEntitiesByClass(MobEntity.class,fire,e->e.isAlive())) {
+  for(MobEntity mob:world.getEntitiesByClass(MobEntity.class,fire,e->e.isAlive()&&!e.isFireImmune()&&!e.hasStatusEffect(StatusEffects.FIRE_RESISTANCE))) {
+   boolean firstContact=!m.burningVictims.containsKey(mob.getUuid());
+   m.burningVictims.put(mob.getUuid(),now+100);
    mob.setOnFireFor(4);
-   // Direct altar damage makes deaths reliably attributable to this brazier.
-   mob.damage(world.getDamageSources().inFire(),4);
-   if(!mob.isAlive()) {
-    PlayerEntity p=world.getClosestPlayer(pos.getX()+.5,pos.getY(),pos.getZ()+.5,16,false);
-    if(p!=null) m.offer(p);
-   }
+   if(firstContact || now%20==0) mob.damage(world.getDamageSources().inFire(),4);
   }
-  long now=world.getTime();
+  // Death can occur between direct-damage ticks, or after the mob walks out burning.
+  var victims=m.burningVictims.entrySet().iterator();
+  while(victims.hasNext()) {
+   var entry=victims.next(); Entity entity=sw.getEntity(entry.getKey());
+   if(entity instanceof MobEntity mob && !mob.isAlive()) {
+    if(entry.getValue()>=now && mob.getRecentDamageSource()!=null && mob.getRecentDamageSource().isIn(DamageTypeTags.IS_FIRE)) {
+     PlayerEntity p=m.recipient(mob.getAttacker());if(p!=null) m.offer(p);
+    }
+    victims.remove(); // Exactly once, including if no eligible player is present.
+   } else if(entity==null || entry.getValue()<now) victims.remove();
+  }
   for(var entry:m.devotees.entrySet()) {
    PlayerEntity p=world.getPlayerByUuid(entry.getKey());
    if(p!=null && now-entry.getValue()>=24000 && now%200==0) {
