@@ -6,7 +6,8 @@
   "entrypoints": {
     "fabric-gametest": [
       "ru.zoldrax.ConstructionTests",
-      "ru.zoldrax.OfferingTests"
+      "ru.zoldrax.OfferingTests",
+      "ru.zoldrax.MonkeyTests"
     ]
   },
   "depends": {

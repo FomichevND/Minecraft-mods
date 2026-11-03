@@ -1,1 +1,5 @@
-{"block.zoldrax.monument": "Zoldrax Monument Foundation"}
+{
+  "block.zoldrax.monument": "Zoldrax Monument Foundation",
+  "block.zoldrax.monkey_monument": "Monkey King Monument Foundation",
+  "item.zoldrax.golden_banana": "Golden Banana"
+}

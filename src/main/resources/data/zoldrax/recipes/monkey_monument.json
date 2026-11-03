@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "JGJ",
+    "SCS",
+    "JJJ"
+  ],
+  "key": {
+    "J": {
+      "item": "minecraft:jungle_log"
+    },
+    "G": {
+      "item": "minecraft:gold_ingot"
+    },
+    "S": {
+      "item": "minecraft:chiseled_stone_bricks"
+    },
+    "C": {
+      "item": "minecraft:chest"
+    }
+  },
+  "result": {
+    "item": "zoldrax:monkey_monument"
+  }
+}
