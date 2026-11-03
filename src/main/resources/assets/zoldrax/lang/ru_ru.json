@@ -3,5 +3,9 @@
   "block.zoldrax.monkey_monument": "Основание Короля обезьян",
   "item.zoldrax.golden_banana": "Золотой банан",
   "block.zoldrax.ternor_monument": "Основание монумента Тернора",
-  "entity.zoldrax.ternor_guardian": "Страж Тернора"
+  "entity.zoldrax.ternor_guardian": "Страж Тернора",
+  "entity.zoldrax.chain_punisher": "Цепной каратель",
+  "entity.zoldrax.blood_priest": "Жарокровный жрец",
+  "item.zoldrax.chain_punisher_spawn_egg": "Яйцо призыва Цепного карателя",
+  "item.zoldrax.blood_priest_spawn_egg": "Яйцо призыва Жарокровного жреца"
 }

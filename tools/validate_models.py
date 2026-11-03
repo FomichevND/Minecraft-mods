@@ -65,3 +65,24 @@ for stage in range(1,4):
  print(f'Ternor stage {stage}: UVs valid, PNG identical, exact 4x4x8 bounds')
 for file in ['guardian_wreath','guardian_flowers']:
  assert Image.open(root/f'textures/entity/{file}.png').size==(64,64)
+
+for variant in ['chain_punisher','blood_priest']:
+ model=json.loads((root/f'models/blockbench/{variant}.bbmodel').read_text())
+ image=Image.open(root/f'textures/entity/{variant}.png')
+ embedded=Image.open(io.BytesIO(base64.b64decode(model['textures'][0]['source'].split(',')[1])))
+ assert image.size==(1024,1024) and image.tobytes()==embedded.tobytes()
+ assert model['resolution']=={'width':256,'height':256}
+ bones=model['zoldrax_bones'];assert set(bones)=={'head','body','rightArm','leftArm','rightLeg','leftLeg','cape'}
+ ids={e['uuid'] for e in model['elements']};grouped=[i for group in model['outliner'] for i in group['children']]
+ assert len(ids)==len(model['elements'])==len(set(e['name'] for e in model['elements']))
+ assert len(grouped)==len(ids) and set(grouped)==ids
+ occupied=[]
+ for e in model['elements']:
+  assert e['zoldrax_bone'] in bones and 0<=e.get('inflate',0)<.15
+  w,h,d=[b-a for a,b in zip(e['from'],e['to'])];assert min(w,h,d)>0
+  u,v=e['uv_offset'];U,V=u+2*(w+d),v+h+d
+  assert 0<=u<U<=256 and 0<=v<V<=256
+  for a,b,A,B in occupied:assert U<=a or A<=u or V<=b or B<=v
+  occupied.append((u,v,U,V))
+ assert any(e['name'].startswith('glow_') for e in model['elements'])
+ print(f'{variant}: {len(ids)} cubes, seven bones, UVs/PNG/texture layers verified')

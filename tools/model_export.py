@@ -4,7 +4,8 @@ import json,random,base64,io,uuid
 from texture_materials import paint,TEXEL_SCALE
 OUT=Path('src/main/resources/assets/zoldrax')
 SIZE=1024
-def write_model(cubes,stage,prefix='',paint=paint):
+def write_model(cubes,stage,prefix='',paint=paint,size=1024,texel_scale=TEXEL_SCALE):
+    SIZE=size;TEXEL_SCALE=texel_scale
     img=Image.new('RGBA',(SIZE*TEXEL_SCALE,SIZE*TEXEL_SCALE),(0,0,0,255))
     rng=random.Random(840+stage);elements=[];u=v=row=2
     palette={'stone':(54,48,62),'wood':(101,65,36),'cloth':(146,126,103),'banner':(88,12,22),'metal':(37,32,40),'bone':(123,110,103),'ember':(232,41,16)}

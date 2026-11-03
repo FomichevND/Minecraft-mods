@@ -8,7 +8,8 @@
       "ru.zoldrax.ConstructionTests",
       "ru.zoldrax.OfferingTests",
       "ru.zoldrax.MonkeyTests",
-      "ru.zoldrax.TernorTests"
+      "ru.zoldrax.TernorTests",
+      "ru.zoldrax.CultistTests"
     ]
   },
   "depends": {

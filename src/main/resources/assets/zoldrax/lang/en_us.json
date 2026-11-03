@@ -3,5 +3,9 @@
   "block.zoldrax.monkey_monument": "Monkey King Monument Foundation",
   "item.zoldrax.golden_banana": "Golden Banana",
   "block.zoldrax.ternor_monument": "Ternor Monument Foundation",
-  "entity.zoldrax.ternor_guardian": "Ternor Guardian"
+  "entity.zoldrax.ternor_guardian": "Ternor Guardian",
+  "entity.zoldrax.chain_punisher": "Chain Punisher",
+  "entity.zoldrax.blood_priest": "Bloodfire Priest",
+  "item.zoldrax.chain_punisher_spawn_egg": "Chain Punisher Spawn Egg",
+  "item.zoldrax.blood_priest_spawn_egg": "Bloodfire Priest Spawn Egg"
 }
