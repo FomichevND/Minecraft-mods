@@ -6,6 +6,7 @@ from PIL import Image, ImageDraw
 import json, random, base64, io, uuid
 OUT=Path('src/main/resources/assets/zoldrax')
 SIZE=1024
+from texture_materials import paint,TEXEL_SCALE
 
 def make(stage):
     cubes=[]
@@ -101,7 +102,7 @@ def make(stage):
             box('glow_rune_stem',-1,42,7.05,2,19,1,'ember')
             box('glow_rune_crown',-4,58,7.05,8,2,1,'ember')
             box('glow_coals',-15,16,15,30,1,18,'ember')
-    img=Image.new('RGBA',(SIZE,SIZE),(0,0,0,255));dr=ImageDraw.Draw(img)
+    img=Image.new('RGBA',(SIZE*TEXEL_SCALE,SIZE*TEXEL_SCALE),(0,0,0,255))
     rng=random.Random(840+stage);elements=[];u=v=row=2
     palette={'stone':(54,48,62),'wood':(101,65,36),'cloth':(146,126,103),'banner':(88,12,22),'metal':(37,32,40),'bone':(123,110,103),'ember':(232,41,16)}
     for idx,c in enumerate(cubes):
@@ -109,29 +110,20 @@ def make(stage):
         uw=2*(w+d);uh=h+d
         if u+uw+2>SIZE:u=2;v+=row+3;row=0
         assert v+uh+2<SIZE
-        col=palette[c['material']]
-        for py in range(uh):
-            for px in range(uw):
-                noise=rng.randint(-6,6);color=tuple(max(0,min(255,k+noise)) for k in col)
-                if c['material']=='stone':
-                    if py%8==0 or (px+(8 if (py//8)%2 else 0))%16==0:color=(24,21,31)
-                    elif py%8==1:color=tuple(k+9 for k in col)
-                elif c['material']=='wood' and px%4==0:color=(66,41,24)
-                elif c['material']=='banner':
-                    if px%8 in (0,7):color=(166,57,36)
-                    if (px%8 in (3,4) and py%29 in range(5,24)) or (py%29 in (12,13) and px%8 in range(1,7)):color=(210,55,30)
-                elif c['material']=='ember' and rng.random()<.12:color=(255,151,41)
-                img.putpixel((u+px,v+py),(*color,255))
         uid=str(uuid.uuid5(uuid.NAMESPACE_URL,f'zoldrax/stage{stage}/{c["name"]}'))
         faces={face:{'uv':uv,'texture':0} for face,uv in {
             'east':[u,v+d,u+d,v+d+h], 'north':[u+d,v+d,u+d+w,v+d+h],
             'west':[u+d+w,v+d,u+2*d+w,v+d+h], 'south':[u+2*d+w,v+d,u+2*d+2*w,v+d+h],
             'up':[u+d,v,u+d+w,v+d], 'down':[u+d+w,v,u+d+2*w,v+d]}.items()}
+        for face,data in faces.items():
+            a,b,A,B=data['uv']
+            image=paint(c,face,(A-a)*TEXEL_SCALE,(B-b)*TEXEL_SCALE,cubes)
+            img.paste(image,(a*TEXEL_SCALE,b*TEXEL_SCALE))
         elements.append({'name':c['name'],'type':'cube','uuid':uid,'from':c['from_'],'to':c['to'],'origin':[0,0,0],'rotation':[0,0,0],'uv_offset':[u,v],'box_uv':True,'faces':faces,'rescale':False,'locked':False,'visibility':True,'export':True})
         u+=uw+3;row=max(row,uh)
     stream=io.BytesIO();img.save(stream,format='PNG')
     texture='data:image/png;base64,'+base64.b64encode(stream.getvalue()).decode()
-    model={'meta':{'format_version':'4.10','model_format':'modded_entity','box_uv':True},'name':f'Zoldrax stage {stage+1}','model_identifier':f'zoldrax_stage_{stage+1}','visible_box':[7,9,0],'resolution':{'width':SIZE,'height':SIZE},'elements':elements,'outliner':[e['uuid'] for e in elements],'textures':[{'name':f'stage_{stage+1}.png','uuid':str(uuid.uuid5(uuid.NAMESPACE_URL,f'zoldrax/texture{stage}')),'id':'0','width':SIZE,'height':SIZE,'uv_width':SIZE,'uv_height':SIZE,'source':texture,'mode':'bitmap','saved':False}]}
+    model={'meta':{'format_version':'4.10','model_format':'modded_entity','box_uv':True},'name':f'Zoldrax stage {stage+1}','model_identifier':f'zoldrax_stage_{stage+1}','visible_box':[7,9,0],'resolution':{'width':SIZE,'height':SIZE},'elements':elements,'outliner':[e['uuid'] for e in elements],'textures':[{'name':f'stage_{stage+1}.png','uuid':str(uuid.uuid5(uuid.NAMESPACE_URL,f'zoldrax/texture{stage}')),'id':'0','width':SIZE*TEXEL_SCALE,'height':SIZE*TEXEL_SCALE,'uv_width':SIZE,'uv_height':SIZE,'source':texture,'mode':'bitmap','saved':False}]}
     model_dir=OUT/'models/blockbench';tex_dir=OUT/'textures/entity';model_dir.mkdir(parents=True,exist_ok=True);tex_dir.mkdir(parents=True,exist_ok=True)
     (model_dir/f'stage_{stage+1}.bbmodel').write_text(json.dumps(model,indent=2))
     img.save(tex_dir/f'stage_{stage+1}.png')

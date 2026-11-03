@@ -8,17 +8,18 @@ for stage in range(1,4):
  image=Image.open(root/f'textures/entity/stage_{stage}.png')
  embedded=Image.open(io.BytesIO(base64.b64decode(model['textures'][0]['source'].split(',')[1])))
  assert image.tobytes()==embedded.tobytes(), 'Blockbench and runtime textures differ'
- assert image.size==(model['resolution']['width'],model['resolution']['height'])
+ assert image.size==(model['textures'][0]['width'],model['textures'][0]['height'])
+ assert image.width/model['resolution']['width']==image.height/model['resolution']['height']==2
  occupied=[]
  for cube in model['elements']:
   w,h,d=[b-a for a,b in zip(cube['from'],cube['to'])]
   assert all(n>0 for n in (w,h,d))
   u,v=cube['uv_offset'];right,bottom=u+2*(w+d),v+h+d
-  assert 0<=u<right<=image.width and 0<=v<bottom<=image.height, cube['name']
+  assert 0<=u<right<=model['resolution']['width'] and 0<=v<bottom<=model['resolution']['height'], cube['name']
   for a,b,c,e in occupied:assert right<=a or c<=u or bottom<=b or e<=v, 'UV regions overlap'
   occupied.append((u,v,right,bottom))
   for face in cube['faces'].values():
-   x1,y1,x2,y2=face['uv'];assert 0<=min(x1,x2)<=max(x1,x2)<=image.width and 0<=min(y1,y2)<=max(y1,y2)<=image.height
+   x1,y1,x2,y2=face['uv'];assert 0<=min(x1,x2)<=max(x1,x2)<=model['resolution']['width'] and 0<=min(y1,y2)<=max(y1,y2)<=model['resolution']['height']
  print(f'Stage {stage}: {len(occupied)} cube unwraps valid; embedded/runtime PNG identical')
 
 # Full-size footprint and crown height are a public placement contract.

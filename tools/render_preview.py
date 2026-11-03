@@ -7,7 +7,7 @@ from PIL import Image,ImageDraw
 root=Path('src/main/resources/assets/zoldrax');W,H=600,900
 canvas=Image.new('RGB',(W*3,H),(24,21,28))
 for stage in range(1,4):
- m=json.loads((root/f'models/blockbench/stage_{stage}.bbmodel').read_text());texture=np.asarray(Image.open(root/f'textures/entity/stage_{stage}.png').convert('RGB'))
+ m=json.loads((root/f'models/blockbench/stage_{stage}.bbmodel').read_text());texture=np.asarray(Image.open(root/f'textures/entity/stage_{stage}.png').convert('RGB'));texel_scale=texture.shape[0]/m['resolution']['height']
  pixels=np.zeros((H,W,3),dtype=np.uint8);pixels[:]=(24,21,28);depth=np.full((H,W),-1e10)
  view=np.array([.55,.35,1.]);view/=np.linalg.norm(view)
  right=np.cross([0,1,0],view);right/=np.linalg.norm(right);up=np.cross(view,right)
@@ -25,7 +25,7 @@ for stage in range(1,4):
   w1=((c[1]-a[1])*(x-c[0])+(a[0]-c[0])*(y-c[1]))/den;w2=1-w0-w1
   z=w0*a[2]+w1*b[2]+w2*c[2]
   part=depth[y0:y1+1,x0:x1+1];mask=(w0>=0)&(w1>=0)&(w2>=0)&(z>part)
-  uv=np.asarray(uv);u=(w0*uv[0,0]+w1*uv[1,0]+w2*uv[2,0]).astype(int).clip(0,1023);v=(w0*uv[0,1]+w1*uv[1,1]+w2*uv[2,1]).astype(int).clip(0,1023)
+  uv=np.asarray(uv)*texel_scale;u=(w0*uv[0,0]+w1*uv[1,0]+w2*uv[2,0]).astype(int).clip(0,texture.shape[0]-1);v=(w0*uv[0,1]+w1*uv[1,1]+w2*uv[2,1]).astype(int).clip(0,texture.shape[0]-1)
   color=(texture[v,u]*shade).clip(0,255).astype('uint8')
   pixels[y0:y1+1,x0:x1+1][mask]=color[mask];part[mask]=z[mask]
  for cube in m['elements']:
@@ -36,6 +36,6 @@ for stage in range(1,4):
    'up':([(x,Y,z),(X,Y,z),(X,Y,Z),(x,Y,Z)],1.18)}
   for face,(points,shade) in faces.items():
    u,v,U,V=cube['faces'][face]['uv'];uv=[(u,v),(U,v),(U,V),(u,V)]
-   for indices in [[0,1,2],[0,2,3]]:triangle([points[i] for i in indices],[uv[i] for i in indices],1.1 if cube['name'].startswith('glow_') else shade)
+   for indices in [[0,1,2],[0,2,3]]:triangle([points[i] for i in indices],[uv[i] for i in indices],1)
  image=Image.fromarray(pixels);d=ImageDraw.Draw(image);d.text((20,20),f'ZOLDRAX / STAGE {stage} / MODEL PREVIEW',fill=(213,190,162));canvas.paste(image,((stage-1)*W,0))
-Path('docs').mkdir(exist_ok=True);canvas.save('docs/zoldrax-1.2.0-preview.png')
+Path('docs').mkdir(exist_ok=True);canvas.save('docs/zoldrax-1.2.1-preview.png')
