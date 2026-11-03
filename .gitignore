@@ -2,3 +2,6 @@
 build/
 run/
 .idea/
+
+__pycache__/
+*.pyc
