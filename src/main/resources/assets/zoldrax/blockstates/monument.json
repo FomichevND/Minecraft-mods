@@ -1,1 +1,16 @@
-{"variants": {"": {"model": "zoldrax:block/monument"}}}
+{
+  "variants": {
+    "facing=north": {
+      "model": "zoldrax:block/monument"
+    },
+    "facing=south": {
+      "model": "zoldrax:block/monument"
+    },
+    "facing=east": {
+      "model": "zoldrax:block/monument"
+    },
+    "facing=west": {
+      "model": "zoldrax:block/monument"
+    }
+  }
+}

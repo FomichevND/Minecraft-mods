@@ -37,7 +37,7 @@ public class MonumentRenderer implements BlockEntityRenderer<MonumentEntity> {
  }
  @Override public void render(MonumentEntity e,float delta,MatrixStack matrices,VertexConsumerProvider vertices,int light,int overlay) {
   Identifier texture=new Identifier("zoldrax","textures/entity/stage_"+(e.stage+1)+".png");
-  matrices.push();matrices.translate(.5,0,.5);
+  matrices.push();matrices.translate(.5,0,.5);matrices.multiply(net.minecraft.util.math.RotationAxis.POSITIVE_Y.rotationDegrees(-e.getCachedState().get(MonumentBlock.FACING).asRotation()));
   // This shader has no view-relative entity diffuse lighting. Apply world ambient
   // brightness as vertex colour, so camera pitch cannot brighten/darken the altar.
   float ambient=.35f;

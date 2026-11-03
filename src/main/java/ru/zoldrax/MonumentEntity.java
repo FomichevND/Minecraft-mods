@@ -32,11 +32,11 @@ public class MonumentEntity extends BlockEntity {
  // Transient attribution, scoped to this altar; entries expire or are removed after death.
  private final Map<UUID,Long> burningVictims=new HashMap<>();
  private final Map<UUID,Long> nextItemOffering=new HashMap<>();
- public Box brazierBounds() {
-  // The figure is decorative: dropped items settle at ground level under the bowl.
-  return new Box(pos.getX()-.65,pos.getY()-.1,pos.getZ()+1.1,
-    pos.getX()+1.65,pos.getY()+2,pos.getZ()+3.05);
+ public Vec3d altarPoint(double x,double y,double z){
+  var facing=getCachedState().get(MonumentBlock.FACING);
+  return new Vec3d(pos.getX()+.5+x*facing.getOffsetZ()+z*facing.getOffsetX(),pos.getY()+y,pos.getZ()+.5-x*facing.getOffsetX()+z*facing.getOffsetZ());
  }
+ public Box brazierBounds(){return new Box(altarPoint(-1.15,-.1,.6),altarPoint(1.15,2,2.55));}
  private PlayerEntity recipient(Entity owner) {
   if(owner instanceof PlayerEntity p && p.isAlive() && !p.isSpectator() && p.squaredDistanceTo(Vec3d.ofCenter(pos))<=256) return p;
   return world.getClosestPlayer(pos.getX()+.5,pos.getY(),pos.getZ()+1.25,16,false);
@@ -70,7 +70,7 @@ public class MonumentEntity extends BlockEntity {
   return count;
  }
  public net.minecraft.text.Text status() {
-  if(stage==2) return Text.literal("Золдракс: активен. Бросьте алмаз, изумруд, золото или незерит в жаровню с пламенем (+Z, юг). Один предмет из стопки в секунду. Подожжённый здесь моб тоже считается жертвой. Последнее подношение: "+(lastOffering<0?"ещё не было":((world.getTime()-lastOffering)/20)+" сек. назад"));
+  if(stage==2) return Text.literal("Золдракс: активен. Бросьте алмаз, изумруд, золото или незерит в жаровню с пламенем (на стороне пламени). Один предмет из стопки в секунду. Подожжённый здесь моб тоже считается жертвой. Последнее подношение: "+(lastOffering<0?"ещё не было":((world.getTime()-lastOffering)/20)+" сек. назад"));
   List<Inventory> chests=constructionChests();
   var text=Text.literal("Этап "+(stage+1)+"/3. Найдено сундуков: "+chests.size()+". Радиус: 3 блока, высота ±1.\n");
   for(int i=0;i<MATERIALS[stage].length;i++) {
@@ -87,7 +87,7 @@ public class MonumentEntity extends BlockEntity {
   ServerWorld sw=(ServerWorld)world;
   long now=world.getTime();
   Box fire=m.brazierBounds();
-  if(now%4==0) sw.spawnParticles(ParticleTypes.FLAME,pos.getX()+.5,pos.getY()+.9,pos.getZ()+2.05,8,.6,.2,.45,.015);
+  if(now%4==0){var flame=m.altarPoint(0,.9,1.55);sw.spawnParticles(ParticleTypes.FLAME,flame.x,flame.y,flame.z,8,.45,.2,.45,.015);}
   // Scan every tick: a thrown item can pass through the bowl in less than a second.
   m.nextItemOffering.entrySet().removeIf(entry -> entry.getValue()+100<now);
   for(ItemEntity item:world.getEntitiesByClass(ItemEntity.class,fire,e->!e.isRemoved())) {

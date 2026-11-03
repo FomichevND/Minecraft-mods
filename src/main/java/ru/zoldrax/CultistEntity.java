@@ -29,7 +29,7 @@ public class CultistEntity extends PathAwareEntity {
   goalSelector.add(4,new Goal(){
    {setControls(java.util.EnumSet.of(Control.MOVE));}
    @Override public boolean canStart(){return getTarget()==null&&shrine!=null&&squaredDistanceTo(Vec3d.ofCenter(shrine))>256;}
-   @Override public void tick(){if(shrine!=null)getNavigation().startMovingTo(shrine.getX()+.5,shrine.getY(),shrine.getZ()+3.7,.9);}
+   @Override public void tick(){var shrineEntity=altar();if(shrineEntity!=null){var point=shrineEntity.altarPoint(0,0,3.2);getNavigation().startMovingTo(point.x,point.y,point.z,.9);}}
   });
   goalSelector.add(5,new WanderAroundFarGoal(this,.65));goalSelector.add(6,new LookAtEntityGoal(this,PlayerEntity.class,8));goalSelector.add(7,new LookAroundGoal(this));
   targetSelector.add(1,new RevengeGoal(this));targetSelector.add(2,new ActiveTargetGoal<>(this,LivingEntity.class,0,true,false,CultFactions::isEnemy));
@@ -67,7 +67,7 @@ public class CultistEntity extends PathAwareEntity {
   var altar=altar();if(altar==null||offering.isEmpty())return;
   var stack=offering.copy();stack.getOrCreateNbt().putBoolean("ZoldraxCultOffering",true);stack.getOrCreateNbt().putLong("ZoldraxAltar",altar.getPos().asLong());
   var item=new ItemEntity(getWorld(),getX(),getY()+1.2,getZ(),stack);item.setPickupDelay(40);item.setThrower(donor==null?getUuid():donor);
-  Vec3d aim=new Vec3d(altar.getPos().getX()+.5,altar.getPos().getY()+.6,altar.getPos().getZ()+2.05).subtract(item.getPos()).normalize().multiply(.28);
+  Vec3d aim=altar.altarPoint(0,.6,1.55).subtract(item.getPos()).normalize().multiply(.28);
   item.setVelocity(aim.x,.05,aim.z);if(getWorld().spawnEntity(item)){offering=ItemStack.EMPTY;donor=null;swingHand(Hand.MAIN_HAND);}
  }
  @Override protected ActionResult interactMob(PlayerEntity player,Hand hand){

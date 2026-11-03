@@ -17,10 +17,10 @@ public class Zoldrax implements ModInitializer {
  public static BlockEntityType<MonkeyEntity> MONKEY_ENTITY;
  public static final TernorBlock TERNOR_BLOCK=new TernorBlock();
  public static BlockEntityType<TernorEntity> TERNOR_ENTITY;
- public static final net.minecraft.entity.EntityType<TernorGuardian> TERNOR_GUARDIAN=net.fabricmc.fabric.api.object.builder.v1.entity.FabricEntityTypeBuilder.create(net.minecraft.entity.SpawnGroup.MISC,TernorGuardian::new).dimensions(net.minecraft.entity.EntityDimensions.fixed(1.4f,2.7f)).trackRangeBlocks(12).build();
+ public static final net.minecraft.entity.EntityType<TernorGuardian> TERNOR_GUARDIAN=net.fabricmc.fabric.api.object.builder.v1.entity.FabricEntityTypeBuilder.create(net.minecraft.entity.SpawnGroup.MISC,TernorGuardian::new).dimensions(net.minecraft.entity.EntityDimensions.fixed(1.4f,2.7f)).trackRangeChunks(10).build();
  public static final net.minecraft.entity.EntityType<CultistEntity> CHAIN_PUNISHER=cultistType(.85f,2.35f);
  public static final net.minecraft.entity.EntityType<CultistEntity> BLOOD_PRIEST=cultistType(.7f,2.2f);
- private static net.minecraft.entity.EntityType<CultistEntity> cultistType(float width,float height){return net.fabricmc.fabric.api.object.builder.v1.entity.FabricEntityTypeBuilder.create(net.minecraft.entity.SpawnGroup.CREATURE,CultistEntity::new).dimensions(net.minecraft.entity.EntityDimensions.fixed(width,height)).trackRangeBlocks(10).build();}
+ private static net.minecraft.entity.EntityType<CultistEntity> cultistType(float width,float height){return net.fabricmc.fabric.api.object.builder.v1.entity.FabricEntityTypeBuilder.create(net.minecraft.entity.SpawnGroup.CREATURE,CultistEntity::new).dimensions(net.minecraft.entity.EntityDimensions.fixed(width,height)).trackRangeChunks(10).build();}
  public static final Item RITUAL_STAFF=new Item(new Item.Settings().maxCount(1).rarity(net.minecraft.util.Rarity.RARE));
  public void onInitialize() {
   Registry.register(Registries.BLOCK, new Identifier("zoldrax", "monument"), BLOCK);

@@ -11,7 +11,11 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.*;
 
 public class MonumentBlock extends BlockWithEntity {
- public MonumentBlock() { super(AbstractBlock.Settings.create().strength(4, 1200).nonOpaque().luminance(s -> 10)); }
+ public static final net.minecraft.state.property.DirectionProperty FACING=net.minecraft.state.property.Properties.HORIZONTAL_FACING;
+ public MonumentBlock() { super(AbstractBlock.Settings.create().strength(4, 1200).nonOpaque().luminance(s -> 10)); setDefaultState(getStateManager().getDefaultState().with(FACING,net.minecraft.util.math.Direction.SOUTH)); }
+ @Override protected void appendProperties(net.minecraft.state.StateManager.Builder<Block,BlockState> builder){builder.add(FACING);}
+ @Override public BlockState rotate(BlockState state,BlockRotation rotation){return state.with(FACING,rotation.rotate(state.get(FACING)));}
+ @Override public BlockState mirror(BlockState state,BlockMirror mirror){return state.rotate(mirror.getRotation(state.get(FACING)));}
  @Override public BlockRenderType getRenderType(BlockState s) { return BlockRenderType.INVISIBLE; }
  @Override public BlockEntity createBlockEntity(BlockPos p, BlockState s) { return new MonumentEntity(p,s); }
  @Override public BlockState getPlacementState(ItemPlacementContext c) {

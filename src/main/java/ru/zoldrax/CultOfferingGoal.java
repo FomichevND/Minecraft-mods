@@ -23,8 +23,8 @@ public class CultOfferingGoal extends Goal {
    npc.getLookControl().lookAt(item,30,30);npc.getNavigation().startMovingTo(item,1);
    if(npc.squaredDistanceTo(item)<2.25)npc.collectOffering(item);
   }else{
-   var pos=altar.getPos();double x=pos.getX()+.5,z=pos.getZ()+3.7;
-   npc.getNavigation().startMovingTo(x,pos.getY(),z,.85);npc.getLookControl().lookAt(pos.getX()+.5,pos.getY()+1,pos.getZ()+2,30,30);
+   var pos=altar.getPos();var point=altar.altarPoint(0,0,3.2);double x=point.x,z=point.z;
+   npc.getNavigation().startMovingTo(x,pos.getY(),z,.85);var flame=altar.altarPoint(0,1,1.55);npc.getLookControl().lookAt(flame.x,flame.y,flame.z,30,30);
    if(npc.squaredDistanceTo(x,pos.getY(),z)<2.5)npc.throwOffering();
   }
  }
