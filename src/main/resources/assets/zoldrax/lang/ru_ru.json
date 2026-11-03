@@ -7,5 +7,6 @@
   "entity.zoldrax.chain_punisher": "Цепной каратель",
   "entity.zoldrax.blood_priest": "Жарокровный жрец",
   "item.zoldrax.chain_punisher_spawn_egg": "Яйцо призыва Цепного карателя",
-  "item.zoldrax.blood_priest_spawn_egg": "Яйцо призыва Жарокровного жреца"
+  "item.zoldrax.blood_priest_spawn_egg": "Яйцо призыва Жарокровного жреца",
+  "item.zoldrax.ritual_staff": "Ритуальный посох-жаровня"
 }

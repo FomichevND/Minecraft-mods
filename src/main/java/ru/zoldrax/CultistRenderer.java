@@ -6,7 +6,7 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
 public class CultistRenderer extends MobEntityRenderer<CultistEntity,CultistModel> {
  private final Identifier texture;
- public CultistRenderer(EntityRendererFactory.Context ctx,String variant){super(ctx,new CultistModel(variant),.55f);texture=new Identifier("zoldrax","textures/entity/"+variant+".png");addFeature(new Glow(this));}
+ public CultistRenderer(EntityRendererFactory.Context ctx,String variant){super(ctx,new CultistModel(variant),.55f);texture=new Identifier("zoldrax","textures/entity/"+variant+".png");addFeature(new Glow(this));addFeature(new HeldItemFeatureRenderer<>(this,ctx.getHeldItemRenderer()));}
  @Override public Identifier getTexture(CultistEntity entity){return texture;}
  private static class Glow extends FeatureRenderer<CultistEntity,CultistModel>{
   Glow(CultistRenderer context){super(context);}

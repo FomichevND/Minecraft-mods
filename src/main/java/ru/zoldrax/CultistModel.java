@@ -11,7 +11,7 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
 /** Shared loader for editable, bone-assigned Blockbench followers. */
-public class CultistModel extends SinglePartEntityModel<CultistEntity> {
+public class CultistModel extends SinglePartEntityModel<CultistEntity> implements net.minecraft.client.render.entity.model.ModelWithArms {
  private final ModelPart root,glow;
  private final boolean priest;
  private static final String[] BONES={"head","body","rightArm","leftArm","rightLeg","leftLeg","cape"};
@@ -42,5 +42,6 @@ public class CultistModel extends SinglePartEntityModel<CultistEntity> {
    tree.getChild("cape").pitch=.06f+limbDistance*.22f+MathHelper.sin(age*.07f)*.02f;
   }
  }
+ @Override public void setArmAngle(net.minecraft.util.Arm arm,MatrixStack matrices){root.getChild(arm==net.minecraft.util.Arm.RIGHT?"rightArm":"leftArm").rotate(matrices);}
  public void renderGlow(MatrixStack matrices,VertexConsumerProvider vertices,Identifier texture,int light){glow.render(matrices,vertices.getBuffer(MonumentRenderLayer.get(texture)),LightmapTextureManager.MAX_LIGHT_COORDINATE,OverlayTexture.DEFAULT_UV);}
 }

@@ -23,6 +23,12 @@ import net.minecraft.registry.tag.DamageTypeTags;
 public class MonumentEntity extends BlockEntity {
  public int stage=0;
  private long lastOffering=-1;
+ private long cultRitualUntil=-1;
+ public boolean wasRecentlyFed(){return lastOffering>=0&&world.getTime()-lastOffering<600;}
+ private boolean nearbyPriest(){return !world.getEntitiesByClass(CultistEntity.class,new Box(pos).expand(8),e->e.isAlive()&&e.isPriest()).isEmpty();}
+ private boolean cultRitual(){return cultRitualUntil>world.getTime();}
+ private void recordCultOffering(){lastOffering=world.getTime();if(nearbyPriest())cultRitualUntil=world.getTime()+600;sync();}
+
  // Transient attribution, scoped to this altar; entries expire or are removed after death.
  private final Map<UUID,Long> burningVictims=new HashMap<>();
  private final Map<UUID,Long> nextItemOffering=new HashMap<>();
@@ -86,20 +92,21 @@ public class MonumentEntity extends BlockEntity {
   m.nextItemOffering.entrySet().removeIf(entry -> entry.getValue()+100<now);
   for(ItemEntity item:world.getEntitiesByClass(ItemEntity.class,fire,e->!e.isRemoved())) {
    ItemStack stack=item.getStack();
-   if((stack.isOf(Items.DIAMOND)||stack.isOf(Items.EMERALD)||stack.isOf(Items.GOLD_INGOT)||stack.isOf(Items.NETHERITE_INGOT))
+   if(CultFactions.isOffering(stack)
       && now>=m.nextItemOffering.getOrDefault(item.getUuid(),Long.MIN_VALUE)) {
     PlayerEntity p=m.recipient(item.getOwner());
-    if(p!=null) {
+    boolean cult=stack.hasNbt()&&stack.getNbt().getBoolean("ZoldraxCultOffering")&&stack.getNbt().getLong("ZoldraxAltar")==pos.asLong();
+    if(p!=null||cult) {
      stack.decrement(1); if(stack.isEmpty()) item.discard();
-     m.nextItemOffering.put(item.getUuid(),now+20);m.offer(p);
+     m.nextItemOffering.put(item.getUuid(),now+20);if(p!=null)m.offer(p);else m.recordCultOffering();
     }
    }
   }
-  for(MobEntity mob:world.getEntitiesByClass(MobEntity.class,fire,e->e.isAlive()&&!e.isFireImmune()&&!e.hasStatusEffect(StatusEffects.FIRE_RESISTANCE))) {
+  for(MobEntity mob:world.getEntitiesByClass(MobEntity.class,fire,e->e.isAlive()&&!(e instanceof CultistEntity)&&!e.isFireImmune()&&!e.hasStatusEffect(StatusEffects.FIRE_RESISTANCE))) {
    boolean firstContact=!m.burningVictims.containsKey(mob.getUuid());
    m.burningVictims.put(mob.getUuid(),now+100);
    mob.setOnFireFor(4);
-   if(firstContact || now%20==0) mob.damage(world.getDamageSources().inFire(),4);
+   if(firstContact || now%20==0) mob.damage(world.getDamageSources().inFire(),m.cultRitual()?6:4);
   }
   // Death can occur between direct-damage ticks, or after the mob walks out burning.
   var victims=m.burningVictims.entrySet().iterator();
@@ -121,10 +128,11 @@ public class MonumentEntity extends BlockEntity {
   }
  }
  private void offer(PlayerEntity p) {
-  devotees.put(p.getUuid(),world.getTime()); lastOffering=world.getTime();
+  devotees.put(p.getUuid(),world.getTime());recordCultOffering();
   for(StatusEffect e:CURSES) p.removeStatusEffect(e);
-  p.addStatusEffect(new StatusEffectInstance(GIFTS[world.random.nextInt(GIFTS.length)],3600,0));
-  p.sendMessage(Text.literal("Золдракс принял жертву и даровал благословение на 3 минуты."),false); sync();
+  int minutes=nearbyPriest()?6:3;
+  p.addStatusEffect(new StatusEffectInstance(GIFTS[world.random.nextInt(GIFTS.length)],minutes*1200,0));
+  p.sendMessage(Text.literal("Золдракс принял жертву и даровал благословение на "+minutes+" мин."+(minutes==6?" Жрец усилил ритуал!":"")),false); sync();
  }
  private void build() {
   List<Inventory> inventories=constructionChests();
@@ -142,8 +150,8 @@ public class MonumentEntity extends BlockEntity {
   stage++;sync();
   ((ServerWorld)world).spawnParticles(ParticleTypes.POOF,pos.getX()+.5,pos.getY()+2,pos.getZ()+.5,30,1,1,1,.02);
  }
- @Override protected void writeNbt(NbtCompound n) { super.writeNbt(n);n.putInt("Stage",stage);n.putLong("LastOffering",lastOffering); NbtList list=new NbtList();devotees.forEach((id,time)->{NbtCompound e=new NbtCompound();e.putUuid("Player",id);e.putLong("Time",time);list.add(e);});n.put("Devotees",list); }
- @Override public void readNbt(NbtCompound n) {super.readNbt(n);stage=MathHelper.clamp(n.getInt("Stage"),0,2);lastOffering=n.getLong("LastOffering");devotees.clear();for(NbtElement el:n.getList("Devotees",10)){NbtCompound e=(NbtCompound)el;devotees.put(e.getUuid("Player"),e.getLong("Time"));}}
+ @Override protected void writeNbt(NbtCompound n) { super.writeNbt(n);n.putInt("Stage",stage);n.putLong("LastOffering",lastOffering);n.putLong("CultRitualUntil",cultRitualUntil); NbtList list=new NbtList();devotees.forEach((id,time)->{NbtCompound e=new NbtCompound();e.putUuid("Player",id);e.putLong("Time",time);list.add(e);});n.put("Devotees",list); }
+ @Override public void readNbt(NbtCompound n) {super.readNbt(n);stage=MathHelper.clamp(n.getInt("Stage"),0,2);lastOffering=n.getLong("LastOffering");cultRitualUntil=n.getLong("CultRitualUntil");devotees.clear();for(NbtElement el:n.getList("Devotees",10)){NbtCompound e=(NbtCompound)el;devotees.put(e.getUuid("Player"),e.getLong("Time"));}}
  @Override public NbtCompound toInitialChunkDataNbt() {return createNbt();}
  @Override public Packet<ClientPlayPacketListener> toUpdatePacket() {return BlockEntityUpdateS2CPacket.create(this);}
 }

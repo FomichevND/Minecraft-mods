@@ -86,3 +86,13 @@ for variant in ['chain_punisher','blood_priest']:
   occupied.append((u,v,U,V))
  assert any(e['name'].startswith('glow_') for e in model['elements'])
  print(f'{variant}: {len(ids)} cubes, seven bones, UVs/PNG/texture layers verified')
+
+for variant,prefixes in [('chain_punisher',('weapon_chain_','hook_')),('blood_priest',('staff_','glow_flame_','brazier_iron_edge'))]:
+ model=json.loads((root/f'models/blockbench/{variant}.bbmodel').read_text())
+ assert not any(e['name'].startswith(prefixes) for e in model['elements']), 'Equipped weapon is still baked into NPC mesh'
+staff=json.loads((root/'models/item/ritual_staff.json').read_text())
+assert staff['display']['thirdperson_righthand']['rotation']==[90,0,0]
+for e in staff['elements']:
+ assert all(-16<=v<=32 for v in e['from']+e['to'])
+assert Image.open(root/'textures/item/ritual_staff.png').size==(64,64)
+print('Standalone staff item and weapon-free NPC meshes verified')

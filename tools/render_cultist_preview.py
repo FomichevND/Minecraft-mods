@@ -7,6 +7,12 @@ ROOT=Path('src/main/resources/assets/zoldrax');W,H=600,850
 def render(variant,direction):
  m=json.loads((ROOT/f'models/blockbench/{variant}.bbmodel').read_text());texture=np.asarray(Image.open(ROOT/f'textures/entity/{variant}.png').convert('RGB'));texel_scale=texture.shape[0]/m['resolution']['height']
  pixels=np.zeros((H,W,3),dtype='u1');pixels[:]=(24,21,28);depth=np.full((H,W),-1e10)
+ npc_texture=texture; npc_scale=texel_scale; cubes=list(m['elements'])
+ if variant=='blood_priest':
+  item=json.loads((ROOT/'models/item/ritual_staff.json').read_text());item_texture=np.asarray(Image.open(ROOT/'textures/item/ritual_staff.png').convert('RGB'))
+  for e in item['elements']:
+   x,y,z=e['from'];X,Y,Z=e['to']
+   cubes.append({'name':'held_'+e['name'],'from':[-2-X,y+9,10-Z],'to':[-2-x,Y+9,10-z],'faces':e['faces'],'held':True})
  view=np.array(direction,dtype=float);view/=np.linalg.norm(view);right=np.cross([0,1,0],view);right/=np.linalg.norm(right);up=np.cross(view,right)
  def project(points):
   p=np.asarray(points)-[0,21,0];return np.stack([W/2+(p@right)*15,H/2-(p@up)*15,p@view],axis=1)
@@ -19,7 +25,8 @@ def render(variant,direction):
   part=depth[y0:y1+1,x0:x1+1];mask=(w0>=0)&(w1>=0)&(w2>=0)&(z>part);uv=np.asarray(uv)*texel_scale
   u=(w0*uv[0,0]+w1*uv[1,0]+w2*uv[2,0]).astype(int).clip(0,texture.shape[1]-1);v=(w0*uv[0,1]+w1*uv[1,1]+w2*uv[2,1]).astype(int).clip(0,texture.shape[0]-1)
   pixels[y0:y1+1,x0:x1+1][mask]=texture[v,u][mask];part[mask]=z[mask]
- for c in m['elements']:
+ for c in cubes:
+  texture=item_texture if c.get('held') else npc_texture;texel_scale=4 if c.get('held') else npc_scale
   x,y,z=c['from'];X,Y,Z=c['to'];inflate=c.get('inflate',0);x-=inflate;y-=inflate;z-=inflate;X+=inflate;Y+=inflate;Z+=inflate
   faces={
    'south':([(x,Y,Z),(X,Y,Z),(X,y,Z),(x,y,Z)],[0,0,1]),'north':([(X,Y,z),(x,Y,z),(x,y,z),(X,y,z)],[0,0,-1]),
@@ -37,4 +44,4 @@ if __name__=='__main__':
   canvas=Image.new('RGB',(3*W,H))
   for i,(label,view) in enumerate([('FRONT',(.16,.12,1)),('SIDE',(1,.13,.1)),('BACK',(-.16,.12,-1))]):
    image=render(variant,view);d=ImageDraw.Draw(image);d.text((18,18),variant.upper()+' / '+label,fill=(213,190,162));canvas.paste(image,(i*W,0))
-  canvas.save(f'docs/{variant}-1.5.0-preview.png')
+  canvas.save(f'docs/{variant}-1.6.0-preview.png')

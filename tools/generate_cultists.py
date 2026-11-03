@@ -131,12 +131,16 @@ def make(variant):
   box('priest_cape',-7,3,-6,14,25,1,'cape','cape')
   for x in [-7,5]:box(f'cape_red_edge_{x}',x,3,-7,2,25,1,'red','cape')
   box('staff_gripping_hand',-13,18,-2,4,4,5,'skin','rightArm')
+  box('right_hand_closed_fingers',-12,15,-2,4,4,5,'skin','rightArm')
   box('staff_shaft',-13,0,0,2,36,2,'wood','rightArm')
   for y in [1,15,29]:box(f'staff_gold_band_{y}',-14,y,-1,4,2,4,'gold','rightArm')
   box('staff_brazier',-17,34,-3,10,3,8,'plate','rightArm')
   box('staff_brazier_rim',-18,37,-4,12,1,10,'gold','rightArm')
   for i,(x,y,h) in enumerate([(-16,38,3),(-13,38,6),(-10,38,4)]):box(f'glow_flame_{i}',x,y,-1,2,h,3,'fire','rightArm')
   for x in [-17,-8]:box(f'brazier_iron_edge_{x}',x,34,-3,1,4,8,'plate','rightArm')
+ # Weapons are actual equipped items now; retain only the armour chains.
+ remove=('staff_','brazier_iron_edge','glow_flame_') if is_priest else ('weapon_chain_','hook_')
+ cubes[:]=[c for c in cubes if not c['name'].startswith(remove)]
  write_model(cubes,0,variant+'_',paint,size=256,texel_scale=4)
  src=ROOT/f'models/blockbench/{variant}_stage_1.bbmodel';model=json.loads(src.read_text());src.unlink()
  oldtex=ROOT/f'textures/entity/{variant}_stage_1.png';oldtex.replace(ROOT/f'textures/entity/{variant}.png')

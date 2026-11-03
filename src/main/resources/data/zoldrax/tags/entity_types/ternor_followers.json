@@ -1,0 +1,13 @@
+{
+  "replace": false,
+  "values": [
+    {
+      "id": "zoldrax:ternor_squire",
+      "required": false
+    },
+    {
+      "id": "zoldrax:harvest_keeper",
+      "required": false
+    }
+  ]
+}

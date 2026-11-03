@@ -1,0 +1,13 @@
+{
+  "replace": false,
+  "values": [
+    "minecraft:diamond",
+    "minecraft:emerald",
+    "minecraft:gold_ingot",
+    "minecraft:netherite_ingot",
+    {
+      "id": "#c:rubies",
+      "required": false
+    }
+  ]
+}
