@@ -2,7 +2,7 @@
 from pathlib import Path
 from PIL import Image,ImageDraw
 import json,numpy as np
-ROOT=Path('src/main/resources/assets/zoldrax');W,H=500,850
+ROOT=Path('src/main/resources/assets/zoldrax');W,H=600,850
 
 def render(variant,direction):
  m=json.loads((ROOT/f'models/blockbench/{variant}.bbmodel').read_text());texture=np.asarray(Image.open(ROOT/f'textures/entity/{variant}.png').convert('RGB'));texel_scale=texture.shape[0]/m['resolution']['height']
