@@ -28,9 +28,38 @@ public class MonumentEntity extends BlockEntity {
  private static final StatusEffect[] GIFTS={StatusEffects.STRENGTH,StatusEffects.REGENERATION,StatusEffects.SPEED,StatusEffects.RESISTANCE,StatusEffects.FIRE_RESISTANCE};
  private static final StatusEffect[] CURSES={StatusEffects.WEAKNESS,StatusEffects.SLOWNESS,StatusEffects.HUNGER};
  public MonumentEntity(BlockPos p,BlockState s) { super(Zoldrax.ENTITY,p,s); }
- public String description() {
-  if(stage==2) return "Золдракс: бросьте алмаз, изумруд, золото или незерит в жаровню (южная сторона). Подношение раз в игровой день от каждого верующего.";
-  return "Этап "+(stage+1)+"/3. Поставьте сундук вплотную к основанию. Нужно: "+(stage==0?"32 обсидиана, 24 полированных чернокаменных кирпича, 8 редстоуна":"24 обсидиана, 16 полированных чернокаменных кирпичей, 12 редстоуна, 4 блока редстоуна");
+ /** Scan the visible footprint and its perimeter, including chests one block lower. */
+ private List<Inventory> constructionChests() {
+  List<Inventory> result=new ArrayList<>();
+  if(world==null) return result;
+  for(int y=-1;y<=1;y++) for(int x=-3;x<=3;x++) for(int z=-3;z<=3;z++) {
+   if(x*x+z*z>9) continue;
+   BlockPos q=pos.add(x,y,z);
+   if(world.isChunkLoaded(q) && world.getBlockEntity(q) instanceof ChestBlockEntity chest) result.add(chest);
+  }
+  return result;
+ }
+ private boolean matches(ItemStack stack, Item required) {
+  if(required!=Items.POLISHED_BLACKSTONE_BRICKS) return stack.isOf(required);
+  return stack.isOf(Items.BLACKSTONE)||stack.isOf(Items.POLISHED_BLACKSTONE)||stack.isOf(Items.POLISHED_BLACKSTONE_BRICKS)
+    ||stack.isOf(Items.CRACKED_POLISHED_BLACKSTONE_BRICKS)||stack.isOf(Items.CHISELED_POLISHED_BLACKSTONE);
+ }
+ private int available(List<Inventory> chests, Item item) {
+  int count=0;
+  for(Inventory inv:chests) for(int i=0;i<inv.size();i++) if(matches(inv.getStack(i),item)) count+=inv.getStack(i).getCount();
+  return count;
+ }
+ public net.minecraft.text.Text status() {
+  if(stage==2) return Text.literal("Золдракс: бросьте алмаз, изумруд, золото или незерит в южную жаровню. Подношение нужно раз в игровой день.");
+  List<Inventory> chests=constructionChests();
+  var text=Text.literal("Этап "+(stage+1)+"/3. Найдено сундуков: "+chests.size()+". Радиус: 3 блока, высота ±1.\n");
+  for(int i=0;i<MATERIALS[stage].length;i++) {
+   Item item=MATERIALS[stage][i];
+   text.append(item==Items.POLISHED_BLACKSTONE_BRICKS ? Text.literal("Чернокамень / полированный / кирпичи") : Text.translatable(item.getTranslationKey()));
+   int count=available(chests,item),need=COUNTS[stage][i];
+   text.append(Text.literal(": "+count+" / "+need+(count<need?" — не хватает "+(need-count):" — готово")+"\n"));
+  }
+  return text;
  }
  private void sync() { markDirty(); if(world!=null) world.updateListeners(pos,getCachedState(),getCachedState(),3); }
  public static void tick(World world,BlockPos pos,BlockState state,MonumentEntity m) {
@@ -71,21 +100,20 @@ public class MonumentEntity extends BlockEntity {
   p.sendMessage(Text.literal("Золдракс принял жертву и даровал благословение на 3 минуты."),false); sync();
  }
  private void build() {
-  List<Inventory> inventories=new ArrayList<>();
-  for(Direction d:Direction.Type.HORIZONTAL) {
-   BlockEntity be=world.getBlockEntity(pos.offset(d));
-   if(be instanceof ChestBlockEntity chest) inventories.add(chest);
-  }
+  List<Inventory> inventories=constructionChests();
   Item[] items=MATERIALS[stage]; int[] required=COUNTS[stage];
-  for(int j=0;j<items.length;j++) {
-   int count=0; for(Inventory inv:inventories) for(int i=0;i<inv.size();i++) if(inv.getStack(i).isOf(items[j])) count+=inv.getStack(i).getCount();
-   if(count<required[j]) return;
-  }
+  for(int j=0;j<items.length;j++) if(available(inventories,items[j])<required[j]) return;
   for(int j=0;j<items.length;j++) {
    int remaining=required[j];
-   for(Inventory inv:inventories) {for(int i=0;i<inv.size()&&remaining>0;i++) if(inv.getStack(i).isOf(items[j])) {int n=Math.min(remaining,inv.getStack(i).getCount()); inv.removeStack(i,n);remaining-=n;} inv.markDirty();}
+   for(Inventory inv:inventories) {
+    for(int i=0;i<inv.size()&&remaining>0;i++) if(matches(inv.getStack(i),items[j])) {
+     int n=Math.min(remaining,inv.getStack(i).getCount()); inv.removeStack(i,n); remaining-=n;
+    }
+    inv.markDirty();
+   }
   }
   stage++;sync();
+  ((ServerWorld)world).spawnParticles(ParticleTypes.POOF,pos.getX()+.5,pos.getY()+2,pos.getZ()+.5,30,1,1,1,.02);
  }
  @Override protected void writeNbt(NbtCompound n) { super.writeNbt(n);n.putInt("Stage",stage);n.putLong("LastOffering",lastOffering); NbtList list=new NbtList();devotees.forEach((id,time)->{NbtCompound e=new NbtCompound();e.putUuid("Player",id);e.putLong("Time",time);list.add(e);});n.put("Devotees",list); }
  @Override public void readNbt(NbtCompound n) {super.readNbt(n);stage=MathHelper.clamp(n.getInt("Stage"),0,2);lastOffering=n.getLong("LastOffering");devotees.clear();for(NbtElement el:n.getList("Devotees",10)){NbtCompound e=(NbtCompound)el;devotees.put(e.getUuid("Player"),e.getLong("Time"));}}

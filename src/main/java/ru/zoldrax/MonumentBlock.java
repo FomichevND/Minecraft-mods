@@ -23,7 +23,7 @@ public class MonumentBlock extends BlockWithEntity {
   return getDefaultState();
  }
  @Override public ActionResult onUse(BlockState s, World w, BlockPos p, PlayerEntity player, Hand hand, BlockHitResult hit) {
-  if(!w.isClient && w.getBlockEntity(p) instanceof MonumentEntity m) player.sendMessage(Text.literal(m.description()),false);
+  if(!w.isClient && w.getBlockEntity(p) instanceof MonumentEntity m) player.sendMessage(m.status(),false);
   return ActionResult.SUCCESS;
  }
  @Override public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World w, BlockState s, BlockEntityType<T> t) {
