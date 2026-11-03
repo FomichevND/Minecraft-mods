@@ -91,4 +91,9 @@ public class OfferingTests implements FabricGameTest {
   c.waitAndRun(4,()->{cow.damage(c.getWorld().getDamageSources().genericKill(),1000);});
   c.waitAndRun(8,()->{check(last(s)==-1,"Non-fire death must not be attributed to brazier");complete(c,s);});
  }
+ @GameTest(templateName=EMPTY_STRUCTURE,tickLimit=80)
+ public void enlargedBrazierFrontAcceptsGem(TestContext c) {
+  Scene s=scene(c,2);ItemEntity gem=item(c,s,Items.DIAMOND,1,.1,2.2);
+  c.waitAndRun(8,()->{check(gem.isRemoved()&&last(s)>=0,"New front of enlarged bowl must accept offerings");complete(c,s);});
+ }
 }

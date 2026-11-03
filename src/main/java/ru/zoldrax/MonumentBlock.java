@@ -16,7 +16,7 @@ public class MonumentBlock extends BlockWithEntity {
  @Override public BlockEntity createBlockEntity(BlockPos p, BlockState s) { return new MonumentEntity(p,s); }
  @Override public BlockState getPlacementState(ItemPlacementContext c) {
   BlockPos p=c.getBlockPos();
-  for(int x=-1;x<=1;x++) for(int z=-1;z<=1;z++) for(int y=0;y<6;y++) {
+  for(int x=-2;x<=2;x++) for(int z=-1;z<=2;z++) for(int y=0;y<7;y++) {
    BlockPos q=p.add(x,y,z);
    if(!c.getWorld().isInBuildLimit(q) || !c.getWorld().getBlockState(q).isReplaceable()) return null;
   }

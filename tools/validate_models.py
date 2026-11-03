@@ -20,3 +20,10 @@ for stage in range(1,4):
   for face in cube['faces'].values():
    x1,y1,x2,y2=face['uv'];assert 0<=min(x1,x2)<=max(x1,x2)<=image.width and 0<=min(y1,y2)<=max(y1,y2)<=image.height
  print(f'Stage {stage}: {len(occupied)} cube unwraps valid; embedded/runtime PNG identical')
+
+# Full-size footprint and crown height are a public placement contract.
+model=json.loads((root/'models/blockbench/stage_3.bbmodel').read_text())
+lo=[min(e['from'][i] for e in model['elements']) for i in range(3)]
+hi=[max(e['to'][i] for e in model['elements']) for i in range(3)]
+assert lo==[-40,0,-24] and hi==[40,112,40], (lo,hi)
+print('Completed model bounds verified: 5 x 4 blocks, 7 blocks high')

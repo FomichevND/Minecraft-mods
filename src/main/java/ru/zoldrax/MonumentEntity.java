@@ -28,8 +28,8 @@ public class MonumentEntity extends BlockEntity {
  private final Map<UUID,Long> nextItemOffering=new HashMap<>();
  public Box brazierBounds() {
   // The figure is decorative: dropped items settle at ground level under the bowl.
-  return new Box(pos.getX()-.45,pos.getY()-.1,pos.getZ()+.75,
-    pos.getX()+1.45,pos.getY()+1.8,pos.getZ()+2.1);
+  return new Box(pos.getX()-.65,pos.getY()-.1,pos.getZ()+1.1,
+    pos.getX()+1.65,pos.getY()+2,pos.getZ()+3.05);
  }
  private PlayerEntity recipient(Entity owner) {
   if(owner instanceof PlayerEntity p && p.isAlive() && !p.isSpectator() && p.squaredDistanceTo(Vec3d.ofCenter(pos))<=256) return p;
@@ -81,7 +81,7 @@ public class MonumentEntity extends BlockEntity {
   ServerWorld sw=(ServerWorld)world;
   long now=world.getTime();
   Box fire=m.brazierBounds();
-  if(now%4==0) sw.spawnParticles(ParticleTypes.FLAME,pos.getX()+.5,pos.getY()+.9,pos.getZ()+1.4,5,.45,.15,.25,.015);
+  if(now%4==0) sw.spawnParticles(ParticleTypes.FLAME,pos.getX()+.5,pos.getY()+.9,pos.getZ()+2.05,8,.6,.2,.45,.015);
   // Scan every tick: a thrown item can pass through the bowl in less than a second.
   m.nextItemOffering.entrySet().removeIf(entry -> entry.getValue()+100<now);
   for(ItemEntity item:world.getEntitiesByClass(ItemEntity.class,fire,e->!e.isRemoved())) {
