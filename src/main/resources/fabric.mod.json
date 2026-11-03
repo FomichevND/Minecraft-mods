@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "id": "zoldrax",
+  "version": "1.0.0",
+  "name": "Монумент Золдракса",
+  "description": "Трёхэтапный демонический монумент, подношения и проклятия.",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "ru.zoldrax.Zoldrax"
+    ],
+    "client": [
+      "ru.zoldrax.ZoldraxClient"
+    ]
+  },
+  "depends": {
+    "fabricloader": ">=0.15.11",
+    "minecraft": "~1.20.1",
+    "java": ">=17",
+    "fabric-api": "*"
+  }
+}
