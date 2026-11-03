@@ -1,5 +1,7 @@
 {
   "block.zoldrax.monument": "Основание монумента Золдракса",
   "block.zoldrax.monkey_monument": "Основание Короля обезьян",
-  "item.zoldrax.golden_banana": "Золотой банан"
+  "item.zoldrax.golden_banana": "Золотой банан",
+  "block.zoldrax.ternor_monument": "Основание монумента Тернора",
+  "entity.zoldrax.ternor_guardian": "Страж Тернора"
 }

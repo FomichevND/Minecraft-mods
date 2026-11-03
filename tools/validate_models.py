@@ -48,3 +48,20 @@ for stage in range(1,4):
 banana=Image.open(root/'textures/item/golden_banana.png')
 assert banana.size==(32,32) and banana.mode=='RGBA' and banana.getextrema()[3]==(0,255)
 print('Golden banana icon validated')
+
+for stage in range(1,4):
+ model=json.loads((root/f'models/blockbench/ternor_stage_{stage}.bbmodel').read_text())
+ image=Image.open(root/f'textures/entity/ternor_stage_{stage}.png')
+ embedded=Image.open(io.BytesIO(base64.b64decode(model['textures'][0]['source'].split(',')[1])))
+ assert image.size==(2048,2048) and image.tobytes()==embedded.tobytes()
+ occupied=[]
+ for e in model['elements']:
+  w,h,d=[b-a for a,b in zip(e['from'],e['to'])];u,v=e['uv_offset'];U,V=u+2*(w+d),v+h+d
+  assert 0<=u<U<=1024 and 0<=v<V<=1024
+  for a,b,A,B in occupied:assert U<=a or A<=u or V<=b or B<=v
+  occupied.append((u,v,U,V))
+ lo=[min(e['from'][i] for e in model['elements']) for i in range(3)];hi=[max(e['to'][i] for e in model['elements']) for i in range(3)]
+ assert lo==[-24,0,-24] and hi==[40,128,40], (lo,hi)
+ print(f'Ternor stage {stage}: UVs valid, PNG identical, exact 4x4x8 bounds')
+for file in ['guardian_wreath','guardian_flowers']:
+ assert Image.open(root/f'textures/entity/{file}.png').size==(64,64)

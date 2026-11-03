@@ -5,7 +5,8 @@ from pathlib import Path
 import json,numpy as np
 import sys
 monkey="--monkey" in sys.argv
-prefix="monkey_" if monkey else ""
+ternor="--ternor" in sys.argv
+prefix="ternor_" if ternor else ("monkey_" if monkey else "")
 from PIL import Image,ImageDraw
 root=Path('src/main/resources/assets/zoldrax');W,H=(800,800) if monkey else (600,900)
 canvas=Image.new('RGB',(W*3,H),(24,21,28))
@@ -14,9 +15,9 @@ for stage in range(1,4):
  pixels=np.zeros((H,W,3),dtype=np.uint8);pixels[:]=(24,21,28);depth=np.full((H,W),-1e10)
  view=np.array([.55,.35,1.]);view/=np.linalg.norm(view)
  right=np.cross([0,1,0],view);right/=np.linalg.norm(right);up=np.cross(view,right)
- scale=6 if monkey else 6.1
+ scale=5.7 if ternor else (6 if monkey else 6.1)
  def project(points):
-  p=np.asarray(points)-(np.array([8,35,0]) if monkey else np.array([0,53,7]));return np.stack([W/2+(p@right)*scale,H/2-(p@up)*scale,p@view],axis=1)
+  p=np.asarray(points)-(np.array([8,60,6]) if ternor else (np.array([8,35,0]) if monkey else np.array([0,53,7])));return np.stack([W/2+(p@right)*scale,H/2-(p@up)*scale,p@view],axis=1)
  def triangle(points,uv,shade):
   v=project(points);x0=max(0,int(np.floor(v[:,0].min())));x1=min(W-1,int(np.ceil(v[:,0].max())))
   y0=max(0,int(np.floor(v[:,1].min())));y1=min(H-1,int(np.ceil(v[:,1].max())))
@@ -40,5 +41,5 @@ for stage in range(1,4):
   for face,(points,shade) in faces.items():
    u,v,U,V=cube['faces'][face]['uv'];uv=[(u,v),(U,v),(U,V),(u,V)]
    for indices in [[0,1,2],[0,2,3]]:triangle([points[i] for i in indices],[uv[i] for i in indices],1)
- image=Image.fromarray(pixels);d=ImageDraw.Draw(image);d.text((20,20),f'{"MONKEY KING" if monkey else "ZOLDRAX"} / STAGE {stage} / MODEL PREVIEW',fill=(213,190,162));canvas.paste(image,((stage-1)*W,0))
-Path('docs').mkdir(exist_ok=True);canvas.save('docs/monkey-1.3.1-preview.png' if monkey else 'docs/zoldrax-1.2.2-preview.png')
+ image=Image.fromarray(pixels);d=ImageDraw.Draw(image);d.text((20,20),f'{"TERNOR" if ternor else ("MONKEY KING" if monkey else "ZOLDRAX")} / STAGE {stage} / MODEL PREVIEW',fill=(213,190,162));canvas.paste(image,((stage-1)*W,0))
+Path('docs').mkdir(exist_ok=True);canvas.save('docs/ternor-1.4.0-preview.png' if ternor else ('docs/monkey-1.3.1-preview.png' if monkey else 'docs/zoldrax-1.2.2-preview.png'))
