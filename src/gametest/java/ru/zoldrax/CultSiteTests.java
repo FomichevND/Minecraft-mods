@@ -38,11 +38,25 @@ public class CultSiteTests implements FabricGameTest {
   var anchor=StructureTemplate.transform(data,localAltar).add(origin);
   check(world.getBlockEntity(anchor) instanceof MonumentEntity altar&&altar.stage==2,"Site must contain a completed working altar");
   check(world.getBlockState(anchor).get(MonumentBlock.FACING)==rotation.rotate(Direction.SOUTH),"Altar facing must rotate with buildings");
+  // Roofs must be carried by the tower piers, and the halls must have real entrances.
+  int towerX=name.equals("blood_shrine")?4:3,towerZ=name.equals("blood_shrine")?6:11;
+  for(int dx:new int[]{0,4})for(int dz:new int[]{0,4})for(int y=10;y<=13;y++){
+   var pier=StructureTemplate.transform(data,new BlockPos(towerX+dx,y,towerZ+dz)).add(origin);
+   check(world.getBlockState(pier).isSolidBlock(world,pier),"Tower crown must have continuous corner supports");
+  }
+  var door=StructureTemplate.transform(data,new BlockPos(6,3,name.equals("blood_shrine")?25:26)).add(origin);
+  check(world.getBlockState(door).getBlock() instanceof net.minecraft.block.DoorBlock,"Hall must have a real usable entrance");
+  for(var pos:BlockPos.iterate(box.getMinX(),box.getMinY(),box.getMinZ(),box.getMaxX(),box.getMaxY(),box.getMaxZ())){
+   var state=world.getBlockState(pos);var block=state.getBlock();
+   if(block instanceof net.minecraft.block.LanternBlock||block instanceof net.minecraft.block.WallBannerBlock||block instanceof net.minecraft.block.LadderBlock||block instanceof net.minecraft.block.CandleBlock)
+    check(state.canPlaceAt(world,pos),"Unsupported detail at "+pos+": "+state);
+  }
   c.waitAndRun(60,()->{
    var area=new Box(box.getMinX(),box.getMinY(),box.getMinZ(),box.getMaxX()+1,box.getMaxY()+1,box.getMaxZ()+1);
    var npcs=world.getEntitiesByClass(CultistEntity.class,area,e->true);
    check(npcs.size()==5,"Exactly five followers must spawn once, found "+npcs.size());
    check(npcs.stream().filter(CultistEntity::isPriest).count()==priests,"Correct priest/punisher population");
+   for(var npc:npcs)check(!world.getBlockCollisions(npc,npc.getBoundingBox().contract(.001)).iterator().hasNext(),"Follower intersects blocks at "+npc.getPos()+" type "+npc.getType());
    check(npcs.stream().allMatch(CultistEntity::isPersistent),"Generated followers must persist");
    boolean loot=false;
    for(var pos:BlockPos.iterate(box.getMinX(),box.getMinY(),box.getMinZ(),box.getMaxX(),box.getMaxY(),box.getMaxZ())){
