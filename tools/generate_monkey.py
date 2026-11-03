@@ -2,12 +2,13 @@
 from pathlib import Path
 from PIL import Image,ImageDraw
 import numpy as np
-from texture_materials import paint as stone_paint
+from texture_materials import paint as stone_paint,noise
+import hashlib
 from model_export import write_model
 
 def paint(cube,face,w,h,cubes):
     kind=cube['material']
-    mapped={'gold':'metal','jade':'stone','fur':'stone','face':'stone','mouth':'stone','leaf':'stone','ruby':'ember'}
+    mapped={'stone':'stone','banana':'metal','basket':'wood','fruit':'stone','gold':'metal','jade':'stone','fur':'stone','face':'stone','mouth':'stone','leaf':'stone','ruby':'ember'}
     if kind=='banner':
         cube['material']='cloth'
         image=np.asarray(stone_paint(cube,face,w,h,cubes)).astype(float)
@@ -25,9 +26,24 @@ def paint(cube,face,w,h,cubes):
     cube['material']=mapped[kind]
     image=np.asarray(stone_paint(cube,face,w,h,cubes)).astype(float)
     cube['material']=kind
-    targets={'gold':(174,117,26),'jade':(56,78,48),'fur':(86,70,55),'face':(143,119,88),'mouth':(30,15,13),'leaf':(39,85,27),'ruby':(200,28,14)}
-    baseline={'stone':(39,35,43),'metal':(36,36,37),'ember':(170,32,8)}[mapped[kind]]
+    targets={'stone':(100,103,86),'banana':(212,164,33),'basket':(113,74,36),'fruit':(145,39,22),'gold':(174,117,26),'jade':(56,78,48),'fur':(86,70,55),'face':(143,119,88),'mouth':(30,15,13),'leaf':(39,85,27),'ruby':(200,28,14)}
+    baseline={'wood':(74,48,31),'stone':(39,35,43),'metal':(36,36,37),'ember':(170,32,8)}[mapped[kind]]
     image=image/np.array(baseline)*np.array(targets[kind])
+    if kind=='stone':
+        # Hand-cut jungle temple bricks with moss in the joints.
+        rng=np.random.default_rng(int.from_bytes(hashlib.sha256((cube['name']+'/'+face).encode()).digest()[:8],'big'))
+        xx,yy=np.meshgrid((np.arange(w)+.5)/2,(np.arange(h)+.5)/2)
+        row=np.floor(yy/5);course=yy%5;vertical=(xx+(row%2)*6)%12
+        mortar=(course<.4)|(vertical<.38)
+        bevel=((course>.4)&(course<.8))|((vertical>.38)&(vertical<.75))
+        image*=1-mortar[...,None]*.26
+        image+=bevel[...,None]*np.array([5,5,3])
+        patch=noise(rng,w,h,7)
+        moss=(patch>.14)&((course<1.8)|(vertical<1.5))
+        image[moss]=image[moss]*.55+np.array([48,69,31])*.45
+    if kind=='basket':
+        yy,xx=np.indices((h,w));weave=((xx//3+yy//3)%2)*8-4
+        image+=weave[...,None]
     return Image.fromarray(np.uint8(image.clip(0,255)))
 
 def make(stage):
@@ -109,6 +125,44 @@ def make(stage):
                 # Golden banana reliefs hang from both armrests.
                 for i in range(4):box(f'banana_relief_{side}_{i}',8+side*33-6+i*3,21-abs(i-1)*2,20,4,3,2,'gold')
             box('royal_rug',-7,9,20,30,1,18,'banner')
+    if stage==1:
+        # The intermediate idol is still being carved and gilded.
+        unfinished=('finger_','toe_','bracelet_','collar','pendant','belt','banner_','tail_',
+                    'smile_top_teeth','wide_smile','nostril_','eye_','eyebrow_',
+                    'crown_spike_','crown_ruby','forearm_1','hand_1')
+        c[:]=[piece for piece in c if not piece['name'].startswith(unfinished)]
+        for piece in c:
+            if piece['name']=='crown_band':piece['to'][0]=10
+            if piece['name']=='armrest_cap_1':piece['material']='stone'
+        box('unfinished_right_hand',22,27,16,17,10,14)
+        box('work_cloth_on_arm',24,30,30,12,15,1,'cloth')
+        for z in [-14,20]:box(f'wood_support_{z}',46,8,z,3,46,3,'wood')
+        for y in [18,30,42,54]:box(f'wood_rung_{y}',46,y,-14,3,2,37,'wood')
+        box('wood_workbench',35,35,14,17,3,13,'wood')
+    if stage==2:
+        # Offerings decorate the two front corners, outside the feet and central path.
+        for side,x in enumerate([-37,41]):
+            box(f'fruit_basket_floor_{side}',x,8,23,12,2,12,'basket')
+            box(f'fruit_basket_back_{side}',x,10,23,12,6,2,'basket')
+            box(f'fruit_basket_front_{side}',x,10,33,12,6,2,'basket')
+            box(f'fruit_basket_left_{side}',x,10,25,2,6,8,'basket')
+            box(f'fruit_basket_right_{side}',x+10,10,25,2,6,8,'basket')
+            for j in range(3):
+                z=26+j*2
+                box(f'banana_bunch_{side}_{j}_left',x+2,17,z,2,3,2,'banana')
+                box(f'banana_bunch_{side}_{j}_curve',x+4,16,z,4,2,2,'banana')
+                box(f'banana_bunch_{side}_{j}_tip',x+8,17,z,2,3,2,'banana')
+            box(f'banana_bunch_stem_{side}',x+3,20,27,6,1,2,'basket')
+            box(f'apple_offering_{side}',x+4,11,25,4,4,4,'fruit')
+            box(f'apple_stem_{side}',x+5,15,26,1,1,1,'wood')
+        # Small loose bananas and broad fallen jungle leaves at the steps.
+        for j,(x,z) in enumerate([(-22,35),(31,35)]):
+            box(f'loose_banana_{j}_a',x,9,z,2,2,2,'banana')
+            box(f'loose_banana_{j}_b',x+2,8,z,4,2,2,'banana')
+            box(f'loose_banana_{j}_c',x+6,9,z,2,2,2,'banana')
+        for side in [-1,1]:
+            box(f'fallen_leaf_{side}',8+side*36-3,8,12,6,1,9,'leaf')
+            box(f'foot_gilding_{side}',8+side*22-9,13,32,18,1,1,'gold')
     write_model(c,stage,'monkey_',paint)
 
 if __name__=='__main__':

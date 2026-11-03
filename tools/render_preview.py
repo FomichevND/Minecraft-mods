@@ -41,4 +41,4 @@ for stage in range(1,4):
    u,v,U,V=cube['faces'][face]['uv'];uv=[(u,v),(U,v),(U,V),(u,V)]
    for indices in [[0,1,2],[0,2,3]]:triangle([points[i] for i in indices],[uv[i] for i in indices],1)
  image=Image.fromarray(pixels);d=ImageDraw.Draw(image);d.text((20,20),f'{"MONKEY KING" if monkey else "ZOLDRAX"} / STAGE {stage} / MODEL PREVIEW',fill=(213,190,162));canvas.paste(image,((stage-1)*W,0))
-Path('docs').mkdir(exist_ok=True);canvas.save('docs/monkey-1.3.0-preview.png' if monkey else 'docs/zoldrax-1.2.2-preview.png')
+Path('docs').mkdir(exist_ok=True);canvas.save('docs/monkey-1.3.1-preview.png' if monkey else 'docs/zoldrax-1.2.2-preview.png')
