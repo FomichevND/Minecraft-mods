@@ -92,6 +92,41 @@ public class MonkeyTests implements FabricGameTest {
    check(state.getLong("Deadline")>c.getWorld().getTime()+2300,"Random request must receive full timer");finish(c,s);
   });
  }
+ @GameTest(templateName=EMPTY_STRUCTURE,tickLimit=240,batchId="monkey_first_encounter")
+ public void discoveredTemplateAwakensForFirstVisitor(TestContext c){
+  var w=c.getWorld();var root=new BlockPos(3600,70,3800);
+  var template=w.getStructureTemplateManager().getTemplate(new net.minecraft.util.Identifier("zoldrax","monkey/court_temple")).orElseThrow();
+  var data=new net.minecraft.structure.StructurePlacementData().setIgnoreEntities(true);
+  var bounds=template.calculateBoundingBox(data,root);
+  for(int x=bounds.getMinX()>>4;x<=bounds.getMaxX()>>4;x++)for(int z=bounds.getMinZ()>>4;z<=bounds.getMaxZ()>>4;z++){w.setChunkForced(x,z,true);w.getChunk(x,z);}
+  check(template.place(w,root,root,data,net.minecraft.util.math.random.Random.create(7),2),"Natural shrine template must place");
+  var anchor=root.add(8,12,6);var altar=(MonkeyEntity)w.getBlockEntity(anchor);check(altar!=null&&altar.stage==2,"Natural shrine must already be completed");
+  var chest=anchor.add(0,0,3);w.setBlockState(chest,Blocks.AIR.getDefaultState());w.setBlockState(chest,Blocks.CHEST.getDefaultState());
+  var player=c.createMockCreativeServerPlayerInWorld();player.refreshPositionAndAngles(anchor.getX()+200,anchor.getY(),anchor.getZ(),0,0);
+  c.waitAndRun(30,()->{check(!altar.hasRequest(),"Unvisited shrine must not start an unseen challenge");player.refreshPositionAndAngles(anchor.getX()+2,anchor.getY(),anchor.getZ()+3,0,0);});
+  c.addInstantFinalTask(()->{
+   c.assertTrue(c.getTick()>=30&&altar.hasRequest(),"Found shrine must react when a player approaches without placing or rebuilding it");
+   var n=altar.createNbt();check(n.getUuid("Customer").equals(player.getUuid()),"First finder must receive the challenge");check(n.getBoolean("Awakened"),"First encounter must persist");check(n.getLong("Deadline")>w.getTime()+2300,"Finder must receive a full two-minute challenge");
+   w.getServer().getPlayerManager().remove(player);
+   for(int x=bounds.getMinX()>>4;x<=bounds.getMaxX()>>4;x++)for(int z=bounds.getMinZ()>>4;z<=bounds.getMaxZ()>>4;z++)w.setChunkForced(x,z,false);
+  });
+ }
+ @GameTest(templateName=EMPTY_STRUCTURE,tickLimit=80,batchId="monkey_first_encounter")
+ public void legacyUnvisitedShrineStartsOnUseAndCannotReset(TestContext c){
+  var s=scene(c);var n=s.altar.createNbt();n.remove("Awakened");n.putLong("NextRequest",c.getWorld().getTime()+72000);s.altar.readNbt(n);
+  var p=s.altar.getPos();var hit=new net.minecraft.util.hit.BlockHitResult(Vec3d.ofCenter(p),Direction.UP,p,false);
+  Zoldrax.MONKEY_BLOCK.onUse(s.altar.getCachedState(),c.getWorld(),p,s.player,net.minecraft.util.Hand.MAIN_HAND,hit);
+  check(s.altar.hasRequest(),"Clicking an old discovered shrine must start its first challenge despite its old idle timer");
+  var started=s.altar.createNbt();Zoldrax.MONKEY_BLOCK.onUse(s.altar.getCachedState(),c.getWorld(),p,s.player,net.minecraft.util.Hand.MAIN_HAND,hit);
+  check(s.altar.requestDeadline()==started.getLong("Deadline")&&s.altar.createNbt().getString("Food").equals(started.getString("Food")),"Repeated clicks must not reroll food or reset time");
+  var copy=new MonkeyEntity(p,s.altar.getCachedState());copy.readNbt(started);check(copy.createNbt().getBoolean("Awakened")&&copy.requestDeadline()==s.altar.requestDeadline(),"Reload must preserve first encounter and active challenge");finish(c,s);
+ }
+ @GameTest(templateName=EMPTY_STRUCTURE,tickLimit=80,batchId="monkey_first_encounter")
+ public void oldCompletedChallengeKeepsCooldown(TestContext c){
+  var s=scene(c);request(s,Items.APPLE,32);var n=s.altar.createNbt();n.remove("Awakened");n.putString("Food","minecraft:air");n.putLong("NextRequest",c.getWorld().getTime()+6000);s.altar.readNbt(n);
+  check(!s.altar.tryFirstEncounter(s.player),"Old player history must prevent resetting a completed challenge cooldown");check(!s.altar.hasRequest()&&s.altar.createNbt().getLong("NextRequest")==n.getLong("NextRequest"),"Existing cooldown must survive migration and interaction");
+  var fresh=s.altar.createNbt();fresh.remove("Awakened");fresh.remove("Customer");fresh.putInt("Stage",1);s.altar.readNbt(fresh);check(!s.altar.tryFirstEncounter(s.player),"Unfinished monuments must still require construction");finish(c,s);
+ }
  private void killWave(TestContext c,Scene s){
   for(var el:s.altar.createNbt().getList("Raiders",10)){
    var id=((net.minecraft.nbt.NbtCompound)el).getUuid("Id");Entity e=c.getWorld().getEntity(id);check(e!=null,"Raider must really exist");

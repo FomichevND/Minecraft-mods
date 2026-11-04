@@ -27,6 +27,7 @@ public class MonkeyEntity extends BlockEntity {
  private int amount;
  private long deadline=-1,nextRequest=-1,nextJoke=-1;
  private UUID customer;
+ private boolean awakened;
  private int raidWave;
  private long nextWave;
  private boolean waveStarted;
@@ -67,11 +68,19 @@ public class MonkeyEntity extends BlockEntity {
  public Text status(){
   if(stage<2){var text=Text.literal("Король обезьян: этап "+(stage+1)+"/3. Найдено сундуков: "+chests().size()+"\n");for(int i=0;i<MATERIALS[stage].length;i++)text.append(Text.translatable(MATERIALS[stage][i].getTranslationKey())).append(": "+count(chests(),MATERIALS[stage][i])+" / "+COST[stage][i]+"\n");return text;}
   if(raidWave>0)return Text.literal("Королевский рейд: волна "+raidWave+"/3. Врагов осталось: "+raiders.size());
+  if(food==Items.AIR&&!awakened)return Text.literal("Король обезьян ждёт первого гостя. Подойдите ближе или нажмите ПКМ, чтобы получить испытание.");
   if(food==Items.AIR)return Text.literal("Король пока сыт. Поставьте сундук у основания и ждите голодного зова!");
   return Text.literal("Нужно "+amount+" × ").append(Text.translatable(food.getTranslationKey())).append(". В сундуках: "+count(chests(),food)+". Осталось "+Math.max(0,(deadline-world.getTime()+19)/20)+" сек. За просрочку — рейд!");
  }
  /** A persisted request; also used by the integration tests to control the random trigger. */
- void beginRequest(Item wanted,int count,UUID player){food=wanted;amount=count;customer=player;deadline=world.getTime()+2400;sync();say(Text.literal("Моё величество требует "+amount+" × ").append(Text.translatable(food.getTranslationKey())).append(" за 2 минуты! Положите еду в сундук. Не успеете — пришлю разбойников!"));updateBar();}
+ void beginRequest(Item wanted,int count,UUID player){awakened=true;food=wanted;amount=count;customer=player;deadline=world.getTime()+2400;sync();say(Text.literal("Моё величество требует "+amount+" × ").append(Text.translatable(food.getTranslationKey())).append(" за 2 минуты! Положите еду в сундук. Не успеете — пришлю разбойников!"));updateBar();}
+ /** First contact is independent of who placed the monument or when its chunk loaded. */
+ public boolean tryFirstEncounter(ServerPlayerEntity player){
+  if(world==null||world.isClient||stage<2||awakened||food!=Items.AIR||raidWave>0)return false;
+  if(player.getWorld()!=world||!player.isAlive()||player.isSpectator()||player.squaredDistanceTo(Vec3d.ofCenter(pos))>576)return false;
+  beginRequest(FOODS[world.random.nextInt(FOODS.length)],16+world.random.nextInt(49),player.getUuid());
+  return true;
+ }
  public boolean hasRequest(){return food!=Items.AIR;}
  public long requestDeadline(){return deadline;}
  private void schedule(){nextRequest=world.getTime()+3600+world.random.nextInt(3601);}
@@ -81,6 +90,9 @@ public class MonkeyEntity extends BlockEntity {
    for(int i=0;i<MATERIALS[m.stage].length;i++)m.consume(invs,MATERIALS[m.stage][i],COST[m.stage][i]);m.stage++;m.sync();return;}
   if(m.raidWave>0){m.tickRaid();m.updateBar();return;}
   if(m.nextRequest<0){m.nextRequest=now+1200+w.random.nextInt(2401);m.nextJoke=now+1200;m.markDirty();}
+  if(!m.awakened&&m.food==Items.AIR){
+   var guests=m.viewers();if(!guests.isEmpty()&&m.tryFirstEncounter(guests.get(0)))return;
+  }
   if(m.food!=Items.AIR){
    if(now>=m.deadline){m.food=Items.AIR;m.raidWave=1;m.nextWave=now;m.say("Мой живот объявляет войну! Начинается рейд!");m.sync();m.tickRaid();}
    else{var invs=m.chests();if(m.count(invs,m.food)>=m.amount){m.consume(invs,m.food,m.amount);m.reward(invs);m.food=Items.AIR;m.schedule();m.say("Достойная трапеза! Золотой банан ждёт в сундуке. Я велик, но вы тоже ничего!");m.sync();}}
@@ -130,8 +142,8 @@ public class MonkeyEntity extends BlockEntity {
  }
  private void finishRaid(){raidWave=0;waveStarted=false;raiders.clear();schedule();say("Рейд окончен! В следующий раз начните с закуски.");bar.clearPlayers();sync();}
  @Override public void markRemoved(){bar.clearPlayers();super.markRemoved();}
- @Override protected void writeNbt(NbtCompound n){super.writeNbt(n);n.putInt("Stage",stage);n.putString("Food",Registries.ITEM.getId(food).toString());n.putInt("Amount",amount);n.putLong("Deadline",deadline);n.putLong("NextRequest",nextRequest);n.putLong("NextJoke",nextJoke);if(customer!=null)n.putUuid("Customer",customer);n.putInt("RaidWave",raidWave);n.putBoolean("WaveStarted",waveStarted);n.putLong("NextWave",nextWave);NbtList ids=new NbtList();for(UUID id:raiders){NbtCompound e=new NbtCompound();e.putUuid("Id",id);ids.add(e);}n.put("Raiders",ids);}
- @Override public void readNbt(NbtCompound n){super.readNbt(n);stage=MathHelper.clamp(n.getInt("Stage"),0,2);Identifier id=Identifier.tryParse(n.getString("Food"));food=id==null?Items.AIR:Registries.ITEM.get(id);if(!Arrays.asList(FOODS).contains(food))food=Items.AIR;amount=MathHelper.clamp(n.getInt("Amount"),16,64);deadline=n.contains("Deadline")?n.getLong("Deadline"):-1;nextRequest=n.contains("NextRequest")?n.getLong("NextRequest"):-1;nextJoke=n.contains("NextJoke")?n.getLong("NextJoke"):-1;customer=n.containsUuid("Customer")?n.getUuid("Customer"):null;raidWave=MathHelper.clamp(n.getInt("RaidWave"),0,3);waveStarted=n.getBoolean("WaveStarted");nextWave=n.getLong("NextWave");raiders.clear();for(var el:n.getList("Raiders",10)){var e=(NbtCompound)el;if(e.containsUuid("Id"))raiders.add(e.getUuid("Id"));}}
+ @Override protected void writeNbt(NbtCompound n){super.writeNbt(n);n.putInt("Stage",stage);n.putBoolean("Awakened",awakened);n.putString("Food",Registries.ITEM.getId(food).toString());n.putInt("Amount",amount);n.putLong("Deadline",deadline);n.putLong("NextRequest",nextRequest);n.putLong("NextJoke",nextJoke);if(customer!=null)n.putUuid("Customer",customer);n.putInt("RaidWave",raidWave);n.putBoolean("WaveStarted",waveStarted);n.putLong("NextWave",nextWave);NbtList ids=new NbtList();for(UUID id:raiders){NbtCompound e=new NbtCompound();e.putUuid("Id",id);ids.add(e);}n.put("Raiders",ids);}
+ @Override public void readNbt(NbtCompound n){super.readNbt(n);stage=MathHelper.clamp(n.getInt("Stage"),0,2);Identifier id=Identifier.tryParse(n.getString("Food"));food=id==null?Items.AIR:Registries.ITEM.get(id);if(!Arrays.asList(FOODS).contains(food))food=Items.AIR;amount=MathHelper.clamp(n.getInt("Amount"),16,64);deadline=n.contains("Deadline")?n.getLong("Deadline"):-1;nextRequest=n.contains("NextRequest")?n.getLong("NextRequest"):-1;nextJoke=n.contains("NextJoke")?n.getLong("NextJoke"):-1;customer=n.containsUuid("Customer")?n.getUuid("Customer"):null;raidWave=MathHelper.clamp(n.getInt("RaidWave"),0,3);awakened=n.getBoolean("Awakened")||customer!=null||food!=Items.AIR||raidWave>0;waveStarted=n.getBoolean("WaveStarted");nextWave=n.getLong("NextWave");raiders.clear();for(var el:n.getList("Raiders",10)){var e=(NbtCompound)el;if(e.containsUuid("Id"))raiders.add(e.getUuid("Id"));}}
  @Override public NbtCompound toInitialChunkDataNbt(){return createNbt();}
  @Override public BlockEntityUpdateS2CPacket toUpdatePacket(){return BlockEntityUpdateS2CPacket.create(this);}
 }

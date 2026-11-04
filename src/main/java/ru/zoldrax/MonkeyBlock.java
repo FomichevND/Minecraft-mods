@@ -21,7 +21,10 @@ public class MonkeyBlock extends BlockWithEntity {
   }return getDefaultState();
  }
  @Override public ActionResult onUse(BlockState s,World w,BlockPos p,PlayerEntity player,Hand h,BlockHitResult hit){
-  if(!w.isClient&&w.getBlockEntity(p) instanceof MonkeyEntity m)player.sendMessage(m.status(),false);return ActionResult.SUCCESS;
+  if(!w.isClient&&w.getBlockEntity(p) instanceof MonkeyEntity m){
+   if(player instanceof net.minecraft.server.network.ServerPlayerEntity serverPlayer)m.tryFirstEncounter(serverPlayer);
+   player.sendMessage(m.status(),false);
+  }return ActionResult.SUCCESS;
  }
  @Override public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World w,BlockState s,BlockEntityType<T> type){return w.isClient?null:checkType(type,Zoldrax.MONKEY_ENTITY,MonkeyEntity::tick);}
 }
