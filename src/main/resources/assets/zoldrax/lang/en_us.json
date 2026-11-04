@@ -8,5 +8,11 @@
   "entity.zoldrax.blood_priest": "Bloodfire Priest",
   "item.zoldrax.chain_punisher_spawn_egg": "Chain Punisher Spawn Egg",
   "item.zoldrax.blood_priest_spawn_egg": "Bloodfire Priest Spawn Egg",
-  "item.zoldrax.ritual_staff": "Ritual Brazier Staff"
+  "item.zoldrax.ritual_staff": "Ritual Brazier Staff",
+  "entity.zoldrax.banana_herald": "Banana Herald",
+  "item.zoldrax.banana_herald_spawn_egg": "Banana Herald Spawn Egg",
+  "entity.zoldrax.temple_gatherer": "Temple Gatherer",
+  "item.zoldrax.temple_gatherer_spawn_egg": "Temple Gatherer Spawn Egg",
+  "item.zoldrax.herald_horn": "Herald Horn",
+  "item.zoldrax.harvest_machete": "Harvest Machete"
 }

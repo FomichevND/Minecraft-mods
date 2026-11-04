@@ -37,7 +37,7 @@ public class MonkeyRenderer implements BlockEntityRenderer<MonkeyEntity> {
  }
  @Override public void render(MonkeyEntity e,float delta,MatrixStack matrices,VertexConsumerProvider vertices,int light,int overlay) {
   Identifier texture=new Identifier("zoldrax","textures/entity/monkey_stage_"+(e.stage+1)+".png");
-  matrices.push();matrices.translate(.5,0,.5);
+  matrices.push();matrices.translate(.5,0,.5);matrices.multiply(net.minecraft.util.math.RotationAxis.POSITIVE_Y.rotationDegrees(-e.getCachedState().get(MonkeyBlock.FACING).asRotation()));
   // This shader has no view-relative entity diffuse lighting. Apply world ambient
   // brightness as vertex colour, so camera pitch cannot brighten/darken the altar.
   float ambient=.35f;

@@ -1,0 +1,18 @@
+{
+  "structures": [
+    {
+      "structure": "zoldrax:banana_court",
+      "weight": 1
+    },
+    {
+      "structure": "zoldrax:great_appetite_valley",
+      "weight": 1
+    }
+  ],
+  "placement": {
+    "type": "minecraft:random_spread",
+    "spacing": 30,
+    "separation": 12,
+    "salt": 52601928
+  }
+}

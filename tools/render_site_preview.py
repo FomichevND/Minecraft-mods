@@ -58,6 +58,8 @@ def render(name,cutaway=False):
  center=np.array([15.5,6.5,15.5]);scale=24
  data=json.loads(Path(f'docs/{name}-layout.json').read_text())
  blocks=data['blocks']
+ if name in ['banana_court','great_appetite_valley']:
+  center=np.array([data['size'][0]/2,6.5,data['size'][2]/2]);scale=22 if name=='banana_court' else 19
  if cutaway:
   blocks=[b for b in blocks if 1<=b['pos'][0]<=13 and 17<=b['pos'][2]<=29 and b['pos'][1]<7]
   # Slice the front and right walls above the plinth to expose furnishing.
@@ -84,7 +86,10 @@ def render(name,cutaway=False):
    normal=transform@np.array(normals[face]);dot=normal@view
    if dot<=.001:continue
    points=np.array(faces[face])*(np.array(hi)-lo)+lo;points=(points-8)@transform.T+8;points=points/16+position
-   try:tex=texture(resolve(desc['texture'],textures))
+   try:
+    tex=texture(resolve(desc['texture'],textures))
+    if 'tintindex' in desc:
+     tex=tex.copy();tex[:,:,:3]=(tex[:,:,:3]*np.array([.4,.85,.25])).astype('uint8')
    except KeyError:continue
    u,v,U,V=desc.get('uv',[0,0,16,16]);uv=[(u,v),(U,v),(U,V),(u,V)]
    turns=desc.get('rotation',0)//90
@@ -93,10 +98,11 @@ def render(name,cutaway=False):
    for idx in [(0,1,2),(0,2,3)]:triangle(points[list(idx)],[uv[j] for j in idx],tex,shade)
  for b in blocks:
   state=b['state'];position=np.array(b['pos']);n=state['Name'].split(':')[-1]
-  if n=='monument':
-   m=json.loads((root/'models/blockbench/stage_3.bbmodel').read_text())
+  if n in ['monument','monkey_monument']:
+   prefix='monkey_' if n=='monkey_monument' else ''
+   m=json.loads((root/f'models/blockbench/{prefix}stage_3.bbmodel').read_text())
    for e in m['elements']:
-    fs={f:{'uv':[value*16/2048 for value in d['uv']],'texture':'zoldrax:textures/entity/stage_3'} for f,d in e['faces'].items()}
+    fs={f:{'uv':[value*16/2048 for value in d['uv']],'texture':'zoldrax:textures/entity/'+prefix+'stage_3'} for f,d in e['faces'].items()}
     # UV coordinates in bbmodel's logical 1024 atlas, actual PNG is 2048.
     fs={f:{**d,'uv':[v*2 for v in d['uv']]} for f,d in fs.items()}
     cube(np.array(e['from']),np.array(e['to']),fs,{},np.eye(3),position+np.array([.5,0,.5]),e['name'].startswith('glow_'))
@@ -111,10 +117,15 @@ def render(name,cutaway=False):
     # candle flames etc. may be omitted by this illustrative renderer.
     cube(np.array(e['from']),np.array(e['to']),e['faces'],m.get('textures',{}),transform,position,'lantern' in n or 'candle' in n)
  image=Image.fromarray(pixels);d=ImageDraw.Draw(image)
- title=('Кровавое капище' if name=='blood_shrine' else 'Лагерь цепных карателей')+(' — разрез зала' if cutaway else '')
+ title={'blood_shrine':'Кровавое капище','chain_camp':'Лагерь цепных карателей','banana_court':'Банановый двор','great_appetite_valley':'Долина Великого Аппетита'}[name]+(' — разрез зала' if cutaway else '')
  d.text((30,25),title,font=ImageFont.truetype(font,28),fill='#edd1b6')
  d.text((30,68),'Модели и текстуры игровых блоков • программный предпросмотр',font=ImageFont.truetype(font,17),fill='#ada4ae')
  d.text((30,H-45),'Не скриншот игры. Кровати, сундуки и знамёна в превью скрыты.',font=ImageFont.truetype(font,16),fill='#ada4ae')
- path=f'docs/{name}-1.7.1'+('-interior' if cutaway else '-preview')+'.png';image.save(path);print(path,flush=True)
-for site in ['blood_shrine','chain_camp']:
- render(site);render(site,True)
+ version='1.8.0' if name in ['banana_court','great_appetite_valley'] else '1.7.1'
+ path=f'docs/{name}-{version}'+('-interior' if cutaway else '-preview')+'.png';image.save(path);print(path,flush=True)
+if __name__=='__main__':
+ import sys
+ names=sys.argv[1:] or ['blood_shrine','chain_camp']
+ for site in names:
+  render(site)
+  if site in ['blood_shrine','chain_camp']:render(site,True)

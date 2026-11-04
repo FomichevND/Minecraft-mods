@@ -8,5 +8,11 @@
   "entity.zoldrax.blood_priest": "Жарокровный жрец",
   "item.zoldrax.chain_punisher_spawn_egg": "Яйцо призыва Цепного карателя",
   "item.zoldrax.blood_priest_spawn_egg": "Яйцо призыва Жарокровного жреца",
-  "item.zoldrax.ritual_staff": "Ритуальный посох-жаровня"
+  "item.zoldrax.ritual_staff": "Ритуальный посох-жаровня",
+  "entity.zoldrax.banana_herald": "Банановый глашатай",
+  "item.zoldrax.banana_herald_spawn_egg": "Яйцо призыва: Банановый глашатай",
+  "entity.zoldrax.temple_gatherer": "Храмовый добытчик",
+  "item.zoldrax.temple_gatherer_spawn_egg": "Яйцо призыва: Храмовый добытчик",
+  "item.zoldrax.herald_horn": "Рожок глашатая",
+  "item.zoldrax.harvest_machete": "Мачете добытчика"
 }

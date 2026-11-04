@@ -28,9 +28,9 @@ def dump(p,v):p.parent.mkdir(parents=True,exist_ok=True);p.write_bytes(gzip.comp
 def js(p,v):p=ROOT/p;p.parent.mkdir(parents=True,exist_ok=True);p.write_text(json.dumps(v,indent=2))
 
 class Site:
- def __init__(self,name,height):self.name=name;self.height=height;self.blocks={};self.entities=[];self.rng=random.Random(77+height)
+ def __init__(self,name,height,width=31,length=31):self.width=width;self.length=length;self.name=name;self.height=height;self.blocks={};self.entities=[];self.rng=random.Random(77+height)
  def put(self,x,y,z,name,props=None,nbt=None):
-  assert 0<=x<31 and 0<=z<31 and 0<=y<self.height,(x,y,z,name)
+  assert 0<=x<self.width and 0<=z<self.length and 0<=y<self.height,(x,y,z,name)
   state={'Name':name if ':' in name else 'minecraft:'+name}
   if props:state['Properties']={k:str(v).lower() for k,v in props.items()}
   self.blocks[x,y,z]=(state,nbt)
@@ -245,9 +245,9 @@ class Site:
    entry={'pos':list(pos),'state':ids[key]}
    if nbt:entry['nbt']=nbt
    blocks.append(entry)
-  model={'DataVersion':3465,'size':[31,self.height,31],'palette':palette,'blocks':blocks,'entities':self.entities}
+  model={'DataVersion':3465,'size':[self.width,self.height,self.length],'palette':palette,'blocks':blocks,'entities':self.entities}
   dump(ROOT/f'structures/{self.name}.nbt',model)
-  schematic={'name':self.name,'size':[31,self.height,31],'population':[e['nbt']['id'] for e in self.entities],
+  schematic={'name':self.name,'size':[self.width,self.height,self.length],'population':[e['nbt']['id'] for e in self.entities],
    'blocks':[{'pos':list(pos),'state':state} for pos,(state,_) in self.blocks.items() if state['Name']!='minecraft:air']}
   Path('docs').mkdir(exist_ok=True);Path(f'docs/{self.name}-layout.json').write_text(json.dumps(schematic))
   print(self.name,len(blocks),'template blocks;',len(self.entities),'followers')

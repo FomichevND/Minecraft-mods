@@ -66,7 +66,7 @@ for stage in range(1,4):
 for file in ['guardian_wreath','guardian_flowers']:
  assert Image.open(root/f'textures/entity/{file}.png').size==(64,64)
 
-for variant in ['chain_punisher','blood_priest']:
+for variant in ['chain_punisher','blood_priest','banana_herald','temple_gatherer']:
  model=json.loads((root/f'models/blockbench/{variant}.bbmodel').read_text())
  image=Image.open(root/f'textures/entity/{variant}.png')
  embedded=Image.open(io.BytesIO(base64.b64decode(model['textures'][0]['source'].split(',')[1])))
@@ -84,7 +84,7 @@ for variant in ['chain_punisher','blood_priest']:
   assert 0<=u<U<=256 and 0<=v<V<=256
   for a,b,A,B in occupied:assert U<=a or A<=u or V<=b or B<=v
   occupied.append((u,v,U,V))
- assert any(e['name'].startswith('glow_') for e in model['elements'])
+ if variant in ['chain_punisher','blood_priest']:assert any(e['name'].startswith('glow_') for e in model['elements'])
  print(f'{variant}: {len(ids)} cubes, seven bones, UVs/PNG/texture layers verified')
 
 for variant,prefixes in [('chain_punisher',('weapon_chain_','hook_')),('blood_priest',('staff_','glow_flame_','brazier_iron_edge'))]:
@@ -96,3 +96,11 @@ for e in staff['elements']:
  assert all(-16<=v<=32 for v in e['from']+e['to'])
 assert Image.open(root/'textures/item/ritual_staff.png').size==(64,64)
 print('Standalone staff item and weapon-free NPC meshes verified')
+
+for variant,item in [('banana_herald','herald_horn'),('temple_gatherer','harvest_machete')]:
+ model=json.loads((root/f'models/blockbench/{variant}.bbmodel').read_text())
+ assert not any(e['name'].startswith(('held_','horn_','machete_')) for e in model['elements'])
+ held=json.loads((root/f'models/item/{item}.json').read_text())
+ assert held['display']['thirdperson_righthand']['rotation']==[90,0,0]
+ assert all(-16<=v<=32 for e in held['elements'] for v in e['from']+e['to'])
+ print(variant+': held item is separate from the body mesh')

@@ -8,7 +8,11 @@ import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 public class MonkeyBlock extends BlockWithEntity {
- public MonkeyBlock(){super(AbstractBlock.Settings.create().strength(4,1200).nonOpaque().luminance(s->7));}
+ public static final net.minecraft.state.property.DirectionProperty FACING=net.minecraft.state.property.Properties.HORIZONTAL_FACING;
+ public MonkeyBlock(){super(AbstractBlock.Settings.create().strength(4,1200).nonOpaque().luminance(s->7));setDefaultState(getStateManager().getDefaultState().with(FACING,net.minecraft.util.math.Direction.SOUTH));}
+ @Override protected void appendProperties(net.minecraft.state.StateManager.Builder<Block,BlockState> b){b.add(FACING);}
+ @Override public BlockState rotate(BlockState s,BlockRotation r){return s.with(FACING,r.rotate(s.get(FACING)));}
+ @Override public BlockState mirror(BlockState s,BlockMirror m){return s.rotate(m.getRotation(s.get(FACING)));}
  @Override public BlockRenderType getRenderType(BlockState s){return BlockRenderType.INVISIBLE;}
  @Override public BlockEntity createBlockEntity(BlockPos p,BlockState s){return new MonkeyEntity(p,s);}
  @Override public BlockState getPlacementState(ItemPlacementContext c){

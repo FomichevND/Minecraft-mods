@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "id": "zoldrax",
-  "version": "1.7.1",
+  "version": "1.8.0",
   "name": "Божественные монументы",
   "description": "Трёхэтапный демонический монумент, подношения и проклятия.",
   "environment": "*",

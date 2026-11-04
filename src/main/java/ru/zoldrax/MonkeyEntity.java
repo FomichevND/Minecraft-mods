@@ -36,9 +36,12 @@ public class MonkeyEntity extends BlockEntity {
  private void sync(){markDirty();if(world!=null)world.updateListeners(pos,getCachedState(),getCachedState(),3);}
  private List<Inventory> chests(){
   List<Inventory> out=new ArrayList<>();if(world==null)return out;
-  for(int x=-3;x<=4;x++)for(int z=-3;z<=3;z++)for(int y=-1;y<=1;y++){
-   BlockPos p=pos.add(x,y,z);if(world.isChunkLoaded(p)&&world.getBlockEntity(p) instanceof ChestBlockEntity c)out.add(c);
+  for(int x=-4;x<=4;x++)for(int z=-4;z<=4;z++)for(int y=-1;y<=1;y++){
+   BlockPos p=pos.add(x,y,z);if(acceptsChest(p)&&world.isChunkLoaded(p)&&world.getBlockEntity(p) instanceof ChestBlockEntity c)out.add(c);
   }return out;
+ }
+ public boolean acceptsChest(BlockPos p){
+  var d=p.subtract(pos);var f=getCachedState().get(MonkeyBlock.FACING);int x=d.getX()*f.getOffsetZ()-d.getZ()*f.getOffsetX(),z=d.getX()*f.getOffsetX()+d.getZ()*f.getOffsetZ();return x>=-3&&x<=4&&Math.abs(z)<=3&&Math.abs(d.getY())<=1;
  }
  private int count(List<Inventory> invs,Item item){int n=0;for(var inv:invs)for(int i=0;i<inv.size();i++)if(inv.getStack(i).isOf(item))n+=inv.getStack(i).getCount();return n;}
  private void consume(List<Inventory> invs,Item item,int n){for(var inv:invs){for(int i=0;i<inv.size()&&n>0;i++)if(inv.getStack(i).isOf(item)){int take=Math.min(n,inv.getStack(i).getCount());inv.removeStack(i,take);n-=take;}inv.markDirty();}}
@@ -69,6 +72,8 @@ public class MonkeyEntity extends BlockEntity {
  }
  /** A persisted request; also used by the integration tests to control the random trigger. */
  void beginRequest(Item wanted,int count,UUID player){food=wanted;amount=count;customer=player;deadline=world.getTime()+2400;sync();say(Text.literal("Моё величество требует "+amount+" × ").append(Text.translatable(food.getTranslationKey())).append(" за 2 минуты! Положите еду в сундук. Не успеете — пришлю разбойников!"));updateBar();}
+ public boolean hasRequest(){return food!=Items.AIR;}
+ public long requestDeadline(){return deadline;}
  private void schedule(){nextRequest=world.getTime()+3600+world.random.nextInt(3601);}
  public static void tick(World w,BlockPos p,BlockState state,MonkeyEntity m){
   if(w.getTime()%20!=0)return;long now=w.getTime();

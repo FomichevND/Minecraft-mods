@@ -1,6 +1,15 @@
 {
   "variants": {
-    "": {
+    "facing=north": {
+      "model": "zoldrax:block/monkey_monument"
+    },
+    "facing=south": {
+      "model": "zoldrax:block/monkey_monument"
+    },
+    "facing=west": {
+      "model": "zoldrax:block/monkey_monument"
+    },
+    "facing=east": {
       "model": "zoldrax:block/monkey_monument"
     }
   }

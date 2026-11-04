@@ -8,11 +8,13 @@ def render(variant,direction):
  m=json.loads((ROOT/f'models/blockbench/{variant}.bbmodel').read_text());texture=np.asarray(Image.open(ROOT/f'textures/entity/{variant}.png').convert('RGB'));texel_scale=texture.shape[0]/m['resolution']['height']
  pixels=np.zeros((H,W,3),dtype='u1');pixels[:]=(24,21,28);depth=np.full((H,W),-1e10)
  npc_texture=texture; npc_scale=texel_scale; cubes=list(m['elements'])
- if variant=='blood_priest':
-  item=json.loads((ROOT/'models/item/ritual_staff.json').read_text());item_texture=np.asarray(Image.open(ROOT/'textures/item/ritual_staff.png').convert('RGB'))
+ if variant in ['blood_priest','banana_herald','temple_gatherer']:
+  item_name={'blood_priest':'ritual_staff','banana_herald':'herald_horn','temple_gatherer':'harvest_machete'}[variant]
+  item=json.loads((ROOT/f'models/item/{item_name}.json').read_text());item_texture=np.asarray(Image.open(ROOT/f'textures/item/{item_name}.png').convert('RGB'))
   for e in item['elements']:
    x,y,z=e['from'];X,Y,Z=e['to']
-   cubes.append({'name':'held_'+e['name'],'from':[-2-X,y+9,10-Z],'to':[-2-x,Y+9,10-z],'faces':e['faces'],'held':True})
+   offset=-2 if variant=='blood_priest' else 2
+   cubes.append({'name':'held_'+e['name'],'from':[offset-X,y+9,10-Z],'to':[offset-x,Y+9,10-z],'faces':e['faces'],'held':True})
  view=np.array(direction,dtype=float);view/=np.linalg.norm(view);right=np.cross([0,1,0],view);right/=np.linalg.norm(right);up=np.cross(view,right)
  def project(points):
   p=np.asarray(points)-[0,21,0];return np.stack([W/2+(p@right)*15,H/2-(p@up)*15,p@view],axis=1)
@@ -40,8 +42,10 @@ def render(variant,direction):
 
 if __name__=='__main__':
  Path('docs').mkdir(exist_ok=True)
- for variant in ['chain_punisher','blood_priest']:
+ import sys
+ for variant in sys.argv[1:] or ['chain_punisher','blood_priest']:
   canvas=Image.new('RGB',(3*W,H))
   for i,(label,view) in enumerate([('FRONT',(.16,.12,1)),('SIDE',(1,.13,.1)),('BACK',(-.16,.12,-1))]):
    image=render(variant,view);d=ImageDraw.Draw(image);d.text((18,18),variant.upper()+' / '+label,fill=(213,190,162));canvas.paste(image,(i*W,0))
-  canvas.save(f'docs/{variant}-1.6.0-preview.png')
+  version='1.8.0' if variant in ['banana_herald','temple_gatherer'] else '1.6.0'
+  canvas.save(f'docs/{variant}-{version}-preview.png')

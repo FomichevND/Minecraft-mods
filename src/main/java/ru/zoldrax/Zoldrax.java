@@ -22,7 +22,23 @@ public class Zoldrax implements ModInitializer {
  public static final net.minecraft.entity.EntityType<CultistEntity> BLOOD_PRIEST=cultistType(.7f,2.2f);
  private static net.minecraft.entity.EntityType<CultistEntity> cultistType(float width,float height){return net.fabricmc.fabric.api.object.builder.v1.entity.FabricEntityTypeBuilder.create(net.minecraft.entity.SpawnGroup.CREATURE,CultistEntity::new).dimensions(net.minecraft.entity.EntityDimensions.fixed(width,height)).trackRangeChunks(10).build();}
  public static final Item RITUAL_STAFF=new Item(new Item.Settings().maxCount(1).rarity(net.minecraft.util.Rarity.RARE));
+ public static final net.minecraft.entity.EntityType<MonkeyFollowerEntity> BANANA_HERALD=monkeyFollower();
+ public static final net.minecraft.entity.EntityType<MonkeyFollowerEntity> TEMPLE_GATHERER=monkeyFollower();
+ private static net.minecraft.entity.EntityType<MonkeyFollowerEntity> monkeyFollower(){return net.fabricmc.fabric.api.object.builder.v1.entity.FabricEntityTypeBuilder.create(net.minecraft.entity.SpawnGroup.CREATURE,MonkeyFollowerEntity::new).dimensions(net.minecraft.entity.EntityDimensions.fixed(.65f,1.95f)).trackRangeChunks(10).build();}
+ public static final Item HERALD_HORN=new Item(new Item.Settings().maxCount(1));
+ public static final Item HARVEST_MACHETE=new Item(new Item.Settings().maxCount(1));
  public void onInitialize() {
+  Registry.register(Registries.BANNER_PATTERN,new Identifier("zoldrax","banana"),new net.minecraft.block.entity.BannerPattern("zbanana"));
+  Registry.register(Registries.ITEM,new Identifier("zoldrax","herald_horn"),HERALD_HORN);
+  Registry.register(Registries.ITEM,new Identifier("zoldrax","harvest_machete"),HARVEST_MACHETE);
+  for(var type:java.util.List.of(BANANA_HERALD,TEMPLE_GATHERER)){
+   boolean herald=type==BANANA_HERALD;String id=herald?"banana_herald":"temple_gatherer";
+   Registry.register(Registries.ENTITY_TYPE,new Identifier("zoldrax",id),type);
+   net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry.register(type,net.minecraft.entity.mob.MobEntity.createMobAttributes().add(net.minecraft.entity.attribute.EntityAttributes.GENERIC_MAX_HEALTH,herald?24:28).add(net.minecraft.entity.attribute.EntityAttributes.GENERIC_MOVEMENT_SPEED,herald?.32:.25).add(net.minecraft.entity.attribute.EntityAttributes.GENERIC_ATTACK_DAMAGE,4).add(net.minecraft.entity.attribute.EntityAttributes.GENERIC_FOLLOW_RANGE,24));
+   var egg=Registry.register(Registries.ITEM,new Identifier("zoldrax",id+"_spawn_egg"),new SpawnEggItem(type,herald?0xb52628:0xcaa36b,0xffcf31,new Item.Settings()));
+   ItemGroupEvents.modifyEntriesEvent(ItemGroups.SPAWN_EGGS).register(e->e.add(egg));
+  }
+  ItemGroupEvents.modifyEntriesEvent(ItemGroups.FUNCTIONAL).register(e->{e.add(HERALD_HORN);e.add(HARVEST_MACHETE);});
   Registry.register(Registries.BLOCK, new Identifier("zoldrax", "monument"), BLOCK);
   Registry.register(Registries.ITEM, new Identifier("zoldrax", "monument"), new BlockItem(BLOCK, new Item.Settings().maxCount(1)));
   ENTITY = Registry.register(Registries.BLOCK_ENTITY_TYPE, new Identifier("zoldrax", "monument"), FabricBlockEntityTypeBuilder.create(MonumentEntity::new, BLOCK).build());
