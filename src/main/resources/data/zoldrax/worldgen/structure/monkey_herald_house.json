@@ -1,0 +1,8 @@
+{
+  "type": "zoldrax:monkey_building",
+  "template": "herald_house",
+  "biomes": "#zoldrax:has_structure/monkey_sites",
+  "spawn_overrides": {},
+  "step": "surface_structures",
+  "terrain_adaptation": "none"
+}

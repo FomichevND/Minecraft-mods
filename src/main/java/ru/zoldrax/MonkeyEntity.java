@@ -28,12 +28,31 @@ public class MonkeyEntity extends BlockEntity {
  private long deadline=-1,nextRequest=-1,nextJoke=-1;
  private UUID customer;
  private boolean awakened;
+ private boolean playerBuilt,originKnown;
  private int raidWave;
  private long nextWave;
  private boolean waveStarted;
  private final Set<UUID> raiders=new HashSet<>();
  private final ServerBossBar bar=new ServerBossBar(Text.literal("Король обезьян"),BossBar.Color.YELLOW,BossBar.Style.PROGRESS);
  public MonkeyEntity(BlockPos p,BlockState s){super(Zoldrax.MONKEY_ENTITY,p,s);}
+ /** Placement provenance is explicit for new monuments. Old saves are resolved once. */
+ public void markPlayerBuilt(){playerBuilt=true;originKnown=true;sync();}
+ public boolean isPlayerBuilt(){
+  if(!originKnown&&world instanceof ServerWorld sw){
+   boolean inSite=false;
+   if(stage==2)for(var structure:sw.getStructureAccessor().getStructureReferences(pos).keySet()){
+    var id=sw.getRegistryManager().get(net.minecraft.registry.RegistryKeys.STRUCTURE).getId(structure);
+    if(id!=null&&id.getNamespace().equals("zoldrax")&&(id.getPath().equals("banana_court")||id.getPath().equals("great_appetite_valley"))&&sw.getStructureAccessor().getStructureContaining(pos,structure).hasChildren()){inSite=true;break;}
+   }
+   playerBuilt=!inSite;originKnown=true;markDirty();
+  }
+  return playerBuilt;
+ }
+ private void cancelNaturalChallenge(){
+  if(food==Items.AIR&&raidWave==0&&bar.getPlayers().isEmpty())return;
+  if(world instanceof ServerWorld sw){var history=MonkeyRaidState.get(sw);for(UUID id:raiders){var entity=sw.getEntity(id);if(entity!=null)entity.discard();history.forget(id);}}
+  food=Items.AIR;deadline=-1;customer=null;awakened=false;raidWave=0;waveStarted=false;raiders.clear();nextRequest=-1;nextJoke=-1;bar.clearPlayers();sync();
+ }
  private void sync(){markDirty();if(world!=null)world.updateListeners(pos,getCachedState(),getCachedState(),3);}
  private List<Inventory> chests(){
   List<Inventory> out=new ArrayList<>();if(world==null)return out;
@@ -66,6 +85,7 @@ public class MonkeyEntity extends BlockEntity {
   else{bar.setColor(BossBar.Color.YELLOW);bar.setName(Text.literal("Голодный король: "+amount+" × ").append(Text.translatable(food.getTranslationKey())).append(" — "+Math.max(0,(deadline-world.getTime()+19)/20)+" сек."));bar.setPercent(MathHelper.clamp((deadline-world.getTime())/2400f,0,1));}
  }
  public Text status(){
+  if(!isPlayerBuilt())return Text.literal("Древний монумент Короля Обезьян. Испытания доступны только у алтаря, установленного и построенного игроком.");
   if(stage<2){var text=Text.literal("Король обезьян: этап "+(stage+1)+"/3. Найдено сундуков: "+chests().size()+"\n");for(int i=0;i<MATERIALS[stage].length;i++)text.append(Text.translatable(MATERIALS[stage][i].getTranslationKey())).append(": "+count(chests(),MATERIALS[stage][i])+" / "+COST[stage][i]+"\n");return text;}
   if(raidWave>0)return Text.literal("Королевский рейд: волна "+raidWave+"/3. Врагов осталось: "+raiders.size());
   if(food==Items.AIR&&!awakened)return Text.literal("Король обезьян ждёт первого гостя. Подойдите ближе или нажмите ПКМ, чтобы получить испытание.");
@@ -73,10 +93,10 @@ public class MonkeyEntity extends BlockEntity {
   return Text.literal("Нужно "+amount+" × ").append(Text.translatable(food.getTranslationKey())).append(". В сундуках: "+count(chests(),food)+". Осталось "+Math.max(0,(deadline-world.getTime()+19)/20)+" сек. За просрочку — рейд!");
  }
  /** A persisted request; also used by the integration tests to control the random trigger. */
- void beginRequest(Item wanted,int count,UUID player){awakened=true;food=wanted;amount=count;customer=player;deadline=world.getTime()+2400;sync();say(Text.literal("Моё величество требует "+amount+" × ").append(Text.translatable(food.getTranslationKey())).append(" за 2 минуты! Положите еду в сундук. Не успеете — пришлю разбойников!"));updateBar();}
- /** First contact is independent of who placed the monument or when its chunk loaded. */
+ void beginRequest(Item wanted,int count,UUID player){if(!isPlayerBuilt())return;awakened=true;food=wanted;amount=count;customer=player;deadline=world.getTime()+2400;sync();say(Text.literal("Моё величество требует "+amount+" × ").append(Text.translatable(food.getTranslationKey())).append(" за 2 минуты! Положите еду в сундук. Не успеете — пришлю разбойников!"));updateBar();}
+ /** First contact is available only at a player-built monument. */
  public boolean tryFirstEncounter(ServerPlayerEntity player){
-  if(world==null||world.isClient||stage<2||awakened||food!=Items.AIR||raidWave>0)return false;
+  if(world==null||world.isClient||!isPlayerBuilt()||stage<2||awakened||food!=Items.AIR||raidWave>0)return false;
   if(player.getWorld()!=world||!player.isAlive()||player.isSpectator()||player.squaredDistanceTo(Vec3d.ofCenter(pos))>576)return false;
   beginRequest(FOODS[world.random.nextInt(FOODS.length)],16+world.random.nextInt(49),player.getUuid());
   return true;
@@ -86,6 +106,7 @@ public class MonkeyEntity extends BlockEntity {
  private void schedule(){nextRequest=world.getTime()+3600+world.random.nextInt(3601);}
  public static void tick(World w,BlockPos p,BlockState state,MonkeyEntity m){
   if(w.getTime()%20!=0)return;long now=w.getTime();
+  if(!m.isPlayerBuilt()){m.cancelNaturalChallenge();return;}
   if(m.stage<2){var invs=m.chests();for(int i=0;i<MATERIALS[m.stage].length;i++)if(m.count(invs,MATERIALS[m.stage][i])<COST[m.stage][i])return;
    for(int i=0;i<MATERIALS[m.stage].length;i++)m.consume(invs,MATERIALS[m.stage][i],COST[m.stage][i]);m.stage++;m.sync();return;}
   if(m.raidWave>0){m.tickRaid();m.updateBar();return;}
@@ -142,8 +163,8 @@ public class MonkeyEntity extends BlockEntity {
  }
  private void finishRaid(){raidWave=0;waveStarted=false;raiders.clear();schedule();say("Рейд окончен! В следующий раз начните с закуски.");bar.clearPlayers();sync();}
  @Override public void markRemoved(){bar.clearPlayers();super.markRemoved();}
- @Override protected void writeNbt(NbtCompound n){super.writeNbt(n);n.putInt("Stage",stage);n.putBoolean("Awakened",awakened);n.putString("Food",Registries.ITEM.getId(food).toString());n.putInt("Amount",amount);n.putLong("Deadline",deadline);n.putLong("NextRequest",nextRequest);n.putLong("NextJoke",nextJoke);if(customer!=null)n.putUuid("Customer",customer);n.putInt("RaidWave",raidWave);n.putBoolean("WaveStarted",waveStarted);n.putLong("NextWave",nextWave);NbtList ids=new NbtList();for(UUID id:raiders){NbtCompound e=new NbtCompound();e.putUuid("Id",id);ids.add(e);}n.put("Raiders",ids);}
- @Override public void readNbt(NbtCompound n){super.readNbt(n);stage=MathHelper.clamp(n.getInt("Stage"),0,2);Identifier id=Identifier.tryParse(n.getString("Food"));food=id==null?Items.AIR:Registries.ITEM.get(id);if(!Arrays.asList(FOODS).contains(food))food=Items.AIR;amount=MathHelper.clamp(n.getInt("Amount"),16,64);deadline=n.contains("Deadline")?n.getLong("Deadline"):-1;nextRequest=n.contains("NextRequest")?n.getLong("NextRequest"):-1;nextJoke=n.contains("NextJoke")?n.getLong("NextJoke"):-1;customer=n.containsUuid("Customer")?n.getUuid("Customer"):null;raidWave=MathHelper.clamp(n.getInt("RaidWave"),0,3);awakened=n.getBoolean("Awakened")||customer!=null||food!=Items.AIR||raidWave>0;waveStarted=n.getBoolean("WaveStarted");nextWave=n.getLong("NextWave");raiders.clear();for(var el:n.getList("Raiders",10)){var e=(NbtCompound)el;if(e.containsUuid("Id"))raiders.add(e.getUuid("Id"));}}
+ @Override protected void writeNbt(NbtCompound n){super.writeNbt(n);n.putInt("Stage",stage);if(originKnown)n.putBoolean("PlayerBuilt",playerBuilt);n.putBoolean("Awakened",awakened);n.putString("Food",Registries.ITEM.getId(food).toString());n.putInt("Amount",amount);n.putLong("Deadline",deadline);n.putLong("NextRequest",nextRequest);n.putLong("NextJoke",nextJoke);if(customer!=null)n.putUuid("Customer",customer);n.putInt("RaidWave",raidWave);n.putBoolean("WaveStarted",waveStarted);n.putLong("NextWave",nextWave);NbtList ids=new NbtList();for(UUID id:raiders){NbtCompound e=new NbtCompound();e.putUuid("Id",id);ids.add(e);}n.put("Raiders",ids);}
+ @Override public void readNbt(NbtCompound n){super.readNbt(n);originKnown=n.contains("PlayerBuilt",99);playerBuilt=originKnown&&n.getBoolean("PlayerBuilt");stage=MathHelper.clamp(n.getInt("Stage"),0,2);Identifier id=Identifier.tryParse(n.getString("Food"));food=id==null?Items.AIR:Registries.ITEM.get(id);if(!Arrays.asList(FOODS).contains(food))food=Items.AIR;amount=MathHelper.clamp(n.getInt("Amount"),16,64);deadline=n.contains("Deadline")?n.getLong("Deadline"):-1;nextRequest=n.contains("NextRequest")?n.getLong("NextRequest"):-1;nextJoke=n.contains("NextJoke")?n.getLong("NextJoke"):-1;customer=n.containsUuid("Customer")?n.getUuid("Customer"):null;raidWave=MathHelper.clamp(n.getInt("RaidWave"),0,3);awakened=n.getBoolean("Awakened")||customer!=null||food!=Items.AIR||raidWave>0;waveStarted=n.getBoolean("WaveStarted");nextWave=n.getLong("NextWave");raiders.clear();for(var el:n.getList("Raiders",10)){var e=(NbtCompound)el;if(e.containsUuid("Id"))raiders.add(e.getUuid("Id"));}}
  @Override public NbtCompound toInitialChunkDataNbt(){return createNbt();}
  @Override public BlockEntityUpdateS2CPacket toUpdatePacket(){return BlockEntityUpdateS2CPacket.create(this);}
 }

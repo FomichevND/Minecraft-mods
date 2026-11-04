@@ -3,7 +3,7 @@ Terrain placement is handled by MonkeySettlementStructure, never by a common pla
 """
 from pathlib import Path
 from PIL import Image,ImageDraw
-from generate_cult_sites import Site,Long,js
+from generate_cult_sites import Site,Long,Byte,js
 class MonkeySite(Site):
  def put(self,x,y,z,name,props=None,nbt=None):
   mapping={'polished_blackstone_bricks':'mossy_stone_bricks','cracked_polished_blackstone_bricks':'cracked_stone_bricks','chiseled_polished_blackstone':'chiseled_stone_bricks','polished_blackstone':'stone_bricks','basalt':'stone','polished_basalt':'jungle_log','stripped_dark_oak_log':'stripped_jungle_log','dark_oak_log':'jungle_log','crimson_planks':'jungle_planks','dark_oak_planks':'spruce_planks','crimson_door':'jungle_door','anvil':'smoker','smithing_table':'crafting_table'}
@@ -49,7 +49,7 @@ class MonkeySite(Site):
  def temple(self,x,y,z):
   self.fill(x-5,2,z-4,x+6,y-1,z+4,'mossy_stone_bricks')
   for X in range(x-2,x+4):self.stairs(X,y-1,z+5,'north','stone_brick')
-  self.put(x,y,z,'zoldrax:monkey_monument',{'facing':'south'},{'id':'zoldrax:monkey_monument','Stage':2,'Food':'minecraft:air','Deadline':Long(-1),'NextRequest':Long(-1),'NextJoke':Long(-1)})
+  self.put(x,y,z,'zoldrax:monkey_monument',{'facing':'south'},{'id':'zoldrax:monkey_monument','Stage':2,'PlayerBuilt':Byte(0),'Food':'minecraft:air','Deadline':Long(-1),'NextRequest':Long(-1),'NextJoke':Long(-1)})
   self.loot(x,y,z+3)
   for X in [x-5,x+5]:
    self.pillar(X,y,z-2,4,'chiseled_stone_bricks');self.put(X,y+4,z-2,'gold_block');L=X+1 if X<x else X-1;self.put(L,y+4,z-2,'jungle_planks');self.hanging_light(L,y+2,z-2)

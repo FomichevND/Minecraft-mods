@@ -13,7 +13,8 @@
       "ru.zoldrax.CultMechanicsTests",
       "ru.zoldrax.CultSiteTests",
       "ru.zoldrax.MonkeyFollowerTests",
-      "ru.zoldrax.MonkeyGenerationTests"
+      "ru.zoldrax.MonkeyGenerationTests",
+      "ru.zoldrax.MonkeyBuildingTests"
     ]
   },
   "depends": {

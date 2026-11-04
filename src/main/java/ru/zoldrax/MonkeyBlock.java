@@ -20,6 +20,10 @@ public class MonkeyBlock extends BlockWithEntity {
    BlockPos q=c.getBlockPos().add(x,y,z);if(!c.getWorld().isInBuildLimit(q)||!c.getWorld().getBlockState(q).isReplaceable())return null;
   }return getDefaultState();
  }
+ @Override public void onPlaced(World world,BlockPos pos,BlockState state,net.minecraft.entity.LivingEntity placer,net.minecraft.item.ItemStack stack){
+  super.onPlaced(world,pos,state,placer,stack);
+  if(!world.isClient&&placer instanceof PlayerEntity&&world.getBlockEntity(pos) instanceof MonkeyEntity monument)monument.markPlayerBuilt();
+ }
  @Override public ActionResult onUse(BlockState s,World w,BlockPos p,PlayerEntity player,Hand h,BlockHitResult hit){
   if(!w.isClient&&w.getBlockEntity(p) instanceof MonkeyEntity m){
    if(player instanceof net.minecraft.server.network.ServerPlayerEntity serverPlayer)m.tryFirstEncounter(serverPlayer);
