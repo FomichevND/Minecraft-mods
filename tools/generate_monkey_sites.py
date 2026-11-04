@@ -1,4 +1,6 @@
-"""Jungle/savanna courts, farms and timber halls from the supplied plans."""
+"""Independent rigid Monkey King buildings with local foundations and decoration.
+Terrain placement is handled by MonkeySettlementStructure, never by a common platform.
+"""
 from pathlib import Path
 from PIL import Image,ImageDraw
 from generate_cult_sites import Site,Long,js
@@ -44,22 +46,6 @@ class MonkeySite(Site):
   self.put(x,y,z,'red_wall_banner',{'facing':facing},{'id':'minecraft:banner','Patterns':[{'Color':4,'Pattern':'zbanana'}]})
  def loot(self,x,y,z,kind='treasure',facing='south'):
   self.put(x,y,z,'chest',{'facing':facing,'type':'single','waterlogged':False},{'id':'minecraft:chest','LootTable':'zoldrax:chests/monkey_supplies'})
- def base(self):
-  self.fill(0,0,0,self.width-1,self.height-1,self.length-1,'air');self.fill(0,0,0,self.width-1,0,self.length-1,'dirt')
-  for x in range(self.width):
-   for z in range(self.length):
-    material='moss_block' if self.rng.random()<.13 else 'grass_block';self.put(x,1,z,material,{'snowy':False} if material=='grass_block' else None)
-  # A light stone processional path connecting the altar to houses and front gate.
-  for x in range(2,self.width-2):
-   for z in range(2,self.length-2):
-    if abs(x-self.width//2)<=2 or abs(z-self.length//2)<=1:self.put(x,1,z,'mossy_stone_bricks' if self.rng.random()<.22 else 'stone_bricks')
-  for x in range(1,self.width-1):
-   for z in [1,self.length-2]:
-    if abs(x-self.width//2)>2:self.put(x,2,z,'jungle_fence',{'waterlogged':False})
-  for z in range(2,self.length-2):
-   for x in [1,self.width-2]:self.put(x,2,z,'jungle_fence',{'waterlogged':False})
-  for x in [self.width//2-3,self.width//2+3]:
-   self.pillar(x,2,self.length-3,4,'jungle_log');self.put(x,6,self.length-3,'gold_block');self.put(x,6,self.length-2,'jungle_planks');self.hanging_light(x,4,self.length-2)
  def temple(self,x,y,z):
   self.fill(x-5,2,z-4,x+6,y-1,z+4,'mossy_stone_bricks')
   for X in range(x-2,x+4):self.stairs(X,y-1,z+5,'north','stone_brick')
@@ -121,23 +107,66 @@ class MonkeySite(Site):
    for side,dx,dz in [('east',1,0),('west',-1,0),('north',0,-1),('south',0,1)]:
     n=self.blocks.get((x+dx,y,z+dz),({'Name':'minecraft:air'},None))[0]['Name'];state.setdefault('Properties',{})[side]=str(n in ['minecraft:jungle_fence','minecraft:jungle_log','minecraft:jungle_planks','minecraft:spruce_planks','minecraft:mossy_stone_bricks']).lower()
   super().save()
+def foundation(s):
+ # Local foundations only; the rest of the settlement is untouched terrain.
+ # Eight buried layers cover the maximum accepted five-block footprint slope.
+ for x in range(1,s.width-1):
+  for z in range(1,s.length-1):
+   s.put(x,0,z,'dirt');s.put(x,1,z,'grass_block',{'snowy':False})
+   if z>=s.length-4 and abs(x-s.width//2)<=1:s.put(x,1,z,'mossy_cobblestone' if (x+z)%3==0 else 'dirt_path')
+
+def component(name,w,d,draw):
+ s=MonkeySite('monkey/'+name,24,w,d);foundation(s)
+ # Clear only the individual footprint, keeping terrain between buildings intact.
+ s.fill(1,2,1,w-2,20,d-2,'air');draw(s)
+ # Translate the template upward to include deep, local buried footing.
+ old=s.blocks;s.blocks={};s.height=32
+ for x in range(1,w-1):
+  for z in range(1,d-1):
+   for y in range(8):s.put(x,y,z,'dirt' if y<6 else 'mossy_stone_bricks')
+ for (x,y,z),value in old.items():s.blocks[x,y+8,z]=value
+ for e in s.entities:e['pos'][1]+=8;e['blockPos'][1]+=8
+ s.save()
+
+def temple(s,valley):
+ s.temple(8,4,6)
+ for x,z in [(3,11),(12,11)]:s.put(x,2,z,'mossy_stone_bricks');s.put(x,3,z,'potted_bamboo')
+ # Five residents at a safe, open shrine court; their existing AI finds jobs nearby.
+ roles=['banana_herald']*(2 if valley else 3)+['temple_gatherer']*(3 if valley else 2)
+ for role,(x,z) in zip(roles,[(4,13),(6,13),(8,13),(10,13),(12,13)]):s.npc(role,x,2,z)
+
+def garden(s):
+ s.greenery([(3,3),(7,6)])
+ for x,z in [(2,6),(5,2),(6,8)]:s.put(x,2,z,'azalea');s.put(x+1,2,z,'melon')
+ s.put(4,2,7,'mossy_stone_bricks');s.put(4,3,7,'potted_fern')
+
+def rest(s):
+ s.pillar(2,2,2,3,'jungle_fence');s.put(2,5,2,'jungle_planks');s.hanging_light(2,3,3)
+ for x in range(4,7):s.stairs(x,2,3,'north','jungle');s.trapdoor(x,3,2,'north',material='jungle')
+ s.barrel(5,2,5);s.put(6,2,5,'hay_block',{'axis':'y'});s.put(3,2,6,'potted_bamboo')
+
 def court():
- s=MonkeySite('banana_court',20,32,32);s.base();s.temple(16,4,10)
- s.building(3,18,8,8,'tent');s.building(23,16,7,8,'forge');s.building(23,3,7,8,'storage');s.watch(4,5);s.festival(12,21)
- s.greenery([(2,2),(29,28),(3,14),(27,26)])
- for n,x,y,z in [('banana_herald',13,4,13),('banana_herald',7,3,24),('banana_herald',6,7,8),('temple_gatherer',19,4,13),('temple_gatherer',26,3,22)]:s.npc(n,x,y,z)
- s.save()
-def valley():
- s=MonkeySite('great_appetite_valley',20,40,36);s.base();s.temple(20,3,17)
- s.building(25,3,11,9,'storage');s.building(3,3,10,8,'barracks');s.building(29,16,8,8,'forge');s.market(4,16);s.watch(33,27)
- s.farm(3,25,11,9);s.farm(24,26,7,8);s.greenery([(2,14),(37,13),(16,4),(16,30)])
- for n,x,y,z in [('banana_herald',18,3,21),('banana_herald',35,7,29),('temple_gatherer',7,3,9),('temple_gatherer',27,3,9),('temple_gatherer',7,2,26)]:s.npc(n,x,y,z)
- s.save()
+ component('court_temple',17,17,lambda s:temple(s,False))
+ component('valley_temple',17,17,lambda s:temple(s,True))
+ component('herald_hall',14,16,lambda s:s.building(3,3,8,8,'tent'))
+ component('gatherer_hall',16,16,lambda s:s.building(3,3,10,8,'barracks'))
+ component('storehouse',15,17,lambda s:s.building(3,3,9,9,'storage'))
+ component('kitchen',14,16,lambda s:s.building(3,3,8,8,'forge'))
+ component('watch',9,11,lambda s:s.watch(2,2))
+ component('festival',13,15,lambda s:s.festival(2,2))
+ component('market',11,11,lambda s:s.market(2,2))
+ component('farm',13,13,lambda s:s.farm(2,2,9,9))
+ component('garden',11,11,garden)
+ component('rest',9,9,rest)
+
 if __name__=='__main__':
- court();valley()
+ court()
+ # Legacy monolithic NBT stays readable by already-saved structure starts.
+ # New generation uses only the independent monkey/* templates.
+ for old in ['banana_court','great_appetite_valley']:
+  (Path('src/main/resources/data/zoldrax/worldgen/template_pool')/(old+'.json')).unlink(missing_ok=True)
  for name in ['banana_court','great_appetite_valley']:
-  js(Path(f'worldgen/structure/{name}.json'),{'type':'minecraft:jigsaw','biomes':'#zoldrax:has_structure/monkey_sites','max_distance_from_center':80,'project_start_to_heightmap':'WORLD_SURFACE_WG','size':1,'spawn_overrides':{},'start_height':{'absolute':0},'start_pool':'zoldrax:'+name,'step':'surface_structures','terrain_adaptation':'beard_thin','use_expansion_hack':False})
-  js(Path(f'worldgen/template_pool/{name}.json'),{'fallback':'minecraft:empty','elements':[{'weight':1,'element':{'element_type':'minecraft:single_pool_element','location':'zoldrax:'+name,'processors':'minecraft:empty','projection':'rigid'}}]})
+  js(Path(f'worldgen/structure/{name}.json'),{'type':'zoldrax:monkey_settlement','valley':name=='great_appetite_valley','biomes':'#zoldrax:has_structure/monkey_sites','spawn_overrides':{},'step':'surface_structures','terrain_adaptation':'none'})
  js(Path('worldgen/structure_set/monkey_sites.json'),{'structures':[{'structure':'zoldrax:'+n,'weight':1} for n in ['banana_court','great_appetite_valley']],'placement':{'type':'minecraft:random_spread','spacing':30,'separation':12,'salt':52601928}})
  js(Path('tags/worldgen/biome/has_structure/monkey_sites.json'),{'replace':False,'values':['minecraft:jungle','minecraft:bamboo_jungle','minecraft:sparse_jungle','minecraft:savanna','minecraft:savanna_plateau']})
  js(Path('loot_tables/chests/monkey_supplies.json'),{'type':'minecraft:chest','pools':[{'rolls':{'type':'minecraft:uniform','min':3,'max':6},'entries':[{'type':'minecraft:item','name':'minecraft:'+n,'weight':w,'functions':[{'function':'minecraft:set_count','count':{'type':'minecraft:uniform','min':3,'max':12}}]} for n,w in [('bread',8),('carrot',7),('potato',7),('apple',4),('melon_slice',8),('wheat_seeds',5),('gold_nugget',1)]]}]})

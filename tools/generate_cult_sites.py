@@ -249,7 +249,7 @@ class Site:
   dump(ROOT/f'structures/{self.name}.nbt',model)
   schematic={'name':self.name,'size':[self.width,self.height,self.length],'population':[e['nbt']['id'] for e in self.entities],
    'blocks':[{'pos':list(pos),'state':state} for pos,(state,_) in self.blocks.items() if state['Name']!='minecraft:air']}
-  Path('docs').mkdir(exist_ok=True);Path(f'docs/{self.name}-layout.json').write_text(json.dumps(schematic))
+  layout=Path(f'docs/{self.name}-layout.json');layout.parent.mkdir(parents=True,exist_ok=True);layout.write_text(json.dumps(schematic))
   print(self.name,len(blocks),'template blocks;',len(self.entities),'followers')
 
 def shrine():

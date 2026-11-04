@@ -104,3 +104,13 @@ for variant,item in [('banana_herald','herald_horn'),('temple_gatherer','harvest
  assert held['display']['thirdperson_righthand']['rotation']==[90,0,0]
  assert all(-16<=v<=32 for e in held['elements'] for v in e['from']+e['to'])
  print(variant+': held item is separate from the body mesh')
+
+for variant in ['banana_herald','temple_gatherer']:
+ model=json.loads((root/f'models/blockbench/{variant}.bbmodel').read_text())
+ assert not any(e['name'].startswith(('eye_','brow','nose','mouth','teeth','rosy_cheek','beard')) for e in model['elements']), 'Face must use painted features'
+ head=next(e for e in model['elements'] if e['name']=='face')
+ assert head['from']==[-4,24,-4] and head['to']==[4,32,4]
+ image=Image.open(root/f'textures/entity/{variant}.png').convert('RGB')
+ u,v,U,V=head['faces']['south']['uv'];pixels=list(image.crop((u*4,v*4,U*4,V*4)).getdata())
+ assert sum(1 for r,g,b in pixels if r>235 and g>235 and b>210)>20, 'Visible eye whites are required'
+print('Flat follower faces and painted eye whites verified')

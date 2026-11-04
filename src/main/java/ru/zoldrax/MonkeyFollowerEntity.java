@@ -76,8 +76,14 @@ public class MonkeyFollowerEntity extends PathAwareEntity {
   if(text!=null){for(var p:((ServerWorld)getWorld()).getPlayers(p->p.squaredDistanceTo(getPos())<576))p.sendMessage(Text.literal("[Банановый глашатай] ").append(text),false);playSound(SoundEvents.GOAT_HORN_SOUNDS.get(0).value(),.6f,1.25f);swingHand(Hand.MAIN_HAND);}
   nextSpeech=now+900+random.nextInt(901);
  }
+ // Keep the registered item for existing player inventories, but retire NPC equipment.
+ void updateEquipment(){
+  if(isHerald()){
+   if(getMainHandStack().isEmpty()){equipStack(EquipmentSlot.MAINHAND,new ItemStack(Zoldrax.HERALD_HORN));setEquipmentDropChance(EquipmentSlot.MAINHAND,0);}
+  }else for(var slot:EquipmentSlot.values())if(getEquippedStack(slot).isOf(Zoldrax.HARVEST_MACHETE))equipStack(slot,ItemStack.EMPTY);
+ }
  @Override public void tick(){super.tick();if(getWorld().isClient)return;
-  if(getMainHandStack().isEmpty()){equipStack(EquipmentSlot.MAINHAND,new ItemStack(isHerald()?Zoldrax.HERALD_HORN:Zoldrax.HARVEST_MACHETE));setEquipmentDropChance(EquipmentSlot.MAINHAND,0);}
+  updateEquipment();
   if(age%20==0){var altar=altar();if(altar!=null&&isHerald())announce(altar);if(altar!=null&&squaredDistanceTo(Vec3d.ofCenter(altar.getPos()))>900&&getTarget()==null)getNavigation().startMovingTo(altar.getPos().getX()+.5,altar.getPos().getY(),altar.getPos().getZ()+4,1);}
   if(isHerald()&&age%140==0&&isOnGround()&&getTarget()==null&&!isTouchingWater())getJumpControl().setActive();
  }
@@ -92,6 +98,6 @@ public class MonkeyFollowerEntity extends PathAwareEntity {
   return ActionResult.SUCCESS;
  }
  @Override public void writeCustomDataToNbt(NbtCompound n){super.writeCustomDataToNbt(n);if(shrine!=null)n.put("MonkeyShrine",NbtHelper.fromBlockPos(shrine));var list=new NbtList();for(int i=0;i<cargo.size();i++)if(!cargo.getStack(i).isEmpty()){var entry=cargo.getStack(i).writeNbt(new NbtCompound());entry.putInt("Slot",i);list.add(entry);}n.put("MonkeyCargo",list);n.putLong("NextTrade",nextTrade);n.putLong("NextSpeech",nextSpeech);n.putLong("LastOrder",lastOrder);}
- @Override public void readCustomDataFromNbt(NbtCompound n){super.readCustomDataFromNbt(n);cargo.clear();for(var el:n.getList("MonkeyCargo",10)){var e=(NbtCompound)el;int slot=e.getInt("Slot");if(slot>=0&&slot<cargo.size())cargo.setStack(slot,ItemStack.fromNbt(e));}shrine=n.contains("MonkeyShrine")?NbtHelper.toBlockPos(n.getCompound("MonkeyShrine")):null;if(shrine!=null)setPositionTarget(shrine,22);nextTrade=n.getLong("NextTrade");nextSpeech=n.getLong("NextSpeech");lastOrder=n.contains("LastOrder")?n.getLong("LastOrder"):-1;setPersistent();}
+ @Override public void readCustomDataFromNbt(NbtCompound n){super.readCustomDataFromNbt(n);cargo.clear();for(var el:n.getList("MonkeyCargo",10)){var e=(NbtCompound)el;int slot=e.getInt("Slot");if(slot>=0&&slot<cargo.size())cargo.setStack(slot,ItemStack.fromNbt(e));}shrine=n.contains("MonkeyShrine")?NbtHelper.toBlockPos(n.getCompound("MonkeyShrine")):null;if(shrine!=null)setPositionTarget(shrine,22);nextTrade=n.getLong("NextTrade");nextSpeech=n.getLong("NextSpeech");lastOrder=n.contains("LastOrder")?n.getLong("LastOrder"):-1;setPersistent();updateEquipment();}
  @Override protected void dropEquipment(net.minecraft.entity.damage.DamageSource source,int looting,boolean drops){super.dropEquipment(source,looting,drops);for(int i=0;i<cargo.size();i++){if(!cargo.getStack(i).isEmpty())dropStack(cargo.removeStack(i));}}
 }
