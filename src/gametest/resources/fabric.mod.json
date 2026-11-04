@@ -12,7 +12,8 @@
       "ru.zoldrax.CultistTests",
       "ru.zoldrax.CultMechanicsTests",
       "ru.zoldrax.CultSiteTests",
-      "ru.zoldrax.MonkeyFollowerTests"
+      "ru.zoldrax.MonkeyFollowerTests",
+      "ru.zoldrax.MonkeyGenerationTests"
     ]
   },
   "depends": {

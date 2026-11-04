@@ -11,10 +11,13 @@ import net.minecraft.util.math.*;
 import net.minecraft.world.GameRules;
 /** Navigate before touching resources. A full destination or blocked path preserves cargo. */
 public class MonkeyFoodGoal extends Goal {
- private final MonkeyFollowerEntity npc;private BlockPos target;private ItemEntity dropped;private ChestBlockEntity chest;private int ticks;private boolean delivering;
+ private final MonkeyFollowerEntity npc;private BlockPos target;private ItemEntity dropped;private ChestBlockEntity chest;private int ticks;private long nextScan;private boolean delivering;
  public MonkeyFoodGoal(MonkeyFollowerEntity npc){this.npc=npc;setControls(EnumSet.of(Control.MOVE,Control.LOOK));}
  @Override public boolean canStart(){
-  if(npc.getTarget()!=null||npc.age%20!=0||npc.altar()==null)return false;
+  if(npc.getTarget()!=null||npc.altar()==null)return false;
+  // Minecraft staggers goal checks by entity id. An exact age modulo can be
+  // unreachable for some NPCs; a deadline works with every scheduling phase.
+  long now=npc.getWorld().getTime();if(now<nextScan)return false;nextScan=now+20;
   target=null;dropped=null;chest=null;delivering=npc.carrying();var altar=npc.altar();
   if(delivering){for(var candidate:npc.chests())if(altar.acceptsChest(candidate.getPos())&&npc.canDeliver(candidate)){chest=candidate;target=chest.getPos();break;}}
   else{

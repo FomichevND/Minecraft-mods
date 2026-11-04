@@ -32,34 +32,66 @@ public class MonkeySettlementStructure extends Structure {
   new Plot("market",-17,7),new Plot("watch",22,20),
   new Plot("farm",-8,21),new Plot("farm",8,19),new Plot("garden",-3,-24),
   new Plot("rest",-23,21));
- private static int height(Context c,int x,int z){return c.chunkGenerator().getHeight(x,z,Heightmap.Type.OCEAN_FLOOR_WG,c.world(),c.noiseConfig());}
+ /** Try nearby patches instead of treating every plot as a veto on the whole town. */
+ private static final List<BlockPos> PATCHES;
+ static {
+  var offsets=new ArrayList<BlockPos>();
+  for(int x=-8;x<=8;x+=4)for(int z=-8;z<=8;z+=4)offsets.add(new BlockPos(x,0,z));
+  offsets.sort(Comparator.comparingInt(p->p.getX()*p.getX()+p.getZ()*p.getZ()));
+  PATCHES=List.copyOf(offsets);
+ }
+ private static class Terrain {
+  final Context context;
+  final Map<Long,Integer> heights=new HashMap<>();
+  Terrain(Context context){this.context=context;}
+  int height(int x,int z){return heights.computeIfAbsent(BlockPos.asLong(x,0,z),key->context.chunkGenerator().getHeight(x,z,Heightmap.Type.OCEAN_FLOOR_WG,context.world(),context.noiseConfig()));}
+ }
+ private static PoolStructurePiece fit(Context c,Terrain terrain,Plot plot,int cx,int cz,BlockRotation rotation,List<PoolStructurePiece> pieces){
+  var manager=c.structureTemplateManager();
+  var element=StructurePoolElement.ofSingle("zoldrax:monkey/"+plot.name).apply(StructurePool.Projection.RIGID);
+  var bounds=element.getBoundingBox(manager,BlockPos.ORIGIN,rotation);
+  var offset=new BlockPos(plot.x,0,plot.z).rotate(rotation);
+  int jitterX=plot.x==0&&plot.z==0?0:c.random().nextInt(3)-1;
+  int jitterZ=plot.x==0&&plot.z==0?0:c.random().nextInt(3)-1;
+  int desiredX=cx+offset.getX()-(bounds.getMinX()+bounds.getMaxX())/2+jitterX;
+  int desiredZ=cz+offset.getZ()-(bounds.getMinZ()+bounds.getMaxZ())/2+jitterZ;
+  var size=element.getStart(manager,BlockRotation.NONE);
+  var approach=new BlockPos((size.getX()-1)/2,0,size.getZ()-2).rotate(rotation);
+  for(var patch:PATCHES){
+   int ox=desiredX+patch.getX(),oz=desiredZ+patch.getZ();
+   // Reject horizontal overlap before doing the more expensive terrain sampling.
+   int minX=ox+bounds.getMinX(),maxX=ox+bounds.getMaxX(),minZ=oz+bounds.getMinZ(),maxZ=oz+bounds.getMaxZ();
+   if(pieces.stream().anyMatch(p->{var b=p.getBoundingBox();return minX<=b.getMaxX()+1&&maxX>=b.getMinX()-1&&minZ<=b.getMaxZ()+1&&maxZ>=b.getMinZ()-1;}))continue;
+   int low=Integer.MAX_VALUE,high=Integer.MIN_VALUE;
+   for(int x:new int[]{bounds.getMinX(),(bounds.getMinX()+bounds.getMaxX())/2,bounds.getMaxX()})for(int z:new int[]{bounds.getMinZ(),(bounds.getMinZ()+bounds.getMaxZ())/2,bounds.getMaxZ()}){
+    int y=terrain.height(ox+x,oz+z);low=Math.min(low,y);high=Math.max(high,y);
+   }
+   if(low<c.chunkGenerator().getSeaLevel()||high-low>6||high+24>=c.world().getTopY())continue;
+   int ground=terrain.height(ox+approach.getX(),oz+approach.getZ());
+   if(ground<low||ground>high)continue;
+   var pos=new BlockPos(ox,ground-10,oz);
+   return new PoolStructurePiece(manager,element,pos,10,rotation,element.getBoundingBox(manager,pos,rotation));
+  }
+  return null;
+ }
  @Override protected Optional<StructurePosition> getStructurePosition(Context c){
   int cx=c.chunkPos().getStartX()+8,cz=c.chunkPos().getStartZ()+8;
-  var rotation=BlockRotation.random(c.random());var pieces=new ArrayList<PoolStructurePiece>();
-  var manager=c.structureTemplateManager();
-  for(var plot:valley?VALLEY:COURT){
-   var offset=new BlockPos(plot.x,0,plot.z).rotate(rotation);
-   var element=StructurePoolElement.ofSingle("zoldrax:monkey/"+plot.name).apply(StructurePool.Projection.RIGID);
-   var bounds=element.getBoundingBox(manager,BlockPos.ORIGIN,rotation);
-   // Seeded irregular spacing; temple remains exactly at the settlement anchor.
-   int jitterX=plot.x==0&&plot.z==0?0:c.random().nextInt(3)-1;
-   int jitterZ=plot.x==0&&plot.z==0?0:c.random().nextInt(3)-1;
-   int ox=cx+offset.getX()-(bounds.getMinX()+bounds.getMaxX())/2+jitterX;
-   int oz=cz+offset.getZ()-(bounds.getMinZ()+bounds.getMaxZ())/2+jitterZ;
-   int low=Integer.MAX_VALUE,high=Integer.MIN_VALUE;
-   // Sample corners, edge midpoints and centre without loading any world chunks.
-   for(int x:new int[]{bounds.getMinX(),(bounds.getMinX()+bounds.getMaxX())/2,bounds.getMaxX()})for(int z:new int[]{bounds.getMinZ(),(bounds.getMinZ()+bounds.getMaxZ())/2,bounds.getMaxZ()}){
-    int y=height(c,ox+x,oz+z);low=Math.min(low,y);high=Math.max(high,y);
-   }
-   if(low<c.chunkGenerator().getSeaLevel()||high-low>5||high+24>=c.world().getTopY())return Optional.empty();
-   // Match the front approach, so workers can enter from the natural ground.
-   var approach=new BlockPos((element.getStart(manager,BlockRotation.NONE).getX()-1)/2,0,element.getStart(manager,BlockRotation.NONE).getZ()-2).rotate(rotation);
-   int ground=height(c,ox+approach.getX(),oz+approach.getZ());
-   var pos=new BlockPos(ox,ground-10,oz);var box=element.getBoundingBox(manager,pos,rotation);
-   if(pieces.stream().anyMatch(p->p.getBoundingBox().intersects(box)))return Optional.empty();
-   pieces.add(new PoolStructurePiece(manager,element,pos,10,rotation,box));
+  var terrain=new Terrain(c);var rotation=BlockRotation.random(c.random());
+  var pieces=new ArrayList<PoolStructurePiece>();var plan=valley?VALLEY:COURT;
+  var temple=fit(c,terrain,plan.get(0),cx,cz,rotation,pieces);
+  if(temple==null)return Optional.empty();
+  pieces.add(temple);
+  // Keep the other plots centred on the actual fitted shrine.
+  var anchor=temple.getPos().add(new BlockPos(8,10,8).rotate(rotation));cx=anchor.getX();cz=anchor.getZ();
+  int farms=0;
+  for(var plot:plan.subList(1,plan.size())){
+   var piece=fit(c,terrain,plot,cx,cz,rotation,pieces);
+   if(piece!=null){pieces.add(piece);if(plot.name.equals("farm"))farms++;}
+   else if(plot.name.endsWith("hall")||plot.name.equals("storehouse")||plot.name.equals("kitchen"))return Optional.empty();
+   // A steep optional garden, tower or rest area no longer cancels all buildings.
   }
-  return Optional.of(new StructurePosition(new BlockPos(cx,height(c,cx,cz),cz),collector->pieces.forEach(collector::addPiece)));
+  if(valley&&farms==0)return Optional.empty();
+  return Optional.of(new StructurePosition(anchor,collector->pieces.forEach(collector::addPiece)));
  }
  @Override public StructureType<?> getType(){return TYPE;}
 }

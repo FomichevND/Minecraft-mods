@@ -1,5 +1,5 @@
 plugins { id 'fabric-loom' version '1.6.12' }
-version = '1.9.0'
+version = '1.9.1'
 group = 'ru.zoldrax'
 base { archivesName = 'zoldrax-monument' }
 repositories { mavenCentral() }
