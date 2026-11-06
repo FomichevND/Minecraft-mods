@@ -16,7 +16,7 @@ def render(model,view):
   x,y=np.meshgrid(np.arange(x0,x1+1)+.5,np.arange(y0,y1+1)+.5);a,b,c=v;den=(b[1]-c[1])*(a[0]-c[0])+(c[0]-b[0])*(a[1]-c[1])
   if abs(den)<1e-7:return
   w0=((b[1]-c[1])*(x-c[0])+(c[0]-b[0])*(y-c[1]))/den;w1=((c[1]-a[1])*(x-c[0])+(a[0]-c[0])*(y-c[1]))/den;w2=1-w0-w1;z=w0*a[2]+w1*b[2]+w2*c[2];part=depth[y0:y1+1,x0:x1+1];mask=(w0>=0)&(w1>=0)&(w2>=0)&(z>part);uv=np.array(uv)
-  u=(w0*uv[0,0]+w1*uv[1,0]+w2*uv[2,0]).astype(int).clip(0,255);v=(w0*uv[0,1]+w1*uv[1,1]+w2*uv[2,1]).astype(int).clip(0,255);pixels[y0:y1+1,x0:x1+1][mask]=(tex[v,u]*shade).clip(0,255).astype('u1')[mask];part[mask]=z[mask]
+  u=(w0*uv[0,0]+w1*uv[1,0]+w2*uv[2,0]).astype(int).clip(0,tex.shape[1]-1);v=(w0*uv[0,1]+w1*uv[1,1]+w2*uv[2,1]).astype(int).clip(0,tex.shape[0]-1);pixels[y0:y1+1,x0:x1+1][mask]=(tex[v,u]*shade).clip(0,255).astype('u1')[mask];part[mask]=z[mask]
  for c in model['elements']:
   if c['zoldrax_group']=='extension':continue
   x,y,z=c['from'];X,Y,Z=c['to'];rx,ry,rz=np.radians(c['rotation']);o=np.array(c['origin']);

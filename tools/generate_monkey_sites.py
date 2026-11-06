@@ -119,6 +119,8 @@ def component(name,w,d,draw):
  s=MonkeySite('monkey/'+name,24,w,d);foundation(s)
  # Clear only the individual footprint, keeping terrain between buildings intact.
  s.fill(1,2,1,w-2,20,d-2,'air');draw(s)
+ from monkey_decor_integration import decorate_component
+ decorate_component(s,name)
  # Translate the template upward to include deep, local buried footing.
  old=s.blocks;s.blocks={};s.height=32
  for x in range(1,w-1):

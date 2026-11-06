@@ -1,0 +1,30 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "decorations",
+  "pattern": [
+    "GRG",
+    "PAP",
+    "B B"
+  ],
+  "key": {
+    "A": {
+      "item": "minecraft:paper"
+    },
+    "B": {
+      "item": "minecraft:bamboo"
+    },
+    "G": {
+      "item": "minecraft:gold_nugget"
+    },
+    "R": {
+      "item": "minecraft:red_wool"
+    },
+    "P": {
+      "item": "minecraft:jungle_planks"
+    }
+  },
+  "result": {
+    "item": "zoldrax:monkey_king_notice_board",
+    "count": 1
+  }
+}

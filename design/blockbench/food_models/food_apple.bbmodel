@@ -1,0 +1,468 @@
+{
+  "meta": {
+    "format_version": "4.10",
+    "model_format": "free",
+    "box_uv": false
+  },
+  "name": "food_apple",
+  "resolution": {
+    "width": 32,
+    "height": 32
+  },
+  "elements": [
+    {
+      "name": "fruit_body",
+      "from": [
+        1,
+        1,
+        1
+      ],
+      "to": [
+        7,
+        6,
+        7
+      ],
+      "origin": [
+        4.0,
+        3.5,
+        4.0
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "type": "cube",
+      "uuid": "0f3d95c4-c79d-533c-bf21-860bcef72440",
+      "faces": {
+        "north": {
+          "uv": [
+            0.25,
+            0.25,
+            7.75,
+            7.75
+          ],
+          "texture": 0
+        },
+        "south": {
+          "uv": [
+            0.25,
+            0.25,
+            7.75,
+            7.75
+          ],
+          "texture": 0
+        },
+        "east": {
+          "uv": [
+            0.25,
+            0.25,
+            7.75,
+            7.75
+          ],
+          "texture": 0
+        },
+        "west": {
+          "uv": [
+            0.25,
+            0.25,
+            7.75,
+            7.75
+          ],
+          "texture": 0
+        },
+        "up": {
+          "uv": [
+            0.25,
+            0.25,
+            7.75,
+            7.75
+          ],
+          "texture": 0
+        },
+        "down": {
+          "uv": [
+            0.25,
+            0.25,
+            7.75,
+            7.75
+          ],
+          "texture": 0
+        }
+      },
+      "box_uv": false,
+      "zoldrax_group": "body",
+      "zoldrax_emissive": false
+    },
+    {
+      "name": "fruit_top",
+      "from": [
+        2,
+        6,
+        2
+      ],
+      "to": [
+        6,
+        7,
+        6
+      ],
+      "origin": [
+        4.0,
+        6.5,
+        4.0
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "type": "cube",
+      "uuid": "2fec4b0b-6e6e-5a23-946e-38063eddac5a",
+      "faces": {
+        "north": {
+          "uv": [
+            8.25,
+            0.25,
+            15.75,
+            7.75
+          ],
+          "texture": 0
+        },
+        "south": {
+          "uv": [
+            8.25,
+            0.25,
+            15.75,
+            7.75
+          ],
+          "texture": 0
+        },
+        "east": {
+          "uv": [
+            8.25,
+            0.25,
+            15.75,
+            7.75
+          ],
+          "texture": 0
+        },
+        "west": {
+          "uv": [
+            8.25,
+            0.25,
+            15.75,
+            7.75
+          ],
+          "texture": 0
+        },
+        "up": {
+          "uv": [
+            8.25,
+            0.25,
+            15.75,
+            7.75
+          ],
+          "texture": 0
+        },
+        "down": {
+          "uv": [
+            8.25,
+            0.25,
+            15.75,
+            7.75
+          ],
+          "texture": 0
+        }
+      },
+      "box_uv": false,
+      "zoldrax_group": "body",
+      "zoldrax_emissive": false
+    },
+    {
+      "name": "fruit_base",
+      "from": [
+        2,
+        0,
+        2
+      ],
+      "to": [
+        6,
+        1,
+        6
+      ],
+      "origin": [
+        4.0,
+        0.5,
+        4.0
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "type": "cube",
+      "uuid": "bd47a914-5699-5731-8547-7ec32027e039",
+      "faces": {
+        "north": {
+          "uv": [
+            0.25,
+            0.25,
+            7.75,
+            7.75
+          ],
+          "texture": 0
+        },
+        "south": {
+          "uv": [
+            0.25,
+            0.25,
+            7.75,
+            7.75
+          ],
+          "texture": 0
+        },
+        "east": {
+          "uv": [
+            0.25,
+            0.25,
+            7.75,
+            7.75
+          ],
+          "texture": 0
+        },
+        "west": {
+          "uv": [
+            0.25,
+            0.25,
+            7.75,
+            7.75
+          ],
+          "texture": 0
+        },
+        "up": {
+          "uv": [
+            0.25,
+            0.25,
+            7.75,
+            7.75
+          ],
+          "texture": 0
+        },
+        "down": {
+          "uv": [
+            0.25,
+            0.25,
+            7.75,
+            7.75
+          ],
+          "texture": 0
+        }
+      },
+      "box_uv": false,
+      "zoldrax_group": "body",
+      "zoldrax_emissive": false
+    },
+    {
+      "name": "stem",
+      "from": [
+        3.5,
+        7,
+        3.5
+      ],
+      "to": [
+        4.5,
+        9,
+        4.5
+      ],
+      "origin": [
+        4.0,
+        8.0,
+        4.0
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "type": "cube",
+      "uuid": "9849cc80-1b3a-5e15-8a1e-e33dd572e012",
+      "faces": {
+        "north": {
+          "uv": [
+            16.25,
+            16.25,
+            23.75,
+            23.75
+          ],
+          "texture": 0
+        },
+        "south": {
+          "uv": [
+            16.25,
+            16.25,
+            23.75,
+            23.75
+          ],
+          "texture": 0
+        },
+        "east": {
+          "uv": [
+            16.25,
+            16.25,
+            23.75,
+            23.75
+          ],
+          "texture": 0
+        },
+        "west": {
+          "uv": [
+            16.25,
+            16.25,
+            23.75,
+            23.75
+          ],
+          "texture": 0
+        },
+        "up": {
+          "uv": [
+            16.25,
+            16.25,
+            23.75,
+            23.75
+          ],
+          "texture": 0
+        },
+        "down": {
+          "uv": [
+            16.25,
+            16.25,
+            23.75,
+            23.75
+          ],
+          "texture": 0
+        }
+      },
+      "box_uv": false,
+      "zoldrax_group": "body",
+      "zoldrax_emissive": false
+    },
+    {
+      "name": "leaf",
+      "from": [
+        4,
+        7.2,
+        3
+      ],
+      "to": [
+        7,
+        7.8,
+        5
+      ],
+      "origin": [
+        5.5,
+        7.5,
+        4.0
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "type": "cube",
+      "uuid": "eec168f2-dbdc-552f-b9a5-5c295ed0762e",
+      "faces": {
+        "north": {
+          "uv": [
+            16.25,
+            0.25,
+            23.75,
+            7.75
+          ],
+          "texture": 0
+        },
+        "south": {
+          "uv": [
+            16.25,
+            0.25,
+            23.75,
+            7.75
+          ],
+          "texture": 0
+        },
+        "east": {
+          "uv": [
+            16.25,
+            0.25,
+            23.75,
+            7.75
+          ],
+          "texture": 0
+        },
+        "west": {
+          "uv": [
+            16.25,
+            0.25,
+            23.75,
+            7.75
+          ],
+          "texture": 0
+        },
+        "up": {
+          "uv": [
+            16.25,
+            0.25,
+            23.75,
+            7.75
+          ],
+          "texture": 0
+        },
+        "down": {
+          "uv": [
+            16.25,
+            0.25,
+            23.75,
+            7.75
+          ],
+          "texture": 0
+        }
+      },
+      "box_uv": false,
+      "zoldrax_group": "body",
+      "zoldrax_emissive": false
+    }
+  ],
+  "outliner": [
+    {
+      "name": "body",
+      "uuid": "377b7eee-3424-5b27-80bd-5e22c60aa7a4",
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "children": [
+        "0f3d95c4-c79d-533c-bf21-860bcef72440",
+        "2fec4b0b-6e6e-5a23-946e-38063eddac5a",
+        "bd47a914-5699-5731-8547-7ec32027e039",
+        "9849cc80-1b3a-5e15-8a1e-e33dd572e012",
+        "eec168f2-dbdc-552f-b9a5-5c295ed0762e"
+      ]
+    }
+  ],
+  "textures": [
+    {
+      "id": "0",
+      "name": "food_apple.png",
+      "width": 32,
+      "height": 32,
+      "uv_width": 32,
+      "uv_height": 32,
+      "source": "data:image/png;base64,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"
+    }
+  ]
+}

@@ -21,10 +21,10 @@ import net.minecraft.sound.*;
 public class DecorBaseBlock extends Block implements InventoryProvider {
  public static final DirectionProperty FACING=Properties.HORIZONTAL_FACING;
  public static final BooleanProperty LIT=Properties.LIT;
- public static final IntProperty PART=IntProperty.of("part",0,7),LENGTH=IntProperty.of("chain_length",1,2);
+ public static final IntProperty PART=IntProperty.of("part",0,15),LENGTH=IntProperty.of("chain_length",1,2);
  public final DecorKind kind;
  public DecorBaseBlock(DecorKind kind){
-  super(AbstractBlock.Settings.create().strength(3.5f,9).pistonBehavior(net.minecraft.block.piston.PistonBehavior.BLOCK).nonOpaque().dynamicBounds().sounds(BlockSoundGroup.DEEPSLATE_TILES).luminance(s->s.get(LIT)&&s.get(PART)==kind.emitter(s.get(LENGTH))?kind.light:0));
+  super(AbstractBlock.Settings.create().strength(3.5f,9).pistonBehavior(net.minecraft.block.piston.PistonBehavior.BLOCK).nonOpaque().dynamicBounds().sounds(kind.monkey()?BlockSoundGroup.WOOD:BlockSoundGroup.DEEPSLATE_TILES).luminance(s->s.get(LIT)&&s.get(PART)==kind.emitter(s.get(LENGTH))?kind.light:0));
   this.kind=kind;setDefaultState(getStateManager().getDefaultState().with(FACING,Direction.SOUTH).with(PART,0).with(LENGTH,1).with(LIT,true));
  }
  @Override protected void appendProperties(StateManager.Builder<Block,BlockState> builder){builder.add(FACING,LIT,PART,LENGTH);}
@@ -47,7 +47,7 @@ public class DecorBaseBlock extends Block implements InventoryProvider {
  @Override public boolean canPlaceAt(BlockState state,WorldView world,BlockPos pos){
   if(state.get(PART)>0)return true;
   if(kind.hanging())return world.getBlockState(pos.up()).isSideSolidFullSquare(world,pos.up(),Direction.DOWN);
-  for(int i=0;i<kind.width;i++){var p=pos.add(DecorBlocks.offset(kind,i,state.get(FACING))).down();if(!world.getBlockState(p).isSideSolidFullSquare(world,p,Direction.UP)&&!(kind==DecorKind.CHEST&&world.getBlockState(p).isOf(Blocks.HOPPER)))return false;}
+  for(int i=0;i<kind.width*kind.depth();i++){var p=pos.add(DecorBlocks.offset(kind,i,state.get(FACING))).down();if(!world.getBlockState(p).isSideSolidFullSquare(world,p,Direction.UP)&&!(kind==DecorKind.CHEST&&world.getBlockState(p).isOf(Blocks.HOPPER)))return false;}
   return true;
  }
  @Override public void onPlaced(World world,BlockPos pos,BlockState state,net.minecraft.entity.LivingEntity placer,ItemStack stack){
@@ -82,7 +82,7 @@ public class DecorBaseBlock extends Block implements InventoryProvider {
  }
  @Override public ActionResult onUse(BlockState state,World world,BlockPos pos,PlayerEntity player,Hand hand,BlockHitResult hit){
   if(world.isClient)return ActionResult.SUCCESS;
-  var entity=DecorBlocks.entity(world,pos,state);return entity==null?ActionResult.PASS:entity.use(player,hand);
+  var entity=DecorBlocks.entity(world,pos,state);return entity==null?ActionResult.PASS:entity.useAt(player,hand,hit);
  }
  @Override public net.minecraft.inventory.SidedInventory getInventory(BlockState state,WorldAccess world,BlockPos pos){
   var root=DecorBlocks.root(pos,state);

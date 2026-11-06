@@ -30,7 +30,7 @@ public final class DecorRenderer implements BlockEntityRenderer<DecorBlockEntity
   net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry.register(DecorBlocks.SEAT,net.minecraft.client.render.entity.EmptyEntityRenderer::new);
   for(var kind:DecorKind.values())BuiltinItemRendererRegistry.INSTANCE.register(DecorBlocks.BLOCKS.get(kind).asItem(),(stack,mode,matrices,vertices,light,overlay)->renderItem(kind,matrices,vertices,light,overlay));
   ItemTooltipCallback.EVENT.register((stack,context,lines)->{if(stack.getItem() instanceof BlockItem item&&item.getBlock() instanceof DecorBlock block)lines.add(Text.translatable("tooltip.zoldrax."+block.kind.id).formatted(Formatting.GRAY));});
-  ResourceManagerHelper.get(ResourceType.CLIENT_RESOURCES).registerReloadListener(new SimpleSynchronousResourceReloadListener(){public Identifier getFabricId(){return DecorBlocks.id("decor_meshes");}public void reload(ResourceManager manager){CACHE.clear();}});
+  ResourceManagerHelper.get(ResourceType.CLIENT_RESOURCES).registerReloadListener(new SimpleSynchronousResourceReloadListener(){public Identifier getFabricId(){return DecorBlocks.id("decor_meshes");}public void reload(ResourceManager manager){CACHE.clear();FoodDisplayModelRegistry.reload();}});
  }
  private static Mesh mesh(DecorKind kind){return CACHE.computeIfAbsent(kind,Mesh::new);}
  private static void renderItem(DecorKind kind,MatrixStack matrices,VertexConsumerProvider vertices,int light,int overlay){
@@ -43,7 +43,10 @@ public final class DecorRenderer implements BlockEntityRenderer<DecorBlockEntity
   float open=MathHelper.lerp(tickDelta,entity.previousLid,entity.lid);open=1-(1-open)*(1-open)*(1-open);
   matrices.push();matrices.translate(.5,0,.5);matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(-DecorBlocks.degrees(state.get(DecorBaseBlock.FACING))));matrices.translate(-.5,0,-.5);
   boolean vanillaBook=kind==DecorKind.LECTERN&&!entity.getStack(0).isEmpty()&&(entity.getStack(0).isOf(Items.BOOK)||entity.getStack(0).isOf(Items.WRITTEN_BOOK)||entity.getStack(0).isOf(Items.WRITABLE_BOOK));
-  drawModel(kind,model,matrices,vertices,light,overlay,kind.light==0||state.get(DecorBaseBlock.LIT),state.get(DecorBaseBlock.LENGTH),open,vanillaBook,kind!=DecorKind.OFFERING_PEDESTAL||entity.getStack(0).isEmpty(),time);
+  drawModel(kind,model,matrices,vertices,light,overlay,kind.light==0||state.get(DecorBaseBlock.LIT),state.get(DecorBaseBlock.LENGTH),open,vanillaBook,kind!=DecorKind.OFFERING_PEDESTAL||entity.getStack(0).isEmpty(),kind==DecorKind.COURTYARD_GONG||kind==DecorKind.FESTIVAL_DRUM?entity.strikeTicks:time);
+  if(kind==DecorKind.SUPPLY_BASKET){var remaining=new int[9];for(int i=0;i<9;i++)remaining[i]=entity.getStack(i).getCount();int shown=0;for(int pass=0;pass<12&&shown<12;pass++)for(int i=0;i<9&&shown<12;i++)if(remaining[i]>0){int j=shown++;remaining[i]--;var slot=new FoodDisplaySlots.Slot(.26+(j%3)*.24,.125+(j/3)*.24,.35+(j%2)*.25,0,.24f,false);FoodDisplayModelRegistry.render(entity.getStack(i),slot,matrices,vertices,light,overlay,entity.getWorld());}}
+  else if(kind.foodDisplay()){var slots=FoodDisplaySlots.forKind(kind);for(int i=0;i<Math.min(slots.size(),entity.size());i++)if(!entity.getStack(i).isEmpty())FoodDisplayModelRegistry.render(entity.getStack(i),slots.get(i),matrices,vertices,light,overlay,entity.getWorld());}
+  if(kind==DecorKind.NOTICE_BOARD)renderDocuments(entity,matrices,vertices,light,overlay);
   if(kind==DecorKind.WEAPON_RACK){for(int i=0;i<3;i++)if(!entity.getStack(i).isEmpty()){
    matrices.push();matrices.translate(.5+i*.5,.98,.9);matrices.multiply(RotationAxis.POSITIVE_Z.rotationDegrees(135));matrices.scale(1.05f,1.05f,1.05f);items.renderItem(entity.getStack(i),ModelTransformationMode.FIXED,light,overlay,matrices,vertices,entity.getWorld(),entity.getPos().hashCode()+i);matrices.pop();
   }}
@@ -55,10 +58,22 @@ public final class DecorRenderer implements BlockEntityRenderer<DecorBlockEntity
   }
   matrices.pop();
  }
+ private void renderDocuments(DecorBlockEntity entity,MatrixStack matrices,VertexConsumerProvider vertices,int light,int overlay){
+  double[][] positions={{.9,1.75},{2.1,1.75},{1.5,.85}};
+  for(int i=0;i<3;i++){var stack=entity.getStack(i);if(stack.isEmpty())continue;if(stack.isOf(Items.PAPER)){mesh(entity.kind).render("paper"+i,matrices,vertices,light,overlay,false);continue;}matrices.push();matrices.translate(positions[i][0],positions[i][1],.435);
+   var id=net.minecraft.item.FilledMapItem.getMapId(stack);var map=id==null?null:net.minecraft.item.FilledMapItem.getMapState(id,entity.getWorld());
+   if(stack.isOf(Items.FILLED_MAP)&&map!=null){matrices.scale(.0055f,-.0055f,.0055f);matrices.translate(-64,-64,0);MinecraftClient.getInstance().gameRenderer.getMapRenderer().draw(matrices,vertices,id,map,false,light);}
+   else {matrices.scale(.65f,.65f,.65f);items.renderItem(stack,ModelTransformationMode.FIXED,light,overlay,matrices,vertices,entity.getWorld(),i);}
+   matrices.pop();
+  }
+ }
  private static void drawModel(DecorKind kind,Mesh model,MatrixStack matrices,VertexConsumerProvider vertices,int light,int overlay,boolean lit,int length,float open,boolean book,boolean crystal,float time){
   for(String group:model.groups.keySet()){
+   if(group.startsWith("paper"))continue;
    if(group.equals("book")&&!book||group.equals("crystal")&&!crystal||group.equals("flame")&&!lit||group.equals("extension")&&length==1)continue;
    matrices.push();
+   if(group.equals("gong")){matrices.translate(1.5,2.5,.5);matrices.multiply(RotationAxis.POSITIVE_Z.rotationDegrees((float)Math.sin(time*1.7)*Math.min(7,time)));matrices.translate(-1.5,-2.5,-.5);}
+   if(group.equals("drum"))matrices.translate(0,0,Math.sin(time*2)*Math.min(.045,time*.004));
    if(group.equals("lid")){matrices.translate(.5,14/16f,3/16f);matrices.multiply(RotationAxis.POSITIVE_X.rotationDegrees(-90*open));matrices.translate(-.5,-14/16f,-3/16f);}
    if(group.equals("cage")){matrices.translate(.5,-(length-1),.5);matrices.multiply(RotationAxis.POSITIVE_Z.rotationDegrees((float)Math.sin(time*.035)*1.7f));matrices.translate(-.5,0,-.5);}
    if(group.equals("flame")){matrices.translate(.5,1,.5);matrices.scale(1,1+(float)Math.sin(time*.17)*.025f,1);matrices.translate(-.5,-1,-.5);}
@@ -68,11 +83,13 @@ public final class DecorRenderer implements BlockEntityRenderer<DecorBlockEntity
  @Override public boolean rendersOutsideBoundingBox(DecorBlockEntity entity){return true;}
  @Override public int getRenderDistance(){return 80;}
  private record Quad(float[] xyz,float[] uv,float nx,float ny,float nz,boolean emissive){}
- private static final class Mesh {
-  final Map<String,List<Quad>> groups=new LinkedHashMap<>();final Identifier texture;float cx,cy,cz,extent;
-  Mesh(DecorKind kind){
-   texture=DecorBlocks.id("textures/block/zoldrax/"+kind.id+".png");float[] min={Float.MAX_VALUE,Float.MAX_VALUE,Float.MAX_VALUE},max={-Float.MAX_VALUE,-Float.MAX_VALUE,-Float.MAX_VALUE};
-   try(var reader=new InputStreamReader(MinecraftClient.getInstance().getResourceManager().getResource(DecorBlocks.id("models/blockbench/decor/"+kind.id+".bbmodel")).orElseThrow().getInputStream(),StandardCharsets.UTF_8)){
+ static final class Mesh {
+  final Map<String,List<Quad>> groups=new LinkedHashMap<>();final Identifier texture;float cx,cy,cz,extent,minY,maxY;
+  Mesh(DecorKind kind){this("decor",kind.id);}
+  Mesh(String folder,String name){this(DecorBlocks.id("models/blockbench/"+folder+"/"+name+".bbmodel"),DecorBlocks.id("textures/block/zoldrax/"+name+".png"));}
+  Mesh(Identifier resource,Identifier modelTexture){
+   texture=modelTexture;float[] min={Float.MAX_VALUE,Float.MAX_VALUE,Float.MAX_VALUE},max={-Float.MAX_VALUE,-Float.MAX_VALUE,-Float.MAX_VALUE};
+   try(var reader=new InputStreamReader(MinecraftClient.getInstance().getResourceManager().getResource(resource).orElseThrow().getInputStream(),StandardCharsets.UTF_8)){
     var data=JsonParser.parseReader(reader).getAsJsonObject();float tw=data.getAsJsonObject("resolution").get("width").getAsFloat(),th=data.getAsJsonObject("resolution").get("height").getAsFloat();
     var byUuid=new HashMap<String,String>();indexGroups(data.getAsJsonArray("outliner"),"body",byUuid);
     for(var value:data.getAsJsonArray("elements")){
@@ -95,17 +112,18 @@ public final class DecorRenderer implements BlockEntityRenderer<DecorBlockEntity
       list.add(new Quad(points,new float[]{u,v,u,V,U,V,U,v},normal.x,normal.y,normal.z,e.has("zoldrax_emissive")?e.get("zoldrax_emissive").getAsBoolean():((int)(v*th/64)*4+(int)(u*tw/64)>=9&&(int)(v*th/64)*4+(int)(u*tw/64)<=11)));
      }
     }
-   }catch(Exception e){throw new IllegalStateException("Cannot load editable decor mesh "+kind.id,e);}
-   cx=(min[0]+max[0])/2;cy=(min[1]+max[1])/2;cz=(min[2]+max[2])/2;extent=Math.max(max[0]-min[0],Math.max(max[1]-min[1],max[2]-min[2]));
+   }catch(Exception e){throw new IllegalStateException("Cannot load editable decor mesh "+resource,e);}
+   minY=min[1];maxY=max[1];cx=(min[0]+max[0])/2;cy=(min[1]+max[1])/2;cz=(min[2]+max[2])/2;extent=Math.max(max[0]-min[0],Math.max(max[1]-min[1],max[2]-min[2]));
   }
   void render(String group,MatrixStack matrices,VertexConsumerProvider vertices,int light,int overlay,boolean lit){
    var entry=matrices.peek();var matrix=entry.getPositionMatrix();var normal=entry.getNormalMatrix();
    for(int pass=0;pass<2;pass++){
     if(pass==1&&!lit)continue;
-    var consumer=vertices.getBuffer(pass==0?RenderLayer.getEntityCutoutNoCull(texture):RenderLayer.getEntityTranslucentEmissive(texture));
+    var consumer=vertices.getBuffer(pass==0?MonumentRenderLayer.get(texture):MonumentRenderLayer.get(texture));
     for(var q:groups.get(group)){
      boolean emission=q.emissive&&lit;if(emission!=(pass==1))continue;
      int brightness=emission?LightmapTextureManager.MAX_LIGHT_COORDINATE:light;float color=q.emissive&&!lit?.28f:1;
+     if(!emission){int sky=(light>>20)&15,block=(light>>4)&15;var world=MinecraftClient.getInstance().world;if(world!=null)sky=Math.max(0,sky-world.getAmbientDarkness());color*=.22f+.78f*Math.max(sky,block)/15f;}
      for(int i=0;i<4;i++)consumer.vertex(matrix,q.xyz[i*3],q.xyz[i*3+1],q.xyz[i*3+2]).color(color,color,color,1).texture(q.uv[i*2],q.uv[i*2+1]).overlay(overlay).light(brightness).normal(normal,q.nx,q.ny,q.nz).next();
     }
    }

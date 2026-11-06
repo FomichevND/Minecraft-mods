@@ -1,0 +1,723 @@
+{
+  "meta": {
+    "format_version": "4.10",
+    "model_format": "free",
+    "box_uv": false
+  },
+  "name": "food_enchanted_golden_apple",
+  "resolution": {
+    "width": 32,
+    "height": 32
+  },
+  "elements": [
+    {
+      "name": "fruit_body",
+      "from": [
+        1,
+        1,
+        1
+      ],
+      "to": [
+        7,
+        6,
+        7
+      ],
+      "origin": [
+        4.0,
+        3.5,
+        4.0
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "type": "cube",
+      "uuid": "31e7ca99-eead-5b47-9cec-0f4b581729d0",
+      "faces": {
+        "north": {
+          "uv": [
+            0.25,
+            0.25,
+            7.75,
+            7.75
+          ],
+          "texture": 0
+        },
+        "south": {
+          "uv": [
+            0.25,
+            0.25,
+            7.75,
+            7.75
+          ],
+          "texture": 0
+        },
+        "east": {
+          "uv": [
+            0.25,
+            0.25,
+            7.75,
+            7.75
+          ],
+          "texture": 0
+        },
+        "west": {
+          "uv": [
+            0.25,
+            0.25,
+            7.75,
+            7.75
+          ],
+          "texture": 0
+        },
+        "up": {
+          "uv": [
+            0.25,
+            0.25,
+            7.75,
+            7.75
+          ],
+          "texture": 0
+        },
+        "down": {
+          "uv": [
+            0.25,
+            0.25,
+            7.75,
+            7.75
+          ],
+          "texture": 0
+        }
+      },
+      "box_uv": false,
+      "zoldrax_group": "body",
+      "zoldrax_emissive": false
+    },
+    {
+      "name": "fruit_top",
+      "from": [
+        2,
+        6,
+        2
+      ],
+      "to": [
+        6,
+        7,
+        6
+      ],
+      "origin": [
+        4.0,
+        6.5,
+        4.0
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "type": "cube",
+      "uuid": "afffa8a6-7d18-5260-b5a4-fc752dd41559",
+      "faces": {
+        "north": {
+          "uv": [
+            8.25,
+            0.25,
+            15.75,
+            7.75
+          ],
+          "texture": 0
+        },
+        "south": {
+          "uv": [
+            8.25,
+            0.25,
+            15.75,
+            7.75
+          ],
+          "texture": 0
+        },
+        "east": {
+          "uv": [
+            8.25,
+            0.25,
+            15.75,
+            7.75
+          ],
+          "texture": 0
+        },
+        "west": {
+          "uv": [
+            8.25,
+            0.25,
+            15.75,
+            7.75
+          ],
+          "texture": 0
+        },
+        "up": {
+          "uv": [
+            8.25,
+            0.25,
+            15.75,
+            7.75
+          ],
+          "texture": 0
+        },
+        "down": {
+          "uv": [
+            8.25,
+            0.25,
+            15.75,
+            7.75
+          ],
+          "texture": 0
+        }
+      },
+      "box_uv": false,
+      "zoldrax_group": "body",
+      "zoldrax_emissive": false
+    },
+    {
+      "name": "fruit_base",
+      "from": [
+        2,
+        0,
+        2
+      ],
+      "to": [
+        6,
+        1,
+        6
+      ],
+      "origin": [
+        4.0,
+        0.5,
+        4.0
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "type": "cube",
+      "uuid": "726d4d01-698b-596c-b3e0-6b26fe396bcf",
+      "faces": {
+        "north": {
+          "uv": [
+            0.25,
+            0.25,
+            7.75,
+            7.75
+          ],
+          "texture": 0
+        },
+        "south": {
+          "uv": [
+            0.25,
+            0.25,
+            7.75,
+            7.75
+          ],
+          "texture": 0
+        },
+        "east": {
+          "uv": [
+            0.25,
+            0.25,
+            7.75,
+            7.75
+          ],
+          "texture": 0
+        },
+        "west": {
+          "uv": [
+            0.25,
+            0.25,
+            7.75,
+            7.75
+          ],
+          "texture": 0
+        },
+        "up": {
+          "uv": [
+            0.25,
+            0.25,
+            7.75,
+            7.75
+          ],
+          "texture": 0
+        },
+        "down": {
+          "uv": [
+            0.25,
+            0.25,
+            7.75,
+            7.75
+          ],
+          "texture": 0
+        }
+      },
+      "box_uv": false,
+      "zoldrax_group": "body",
+      "zoldrax_emissive": false
+    },
+    {
+      "name": "stem",
+      "from": [
+        3.5,
+        7,
+        3.5
+      ],
+      "to": [
+        4.5,
+        9,
+        4.5
+      ],
+      "origin": [
+        4.0,
+        8.0,
+        4.0
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "type": "cube",
+      "uuid": "6933903f-ef1e-5d52-a8f5-6240a5659294",
+      "faces": {
+        "north": {
+          "uv": [
+            16.25,
+            16.25,
+            23.75,
+            23.75
+          ],
+          "texture": 0
+        },
+        "south": {
+          "uv": [
+            16.25,
+            16.25,
+            23.75,
+            23.75
+          ],
+          "texture": 0
+        },
+        "east": {
+          "uv": [
+            16.25,
+            16.25,
+            23.75,
+            23.75
+          ],
+          "texture": 0
+        },
+        "west": {
+          "uv": [
+            16.25,
+            16.25,
+            23.75,
+            23.75
+          ],
+          "texture": 0
+        },
+        "up": {
+          "uv": [
+            16.25,
+            16.25,
+            23.75,
+            23.75
+          ],
+          "texture": 0
+        },
+        "down": {
+          "uv": [
+            16.25,
+            16.25,
+            23.75,
+            23.75
+          ],
+          "texture": 0
+        }
+      },
+      "box_uv": false,
+      "zoldrax_group": "body",
+      "zoldrax_emissive": false
+    },
+    {
+      "name": "leaf",
+      "from": [
+        4,
+        7.2,
+        3
+      ],
+      "to": [
+        7,
+        7.8,
+        5
+      ],
+      "origin": [
+        5.5,
+        7.5,
+        4.0
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "type": "cube",
+      "uuid": "5626a6be-8831-5399-be17-bbcfc74ffcd1",
+      "faces": {
+        "north": {
+          "uv": [
+            16.25,
+            0.25,
+            23.75,
+            7.75
+          ],
+          "texture": 0
+        },
+        "south": {
+          "uv": [
+            16.25,
+            0.25,
+            23.75,
+            7.75
+          ],
+          "texture": 0
+        },
+        "east": {
+          "uv": [
+            16.25,
+            0.25,
+            23.75,
+            7.75
+          ],
+          "texture": 0
+        },
+        "west": {
+          "uv": [
+            16.25,
+            0.25,
+            23.75,
+            7.75
+          ],
+          "texture": 0
+        },
+        "up": {
+          "uv": [
+            16.25,
+            0.25,
+            23.75,
+            7.75
+          ],
+          "texture": 0
+        },
+        "down": {
+          "uv": [
+            16.25,
+            0.25,
+            23.75,
+            7.75
+          ],
+          "texture": 0
+        }
+      },
+      "box_uv": false,
+      "zoldrax_group": "body",
+      "zoldrax_emissive": false
+    },
+    {
+      "name": "enchanted_glint1",
+      "from": [
+        1,
+        3,
+        1
+      ],
+      "to": [
+        2.2,
+        5,
+        2.2
+      ],
+      "origin": [
+        1.6,
+        4.0,
+        1.6
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "type": "cube",
+      "uuid": "71e56483-b34d-557b-9855-5f2bf7ee801f",
+      "faces": {
+        "north": {
+          "uv": [
+            0.25,
+            8.25,
+            7.75,
+            15.75
+          ],
+          "texture": 0
+        },
+        "south": {
+          "uv": [
+            0.25,
+            8.25,
+            7.75,
+            15.75
+          ],
+          "texture": 0
+        },
+        "east": {
+          "uv": [
+            0.25,
+            8.25,
+            7.75,
+            15.75
+          ],
+          "texture": 0
+        },
+        "west": {
+          "uv": [
+            0.25,
+            8.25,
+            7.75,
+            15.75
+          ],
+          "texture": 0
+        },
+        "up": {
+          "uv": [
+            0.25,
+            8.25,
+            7.75,
+            15.75
+          ],
+          "texture": 0
+        },
+        "down": {
+          "uv": [
+            0.25,
+            8.25,
+            7.75,
+            15.75
+          ],
+          "texture": 0
+        }
+      },
+      "box_uv": false,
+      "zoldrax_group": "body",
+      "zoldrax_emissive": false
+    },
+    {
+      "name": "enchanted_glint6",
+      "from": [
+        6,
+        3,
+        5
+      ],
+      "to": [
+        7.2,
+        5,
+        6.2
+      ],
+      "origin": [
+        6.6,
+        4.0,
+        5.6
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "type": "cube",
+      "uuid": "73243b2c-ad76-5f5f-8bf1-7a3eada59ef5",
+      "faces": {
+        "north": {
+          "uv": [
+            0.25,
+            8.25,
+            7.75,
+            15.75
+          ],
+          "texture": 0
+        },
+        "south": {
+          "uv": [
+            0.25,
+            8.25,
+            7.75,
+            15.75
+          ],
+          "texture": 0
+        },
+        "east": {
+          "uv": [
+            0.25,
+            8.25,
+            7.75,
+            15.75
+          ],
+          "texture": 0
+        },
+        "west": {
+          "uv": [
+            0.25,
+            8.25,
+            7.75,
+            15.75
+          ],
+          "texture": 0
+        },
+        "up": {
+          "uv": [
+            0.25,
+            8.25,
+            7.75,
+            15.75
+          ],
+          "texture": 0
+        },
+        "down": {
+          "uv": [
+            0.25,
+            8.25,
+            7.75,
+            15.75
+          ],
+          "texture": 0
+        }
+      },
+      "box_uv": false,
+      "zoldrax_group": "body",
+      "zoldrax_emissive": false
+    },
+    {
+      "name": "enchanted_glint2",
+      "from": [
+        2,
+        3,
+        6
+      ],
+      "to": [
+        3.2,
+        5,
+        7.2
+      ],
+      "origin": [
+        2.6,
+        4.0,
+        6.6
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "type": "cube",
+      "uuid": "37eb4f79-33d9-5bba-bfc4-75b9b6fa8d72",
+      "faces": {
+        "north": {
+          "uv": [
+            0.25,
+            8.25,
+            7.75,
+            15.75
+          ],
+          "texture": 0
+        },
+        "south": {
+          "uv": [
+            0.25,
+            8.25,
+            7.75,
+            15.75
+          ],
+          "texture": 0
+        },
+        "east": {
+          "uv": [
+            0.25,
+            8.25,
+            7.75,
+            15.75
+          ],
+          "texture": 0
+        },
+        "west": {
+          "uv": [
+            0.25,
+            8.25,
+            7.75,
+            15.75
+          ],
+          "texture": 0
+        },
+        "up": {
+          "uv": [
+            0.25,
+            8.25,
+            7.75,
+            15.75
+          ],
+          "texture": 0
+        },
+        "down": {
+          "uv": [
+            0.25,
+            8.25,
+            7.75,
+            15.75
+          ],
+          "texture": 0
+        }
+      },
+      "box_uv": false,
+      "zoldrax_group": "body",
+      "zoldrax_emissive": false
+    }
+  ],
+  "outliner": [
+    {
+      "name": "body",
+      "uuid": "2080deaa-4cce-57fc-9f20-4a0bbf09a4a5",
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "children": [
+        "31e7ca99-eead-5b47-9cec-0f4b581729d0",
+        "afffa8a6-7d18-5260-b5a4-fc752dd41559",
+        "726d4d01-698b-596c-b3e0-6b26fe396bcf",
+        "6933903f-ef1e-5d52-a8f5-6240a5659294",
+        "5626a6be-8831-5399-be17-bbcfc74ffcd1",
+        "71e56483-b34d-557b-9855-5f2bf7ee801f",
+        "73243b2c-ad76-5f5f-8bf1-7a3eada59ef5",
+        "37eb4f79-33d9-5bba-bfc4-75b9b6fa8d72"
+      ]
+    }
+  ],
+  "textures": [
+    {
+      "id": "0",
+      "name": "food_enchanted_golden_apple.png",
+      "width": 32,
+      "height": 32,
+      "uv_width": 32,
+      "uv_height": 32,
+      "source": "data:image/png;base64,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"
+    }
+  ]
+}

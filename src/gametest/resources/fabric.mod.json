@@ -15,10 +15,13 @@
       "ru.zoldrax.MonkeyFollowerTests",
       "ru.zoldrax.MonkeyGenerationTests",
       "ru.zoldrax.MonkeyBuildingTests",
-      "ru.zoldrax.DecorTests"
+      "ru.zoldrax.DecorTests",
+      "ru.zoldrax.MonkeyDecorTests",
+      "ru.zoldrax.MonkeyFoodCatalogTests"
     ],
     "client": [
-      "ru.zoldrax.DecorClientPreview"
+      "ru.zoldrax.DecorClientPreview",
+      "ru.zoldrax.MonkeyDecorClientPreview"
     ]
   },
   "depends": {

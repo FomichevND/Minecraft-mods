@@ -38,5 +38,22 @@
   "message.zoldrax.lectern_book": "Place a book or a written book.",
   "message.zoldrax.take_offering": "Sneak-use to retrieve the displayed offering.",
   "message.zoldrax.chain_blocked": "There is not enough room below for the longer chain.",
-  "entity.zoldrax.decor_seat": "Throne seat"
+  "entity.zoldrax.decor_seat": "Throne seat",
+  "itemGroup.zoldrax.monkey_decor": "Monkey King Court",
+  "block.zoldrax.monkey_king_food_shelf": "Fruit Offering Shelf",
+  "tooltip.zoldrax.monkey_king_food_shelf": "Use to interact or place one item; sneak-use with an empty hand to retrieve.",
+  "block.zoldrax.monkey_king_preparation_table": "Gatherer Preparation Table",
+  "tooltip.zoldrax.monkey_king_preparation_table": "Use to interact or place one item; sneak-use with an empty hand to retrieve.",
+  "block.zoldrax.monkey_king_supply_basket": "Shared Supply Basket",
+  "tooltip.zoldrax.monkey_king_supply_basket": "Use to interact or place one item; sneak-use with an empty hand to retrieve.",
+  "block.zoldrax.monkey_king_drying_rack": "Bamboo Drying Rack",
+  "tooltip.zoldrax.monkey_king_drying_rack": "Use to interact or place one item; sneak-use with an empty hand to retrieve.",
+  "block.zoldrax.monkey_king_courtyard_gong": "Courtyard Gong",
+  "tooltip.zoldrax.monkey_king_courtyard_gong": "Use to interact or place one item; sneak-use with an empty hand to retrieve.",
+  "block.zoldrax.monkey_king_festival_bench": "Festival Bench",
+  "tooltip.zoldrax.monkey_king_festival_bench": "Use to interact or place one item; sneak-use with an empty hand to retrieve.",
+  "block.zoldrax.monkey_king_notice_board": "Herald Notice Board",
+  "tooltip.zoldrax.monkey_king_notice_board": "Use to interact or place one item; sneak-use with an empty hand to retrieve.",
+  "block.zoldrax.monkey_king_festival_drum": "Festival Drum",
+  "tooltip.zoldrax.monkey_king_festival_drum": "Use to interact or place one item; sneak-use with an empty hand to retrieve."
 }

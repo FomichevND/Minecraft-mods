@@ -1,0 +1,298 @@
+{
+  "meta": {
+    "format_version": "4.10",
+    "model_format": "free",
+    "box_uv": false
+  },
+  "name": "food_baked_potato",
+  "resolution": {
+    "width": 32,
+    "height": 32
+  },
+  "elements": [
+    {
+      "name": "fruit_body",
+      "from": [
+        1,
+        1,
+        1
+      ],
+      "to": [
+        7,
+        6,
+        7
+      ],
+      "origin": [
+        4.0,
+        3.5,
+        4.0
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "type": "cube",
+      "uuid": "3a5d63c5-5ddd-5e8c-866e-776872cbf850",
+      "faces": {
+        "north": {
+          "uv": [
+            0.25,
+            0.25,
+            7.75,
+            7.75
+          ],
+          "texture": 0
+        },
+        "south": {
+          "uv": [
+            0.25,
+            0.25,
+            7.75,
+            7.75
+          ],
+          "texture": 0
+        },
+        "east": {
+          "uv": [
+            0.25,
+            0.25,
+            7.75,
+            7.75
+          ],
+          "texture": 0
+        },
+        "west": {
+          "uv": [
+            0.25,
+            0.25,
+            7.75,
+            7.75
+          ],
+          "texture": 0
+        },
+        "up": {
+          "uv": [
+            0.25,
+            0.25,
+            7.75,
+            7.75
+          ],
+          "texture": 0
+        },
+        "down": {
+          "uv": [
+            0.25,
+            0.25,
+            7.75,
+            7.75
+          ],
+          "texture": 0
+        }
+      },
+      "box_uv": false,
+      "zoldrax_group": "body",
+      "zoldrax_emissive": false
+    },
+    {
+      "name": "fruit_top",
+      "from": [
+        2,
+        6,
+        2
+      ],
+      "to": [
+        6,
+        7,
+        6
+      ],
+      "origin": [
+        4.0,
+        6.5,
+        4.0
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "type": "cube",
+      "uuid": "82f44c96-709a-5c5e-a2a7-9d87bf439f69",
+      "faces": {
+        "north": {
+          "uv": [
+            8.25,
+            0.25,
+            15.75,
+            7.75
+          ],
+          "texture": 0
+        },
+        "south": {
+          "uv": [
+            8.25,
+            0.25,
+            15.75,
+            7.75
+          ],
+          "texture": 0
+        },
+        "east": {
+          "uv": [
+            8.25,
+            0.25,
+            15.75,
+            7.75
+          ],
+          "texture": 0
+        },
+        "west": {
+          "uv": [
+            8.25,
+            0.25,
+            15.75,
+            7.75
+          ],
+          "texture": 0
+        },
+        "up": {
+          "uv": [
+            8.25,
+            0.25,
+            15.75,
+            7.75
+          ],
+          "texture": 0
+        },
+        "down": {
+          "uv": [
+            8.25,
+            0.25,
+            15.75,
+            7.75
+          ],
+          "texture": 0
+        }
+      },
+      "box_uv": false,
+      "zoldrax_group": "body",
+      "zoldrax_emissive": false
+    },
+    {
+      "name": "fruit_base",
+      "from": [
+        2,
+        0,
+        2
+      ],
+      "to": [
+        6,
+        1,
+        6
+      ],
+      "origin": [
+        4.0,
+        0.5,
+        4.0
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "type": "cube",
+      "uuid": "6905fa88-fffd-5b03-a74b-e0069d76d003",
+      "faces": {
+        "north": {
+          "uv": [
+            0.25,
+            0.25,
+            7.75,
+            7.75
+          ],
+          "texture": 0
+        },
+        "south": {
+          "uv": [
+            0.25,
+            0.25,
+            7.75,
+            7.75
+          ],
+          "texture": 0
+        },
+        "east": {
+          "uv": [
+            0.25,
+            0.25,
+            7.75,
+            7.75
+          ],
+          "texture": 0
+        },
+        "west": {
+          "uv": [
+            0.25,
+            0.25,
+            7.75,
+            7.75
+          ],
+          "texture": 0
+        },
+        "up": {
+          "uv": [
+            0.25,
+            0.25,
+            7.75,
+            7.75
+          ],
+          "texture": 0
+        },
+        "down": {
+          "uv": [
+            0.25,
+            0.25,
+            7.75,
+            7.75
+          ],
+          "texture": 0
+        }
+      },
+      "box_uv": false,
+      "zoldrax_group": "body",
+      "zoldrax_emissive": false
+    }
+  ],
+  "outliner": [
+    {
+      "name": "body",
+      "uuid": "7dbd529a-9ad8-5ffb-957c-ec98ca573c90",
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "children": [
+        "3a5d63c5-5ddd-5e8c-866e-776872cbf850",
+        "82f44c96-709a-5c5e-a2a7-9d87bf439f69",
+        "6905fa88-fffd-5b03-a74b-e0069d76d003"
+      ]
+    }
+  ],
+  "textures": [
+    {
+      "id": "0",
+      "name": "food_baked_potato.png",
+      "width": 32,
+      "height": 32,
+      "uv_width": 32,
+      "uv_height": 32,
+      "source": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAFdUlEQVR4nG1Xv4tdRRg9e2cyszu+zC5BtkgsjCksUvgPCFoYQYhoIaSws7OxtwjBxs7aQmwEEUW7lIJ/giB2KQRhw+4SNnsn707uzJu5z+K98+3chwOP93h35pvvO+d8P+7e71+/t1ZKodaKlBKcc6i1AgDGccTdu3ehtUYpBVwxRjjnMAwDPj/5EzFGKKVgrUVKSfYNw4Bf3vkQAFBrlee8b7VaoWsPOOcQYxQHuLGUghgjcs6IMYoT7Wovt9ai1irBaK0BACklpJTEmVor9DiO6LoOKSVYa7FarTBNE7TWGMcRfd+LI+13SgnjOOLp06dwzmGaJoQQYK3FcrlErRXjOMrFdIiLiOobN26g1orFYoEQAg4ODuCck0OHh4dymP8ppbBYLDCOIxbnCwDANE04Pj5GzlmQtNbOYCdCKSV476GUQrcLqVIKIQQopeTTwsf/Wuq01rDWio0QAowxsNbOaKIt771Q3ZELY4wY0lqj1ooYI7TWMMbMuKVeWu3QoVKK7Isxzhyl0GOMMMYgpbQRoTFGvOeBWiu89/Kb3jNiKt97L/phxBSZc26GIv8vpVwF++LFC1xeXs5gSilJ5M+ePUMIQZwBgOfPn4vBk5MTcbyF/PT0VFKV6U1ElVIYxxFKKez9+tqdtTFGxFNKQa1V8vTdb7UIiZdQlMvlEsd3bm2MOgcQbmuBlLBer/HT+/8KvTzPOrJcLtGRS3LCy1vISymCyi7nfI4mx5ESoBRijAJ3KQVq+58xBh//lqG1RhdCQM5ZLt5VbltcqOy2mgn3229xfOustRYhBNGYc04CiTFC0yCVTh20F5A7cqmUEqeJTAlhQ4UxgNao20gpWtqrteLB4z38+lG3cYZpxUsouBDCFjYnqDC6nLP8lmfGoOaMmjNKjLDeY1ouhfcHj/dmyJKejrDqBjJ+e+8l73cF2KJEmmZObUtt29y4fr6/Fro0o+GHFYoqBfYERgqolIKc84wuaA1oDQWgxgi1jZK2frgX/rcy6tVqheVyKQ9Zp8/PzwEA43jVEbXWWK1W0nCcc+j7XgyyVrQ2h+EUfd9Lc+OesNWM/uuzTwRKesXfwzDg7ZtvzprLdhP2c0aZJvz43TdNvzgTwVlr0feneOuL600mXRcUfbYYxxEdazZXWwNoiJe3tYHcts2q1QFrAhsbCxnp4z7N5tHWc/ZqOsCL2KTodK0VL1++nIms6zrpE5t54JUN1E0Roz1jzKYOtKJoK1yMUcomgNlYxjp/dHQ06/P7+/u4du0arLVbzjeiZbnfUHHVurvdSLmBiDAzGDGrIFfbhGiDopWpZ4sAA2SNAQC9exF14L2XkYoHd2sGz5Jv0snmk3NGSleacM7Bey866LoOmhfknGeRhBDQdZ1Eaq0V8YQQxBjFxfTabWhtEyPCV86ljQgvLi7gvUff95Lb7GDtYEkYWz2cnZ1BKYXLy0uJvH1eymau6LoOfd/PRA0A+u+jPwQB9eqWW7eJ+Pz8HNdv3kdKCde32UEddM5hHEe8/un3s4Gl7fnTNOHeB2/IOdLMXrNerzcjGdXZ1vs2PduIqI9b+UtJR84H7V7n3BXMTTdsKZUsoA5Y8VqPySNfMPiSwjPc22ZFm/N2BzmmNM90zACKjD2cl3JUo/istbiNR3hSHgKAdEwix5GbSLTBtDSJBuhxm4KsVhRgzhm38QjQAOoVhMMwADgQJNoSzvGbkTKYFvGUEjrvvQyj5JLpRp7aaQkAnpSHopN2tbWE54kwS287R3jvN2nIZtO+iLB9MkP+wVfNmDYf13bfrluhtVM2neKQW0qBvri4kLrNxV5OGkjLer2ePdvk94TVaiVQ0x65HoZDcYxnlVJYr9cwxuA/rjALVSipEl8AAAAASUVORK5CYII="
+    }
+  ]
+}

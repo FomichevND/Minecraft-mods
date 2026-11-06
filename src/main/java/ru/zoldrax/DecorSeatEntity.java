@@ -12,12 +12,13 @@ public final class DecorSeatEntity extends Entity {
  public DecorSeatEntity(EntityType<? extends DecorSeatEntity> type,World world){super(type,world);noClip=true;setNoGravity(true);}
  @Override protected void initDataTracker(){dataTracker.startTracking(ANCHOR,BlockPos.ORIGIN);}
  public BlockPos anchor(){return dataTracker.get(ANCHOR);}
- public void setAnchor(BlockPos pos,Direction facing){dataTracker.set(ANCHOR,pos.toImmutable());var p=DecorBlocks.point(pos,facing,1,.75,.6);refreshPositionAndAngles(p.x,p.y,p.z,facing.asRotation(),0);}
+ public void setAnchor(BlockPos pos,Direction facing){dataTracker.set(ANCHOR,pos.toImmutable());setPositionForSeat(pos,facing,1,.75,.6);}
+ public void setPositionForSeat(BlockPos pos,Direction facing,double x,double y,double z){dataTracker.set(ANCHOR,pos.toImmutable());var p=DecorBlocks.point(pos,facing,x,y,z);refreshPositionAndAngles(p.x,p.y,p.z,facing.asRotation(),0);}
  @Override protected void readCustomDataFromNbt(NbtCompound n){dataTracker.set(ANCHOR,net.minecraft.nbt.NbtHelper.toBlockPos(n.getCompound("Anchor")));}
  @Override protected void writeCustomDataToNbt(NbtCompound n){n.put("Anchor",net.minecraft.nbt.NbtHelper.fromBlockPos(anchor()));}
  @Override public boolean shouldSave(){return false;}
- @Override public void tick(){super.tick();if(!getWorld().isClient&&(getWorld().getBlockState(anchor()).getBlock()!=DecorBlocks.BLOCKS.get(DecorKind.THRONE)||!hasPassengers()))discard();}
- @Override protected boolean canAddPassenger(Entity passenger){return passenger instanceof PlayerEntity&&!hasPassengers();}
+ @Override public void tick(){super.tick();if(!getWorld().isClient&&(!(getWorld().getBlockState(anchor()).getBlock() instanceof DecorBlock b&&(b.kind==DecorKind.THRONE||b.kind==DecorKind.FESTIVAL_BENCH))||!hasPassengers()))discard();}
+ @Override protected boolean canAddPassenger(Entity passenger){return passenger instanceof LivingEntity&&!hasPassengers();}
  @Override protected void updatePassengerPosition(Entity passenger,PositionUpdater updater){
   if(!hasPassenger(passenger))return;updater.accept(passenger,getX(),getY()-.75,getZ());
   passenger.setBodyYaw(getYaw());float delta=MathHelper.wrapDegrees(passenger.getYaw()-getYaw());float clamped=MathHelper.clamp(delta,-100,100);passenger.prevYaw+=clamped-delta;passenger.setYaw(passenger.getYaw()+clamped-delta);passenger.setHeadYaw(passenger.getYaw());

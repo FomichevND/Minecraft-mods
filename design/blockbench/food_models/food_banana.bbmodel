@@ -1,0 +1,553 @@
+{
+  "meta": {
+    "format_version": "4.10",
+    "model_format": "free",
+    "box_uv": false
+  },
+  "name": "food_banana",
+  "resolution": {
+    "width": 32,
+    "height": 32
+  },
+  "elements": [
+    {
+      "name": "banana_curve0",
+      "from": [
+        0,
+        2,
+        2
+      ],
+      "to": [
+        2,
+        4,
+        5
+      ],
+      "origin": [
+        1.0,
+        3.0,
+        3.5
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "type": "cube",
+      "uuid": "40d24cd9-bdc2-5261-8483-d2101ed932f6",
+      "faces": {
+        "north": {
+          "uv": [
+            8.25,
+            8.25,
+            15.75,
+            15.75
+          ],
+          "texture": 0
+        },
+        "south": {
+          "uv": [
+            8.25,
+            8.25,
+            15.75,
+            15.75
+          ],
+          "texture": 0
+        },
+        "east": {
+          "uv": [
+            8.25,
+            8.25,
+            15.75,
+            15.75
+          ],
+          "texture": 0
+        },
+        "west": {
+          "uv": [
+            8.25,
+            8.25,
+            15.75,
+            15.75
+          ],
+          "texture": 0
+        },
+        "up": {
+          "uv": [
+            8.25,
+            8.25,
+            15.75,
+            15.75
+          ],
+          "texture": 0
+        },
+        "down": {
+          "uv": [
+            8.25,
+            8.25,
+            15.75,
+            15.75
+          ],
+          "texture": 0
+        }
+      },
+      "box_uv": false,
+      "zoldrax_group": "body",
+      "zoldrax_emissive": false
+    },
+    {
+      "name": "banana_curve1",
+      "from": [
+        1,
+        1,
+        2
+      ],
+      "to": [
+        3,
+        3,
+        5
+      ],
+      "origin": [
+        2.0,
+        2.0,
+        3.5
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "type": "cube",
+      "uuid": "38b0aa8b-e74a-5abb-8fc6-fa1382743b52",
+      "faces": {
+        "north": {
+          "uv": [
+            8.25,
+            8.25,
+            15.75,
+            15.75
+          ],
+          "texture": 0
+        },
+        "south": {
+          "uv": [
+            8.25,
+            8.25,
+            15.75,
+            15.75
+          ],
+          "texture": 0
+        },
+        "east": {
+          "uv": [
+            8.25,
+            8.25,
+            15.75,
+            15.75
+          ],
+          "texture": 0
+        },
+        "west": {
+          "uv": [
+            8.25,
+            8.25,
+            15.75,
+            15.75
+          ],
+          "texture": 0
+        },
+        "up": {
+          "uv": [
+            8.25,
+            8.25,
+            15.75,
+            15.75
+          ],
+          "texture": 0
+        },
+        "down": {
+          "uv": [
+            8.25,
+            8.25,
+            15.75,
+            15.75
+          ],
+          "texture": 0
+        }
+      },
+      "box_uv": false,
+      "zoldrax_group": "body",
+      "zoldrax_emissive": false
+    },
+    {
+      "name": "banana_curve2",
+      "from": [
+        3,
+        0,
+        2
+      ],
+      "to": [
+        5,
+        2,
+        5
+      ],
+      "origin": [
+        4.0,
+        1.0,
+        3.5
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "type": "cube",
+      "uuid": "bb032a83-5ba8-5316-ad09-4bcb366ec092",
+      "faces": {
+        "north": {
+          "uv": [
+            8.25,
+            8.25,
+            15.75,
+            15.75
+          ],
+          "texture": 0
+        },
+        "south": {
+          "uv": [
+            8.25,
+            8.25,
+            15.75,
+            15.75
+          ],
+          "texture": 0
+        },
+        "east": {
+          "uv": [
+            8.25,
+            8.25,
+            15.75,
+            15.75
+          ],
+          "texture": 0
+        },
+        "west": {
+          "uv": [
+            8.25,
+            8.25,
+            15.75,
+            15.75
+          ],
+          "texture": 0
+        },
+        "up": {
+          "uv": [
+            8.25,
+            8.25,
+            15.75,
+            15.75
+          ],
+          "texture": 0
+        },
+        "down": {
+          "uv": [
+            8.25,
+            8.25,
+            15.75,
+            15.75
+          ],
+          "texture": 0
+        }
+      },
+      "box_uv": false,
+      "zoldrax_group": "body",
+      "zoldrax_emissive": false
+    },
+    {
+      "name": "banana_curve3",
+      "from": [
+        5,
+        0,
+        2
+      ],
+      "to": [
+        7,
+        2,
+        5
+      ],
+      "origin": [
+        6.0,
+        1.0,
+        3.5
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "type": "cube",
+      "uuid": "d8955e12-ac23-5361-b751-724eb63b6f7d",
+      "faces": {
+        "north": {
+          "uv": [
+            8.25,
+            8.25,
+            15.75,
+            15.75
+          ],
+          "texture": 0
+        },
+        "south": {
+          "uv": [
+            8.25,
+            8.25,
+            15.75,
+            15.75
+          ],
+          "texture": 0
+        },
+        "east": {
+          "uv": [
+            8.25,
+            8.25,
+            15.75,
+            15.75
+          ],
+          "texture": 0
+        },
+        "west": {
+          "uv": [
+            8.25,
+            8.25,
+            15.75,
+            15.75
+          ],
+          "texture": 0
+        },
+        "up": {
+          "uv": [
+            8.25,
+            8.25,
+            15.75,
+            15.75
+          ],
+          "texture": 0
+        },
+        "down": {
+          "uv": [
+            8.25,
+            8.25,
+            15.75,
+            15.75
+          ],
+          "texture": 0
+        }
+      },
+      "box_uv": false,
+      "zoldrax_group": "body",
+      "zoldrax_emissive": false
+    },
+    {
+      "name": "banana_curve4",
+      "from": [
+        7,
+        1,
+        2
+      ],
+      "to": [
+        9,
+        3,
+        5
+      ],
+      "origin": [
+        8.0,
+        2.0,
+        3.5
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "type": "cube",
+      "uuid": "29d31ecc-853b-534e-8928-fecf3d396b73",
+      "faces": {
+        "north": {
+          "uv": [
+            8.25,
+            8.25,
+            15.75,
+            15.75
+          ],
+          "texture": 0
+        },
+        "south": {
+          "uv": [
+            8.25,
+            8.25,
+            15.75,
+            15.75
+          ],
+          "texture": 0
+        },
+        "east": {
+          "uv": [
+            8.25,
+            8.25,
+            15.75,
+            15.75
+          ],
+          "texture": 0
+        },
+        "west": {
+          "uv": [
+            8.25,
+            8.25,
+            15.75,
+            15.75
+          ],
+          "texture": 0
+        },
+        "up": {
+          "uv": [
+            8.25,
+            8.25,
+            15.75,
+            15.75
+          ],
+          "texture": 0
+        },
+        "down": {
+          "uv": [
+            8.25,
+            8.25,
+            15.75,
+            15.75
+          ],
+          "texture": 0
+        }
+      },
+      "box_uv": false,
+      "zoldrax_group": "body",
+      "zoldrax_emissive": false
+    },
+    {
+      "name": "banana_curve5",
+      "from": [
+        8,
+        3,
+        2
+      ],
+      "to": [
+        10,
+        5,
+        5
+      ],
+      "origin": [
+        9.0,
+        4.0,
+        3.5
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "type": "cube",
+      "uuid": "d17e0448-bd1f-5f7f-b92b-9d421b6fe53d",
+      "faces": {
+        "north": {
+          "uv": [
+            8.25,
+            8.25,
+            15.75,
+            15.75
+          ],
+          "texture": 0
+        },
+        "south": {
+          "uv": [
+            8.25,
+            8.25,
+            15.75,
+            15.75
+          ],
+          "texture": 0
+        },
+        "east": {
+          "uv": [
+            8.25,
+            8.25,
+            15.75,
+            15.75
+          ],
+          "texture": 0
+        },
+        "west": {
+          "uv": [
+            8.25,
+            8.25,
+            15.75,
+            15.75
+          ],
+          "texture": 0
+        },
+        "up": {
+          "uv": [
+            8.25,
+            8.25,
+            15.75,
+            15.75
+          ],
+          "texture": 0
+        },
+        "down": {
+          "uv": [
+            8.25,
+            8.25,
+            15.75,
+            15.75
+          ],
+          "texture": 0
+        }
+      },
+      "box_uv": false,
+      "zoldrax_group": "body",
+      "zoldrax_emissive": false
+    }
+  ],
+  "outliner": [
+    {
+      "name": "body",
+      "uuid": "c79e8e56-9f44-5d61-a437-e068dbe5c2ac",
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "children": [
+        "40d24cd9-bdc2-5261-8483-d2101ed932f6",
+        "38b0aa8b-e74a-5abb-8fc6-fa1382743b52",
+        "bb032a83-5ba8-5316-ad09-4bcb366ec092",
+        "d8955e12-ac23-5361-b751-724eb63b6f7d",
+        "29d31ecc-853b-534e-8928-fecf3d396b73",
+        "d17e0448-bd1f-5f7f-b92b-9d421b6fe53d"
+      ]
+    }
+  ],
+  "textures": [
+    {
+      "id": "0",
+      "name": "food_banana.png",
+      "width": 32,
+      "height": 32,
+      "uv_width": 32,
+      "uv_height": 32,
+      "source": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAFdElEQVR4nG2XMa8kORWFvykb+8nzVDOaQQtaIdAjABFCgESEhFiRIEEIBBuhRfwAJCKWYDNSMjJEABIESzoRPwLIX8bT215VbZWnXG13EVQfP3eDk1KXXb73nnvuPbefffyLb26lFEIIjONI3/eklDDGMM8zd3d3hBAAsNYyjiPeewDmeeaX6d+EEIgx1qf3Hu89wzDwp+/8gFIKzjmstaSU8N6Tc2aeZzoZ14fjOGKMYV3XejjGSCmFlBJ936MVQsB7TykF7z3W2upczhmg/tZ9xhhSSqzrugc1TROn06luxhjpuo6UEsuyMAwDxhhOpxOlFIZhwDkHwOFw4JPySTU0TRMAxph6NsZYfytAOT5NE/b29hbnHF3XAdTLX79+jfeeV69esa5rvSTnXKN++fIl75h3KKUAVMQE8fPnz+t97X6MEYBlWeicc8QYyTljjLk4vK4rpZT63hhTjctZXdYaTylhra280XkF0aavUy70sTGmGgoh1NzLiPKbc6aUUg2EEGoKAcZxrM+WBy0i3ns6QapDeqaUyDnXCjDGYK2tzonR7Z4M6IwilRNCUk6P44h9fHyshluIBOn9/X2FWuloOfHp8inABcztPTlnnHOVoMMwEELYCWgtz/7+1W9s7QXKn3OOZVn4/h9uaqQtdADTNPHu17+CcQ6shZxJMeL7nhIj0zTx5mexVoDS1n7fiWgppRq1IogxklK6iE5LlxnnoBRIqRrnzBExXncrbeM48uO/7XZtmy8ZagnXGrbWXrDbe78bDQFK2Y2fjek7VY0akGxp2ZblcuL/1W7bqJSGnHM1DlC0d3Zk2zZSSoQQsNbWb99/c8NffrjvWTFdHUtGZECw6RIZV6dsYTd72HBOj5pbjJH339wANxeoeu/pZEgQqbZbRgtGOdKmTcYpBbwHa0nnYMZxxFpbS1nrj+8tT6lUNG33ul7XLVgrhECJERMCZV0hRsyV6imdf/1Rh7WWnDN931fE7cPDQ4W073uOxyOllCo+22bouo6cM9u2XThjjGFZFszxWFMzn9VUDszz/LQ3z/UpYtp/ffCTi14fY6yS+/DwwHff/dYebVOCQmGeZ/78698Cuy6oxmOMOOcYx5Fv//xLVQU/HwIxznzxfP8wDHTKj+pezG+1/xr6ti9I91vR0sr5VLnTlrB6gzEG2zKyFQ5NNCKT9762YBny3tN1Heu6sq4Z52zN/9u3bzmdqAFpKSi19sq6tknIOx2UWMlzle22bdzc3FBK4fbW1CnnxYsX54Hks4tKyjlfpLiUQidPWojboUEEbZGSUymleq7VebX3NjU6K+edc4QQ6GRU/V8ea2BQxMp1u0IIhBBq/9CcoNLz/nNVPTVfrOtanzFGumv5jDFWKFu4VbfwpOd63/JGZNsdO9ag1FWFhjFmn5TneaYdSuT9PM8YYzgcDrUKcs51qBShHh9XQlgpZW+GxnwmacC5fe6TtAsNIQ7w7Hu/+dqmHKvfq4VO08THH/z+IneKopTC8XjkH//cLjjTXr4sCz9978t1ZGtRlJZ0Mtz2+77va34FaasPAHd8eEHcdk+cENxCVeOaHKokVFQt6zUVi3zqBddacG1c73LOlXDSAFWHhhlgH0hUn9dyW6eeM1EV0R0f8p/wO9Iw/M8s0Q6yh8PhgtxyTDqybds+kLRzmg616ui95wvxV1CARjD3b5YKu+5oK0OOPZ2n9p3T6bTPA9fTsOpWSzO+1r35qJ69lvBSCn3f116i5nXdZSV8tiVMC337T8lay7356Gkky0/Dq3PdRa6vnVVqW7Vs/0VZ6bUxhmEYLsoM4HjW+uPxWCPW2b2UnlU4YWf6MAx16Ni2jdPpVB1TQ1qWBe89/wXA79XdDWsSMAAAAABJRU5ErkJggg=="
+    }
+  ]
+}

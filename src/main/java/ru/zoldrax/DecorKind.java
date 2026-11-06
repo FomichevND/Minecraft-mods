@@ -4,11 +4,18 @@ public enum DecorKind {
  THRONE("zoldrax_throne",2,3,0,0), BRAZIER("zoldrax_brazier",1,2,0,15),
  SKULL_LAMP("zoldrax_skull_lamp",1,2,0,12), CHAIN_LANTERN("zoldrax_chain_lantern",1,3,0,14),
  WEAPON_RACK("zoldrax_weapon_rack",2,3,3,0), CHEST("zoldrax_chest",1,2,27,0),
- LECTERN("zoldrax_lectern",1,2,1,0), OFFERING_PEDESTAL("zoldrax_offering_pedestal",1,2,1,0);
+ LECTERN("zoldrax_lectern",1,2,1,0), OFFERING_PEDESTAL("zoldrax_offering_pedestal",1,2,1,0),
+ FOOD_SHELF("monkey_king_food_shelf",3,2,6,0), PREPARATION_TABLE("monkey_king_preparation_table",3,2,4,0),
+ SUPPLY_BASKET("monkey_king_supply_basket",1,1,9,0), DRYING_RACK("monkey_king_drying_rack",3,2,5,0),
+ COURTYARD_GONG("monkey_king_courtyard_gong",3,3,0,0), FESTIVAL_BENCH("monkey_king_festival_bench",3,2,0,0),
+ NOTICE_BOARD("monkey_king_notice_board",3,3,3,0), FESTIVAL_DRUM("monkey_king_festival_drum",2,2,0,0);
  public final String id;public final int width,height,slots,light;
  DecorKind(String id,int width,int height,int slots,int light){this.id=id;this.width=width;this.height=height;this.slots=slots;this.light=light;}
  public int height(int length){return this==CHAIN_LANTERN?length+2:height;}
- public int cells(int length){return width*height(length);}
+ public int cells(int length){return width*depth()*height(length);}
  public int emitter(int length){return this==CHAIN_LANTERN?length:(this==BRAZIER||this==SKULL_LAMP?1:0);}
+ public boolean monkey(){return ordinal()>=8;}
+ public int depth(){return this==FESTIVAL_DRUM?2:1;}
+ public boolean foodDisplay(){return this==FOOD_SHELF||this==PREPARATION_TABLE||this==SUPPLY_BASKET||this==DRYING_RACK;}
  public boolean hanging(){return this==CHAIN_LANTERN;}
 }

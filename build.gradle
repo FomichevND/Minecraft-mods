@@ -1,5 +1,5 @@
 plugins { id 'fabric-loom' version '1.6.12' }
-version = '1.11.0'
+version = '1.12.0'
 group = 'ru.zoldrax'
 base { archivesName = 'zoldrax-monument' }
 repositories { mavenCentral() }
@@ -24,6 +24,15 @@ loom {
   zoldrax_test { sourceSet sourceSets.gametest }
  }
  runs {
+  monkeyPreview {
+   client()
+   source sourceSets.gametest
+   vmArg "-Dzoldrax.monkeyPreview=true"
+   vmArg "-Dzoldrax.monkeyPrepOnly=${project.hasProperty('monkeyPrepOnly')}"
+   vmArg "-Dzoldrax.monkeyBoardOnly=${project.hasProperty('monkeyBoardOnly')}"
+   runDir "build/monkey-client"
+   programArgs "--quickPlaySingleplayer", "MonkeyDecorReview", "--width", "1280", "--height", "900"
+  }
   decorPreview {
    client()
    source sourceSets.gametest
@@ -45,11 +54,15 @@ loom {
  }
 }
 
-// Keep the earlier exhaustive terrain frequency benchmark available separately.
+// Test subsets operate on parsed metadata, preserving valid JSON entrypoint arrays.
 tasks.named('processGametestResources') {
  inputs.property('skipFrequency', project.hasProperty('skipFrequency'))
  inputs.property('decorOnly', project.hasProperty('decorOnly'))
- filesMatching('fabric.mod.json') {
-  filter { line -> (project.hasProperty('skipFrequency') && line.contains('ru.zoldrax.MonkeyGenerationTests')) || (project.hasProperty('decorOnly') && line.contains('ru.zoldrax.') && !line.contains('DecorTests') && !line.contains('DecorClientPreview')) ? null : line }
+ doLast {
+  def target = file("${destinationDir}/fabric.mod.json")
+  def metadata = new groovy.json.JsonSlurper().parse(file('src/gametest/resources/fabric.mod.json'))
+  if (project.hasProperty('skipFrequency')) metadata.entrypoints['fabric-gametest'].removeAll { it.endsWith('MonkeyGenerationTests') }
+  if (project.hasProperty('decorOnly')) metadata.entrypoints['fabric-gametest'].removeAll { !(it.endsWith('DecorTests') || it.endsWith('MonkeyFoodCatalogTests')) }
+  target.setText(groovy.json.JsonOutput.prettyPrint(groovy.json.JsonOutput.toJson(metadata)), 'UTF-8')
  }
 }

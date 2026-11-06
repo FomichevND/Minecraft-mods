@@ -1,0 +1,298 @@
+{
+  "meta": {
+    "format_version": "4.10",
+    "model_format": "free",
+    "box_uv": false
+  },
+  "name": "food_mutton",
+  "resolution": {
+    "width": 32,
+    "height": 32
+  },
+  "elements": [
+    {
+      "name": "meat_cut",
+      "from": [
+        1,
+        0,
+        1
+      ],
+      "to": [
+        11,
+        2,
+        4.5
+      ],
+      "origin": [
+        5.0,
+        1.0,
+        3.5
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "type": "cube",
+      "uuid": "00298084-0f44-5866-a3ab-f7b3cd5c5c02",
+      "faces": {
+        "north": {
+          "uv": [
+            0.25,
+            0.25,
+            7.75,
+            7.75
+          ],
+          "texture": 0
+        },
+        "south": {
+          "uv": [
+            0.25,
+            0.25,
+            7.75,
+            7.75
+          ],
+          "texture": 0
+        },
+        "east": {
+          "uv": [
+            0.25,
+            0.25,
+            7.75,
+            7.75
+          ],
+          "texture": 0
+        },
+        "west": {
+          "uv": [
+            0.25,
+            0.25,
+            7.75,
+            7.75
+          ],
+          "texture": 0
+        },
+        "up": {
+          "uv": [
+            0.25,
+            0.25,
+            7.75,
+            7.75
+          ],
+          "texture": 0
+        },
+        "down": {
+          "uv": [
+            0.25,
+            0.25,
+            7.75,
+            7.75
+          ],
+          "texture": 0
+        }
+      },
+      "box_uv": false,
+      "zoldrax_group": "body",
+      "zoldrax_emissive": false
+    },
+    {
+      "name": "raised_flesh",
+      "from": [
+        2,
+        2,
+        2
+      ],
+      "to": [
+        10,
+        3.2,
+        4
+      ],
+      "origin": [
+        5.0,
+        2.6,
+        3.5
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "type": "cube",
+      "uuid": "cc02def7-e83b-5599-9050-9dcc91a1d8af",
+      "faces": {
+        "north": {
+          "uv": [
+            8.25,
+            0.25,
+            15.75,
+            7.75
+          ],
+          "texture": 0
+        },
+        "south": {
+          "uv": [
+            8.25,
+            0.25,
+            15.75,
+            7.75
+          ],
+          "texture": 0
+        },
+        "east": {
+          "uv": [
+            8.25,
+            0.25,
+            15.75,
+            7.75
+          ],
+          "texture": 0
+        },
+        "west": {
+          "uv": [
+            8.25,
+            0.25,
+            15.75,
+            7.75
+          ],
+          "texture": 0
+        },
+        "up": {
+          "uv": [
+            8.25,
+            0.25,
+            15.75,
+            7.75
+          ],
+          "texture": 0
+        },
+        "down": {
+          "uv": [
+            8.25,
+            0.25,
+            15.75,
+            7.75
+          ],
+          "texture": 0
+        }
+      },
+      "box_uv": false,
+      "zoldrax_group": "body",
+      "zoldrax_emissive": false
+    },
+    {
+      "name": "tapered_tip",
+      "from": [
+        10,
+        0.3,
+        1.5
+      ],
+      "to": [
+        12,
+        1.7,
+        3.5
+      ],
+      "origin": [
+        11.0,
+        1.0,
+        2.5
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "type": "cube",
+      "uuid": "0196eaf6-5d0f-5f30-969a-ca028e224dc5",
+      "faces": {
+        "north": {
+          "uv": [
+            0.25,
+            0.25,
+            7.75,
+            7.75
+          ],
+          "texture": 0
+        },
+        "south": {
+          "uv": [
+            0.25,
+            0.25,
+            7.75,
+            7.75
+          ],
+          "texture": 0
+        },
+        "east": {
+          "uv": [
+            0.25,
+            0.25,
+            7.75,
+            7.75
+          ],
+          "texture": 0
+        },
+        "west": {
+          "uv": [
+            0.25,
+            0.25,
+            7.75,
+            7.75
+          ],
+          "texture": 0
+        },
+        "up": {
+          "uv": [
+            0.25,
+            0.25,
+            7.75,
+            7.75
+          ],
+          "texture": 0
+        },
+        "down": {
+          "uv": [
+            0.25,
+            0.25,
+            7.75,
+            7.75
+          ],
+          "texture": 0
+        }
+      },
+      "box_uv": false,
+      "zoldrax_group": "body",
+      "zoldrax_emissive": false
+    }
+  ],
+  "outliner": [
+    {
+      "name": "body",
+      "uuid": "bd2cd1b2-26ab-5ffd-abf8-44b985a30255",
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "children": [
+        "00298084-0f44-5866-a3ab-f7b3cd5c5c02",
+        "cc02def7-e83b-5599-9050-9dcc91a1d8af",
+        "0196eaf6-5d0f-5f30-969a-ca028e224dc5"
+      ]
+    }
+  ],
+  "textures": [
+    {
+      "id": "0",
+      "name": "food_mutton.png",
+      "width": 32,
+      "height": 32,
+      "uv_width": 32,
+      "uv_height": 32,
+      "source": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAFgklEQVR4nG1XwaocRRQ9r6te1bPyUoE8GBchWSguJD+gCC4NShZB3cb/ELISQcF/EAQRBONC3OnSTZb+gvAWDpk36X7dlaqeqmkXPedOzTwLhmF6qu69dc+599w+efH408laCwBIKUEpBQDQWqNtWzx8+BBaa6SUYK1FCAFKKSilkHPGI/cLrLUopUApJd/WWsQY8eP7j9B1HZxzGMcRzjlwtW0LXTun4xACSilieBxH5JxlDwBx4L2XoOrFvSGEgwBzzgc+dN/36LoOWmsopdD3PUopAIDNZgPv/YEBAIgx4vXr1xiGAas3VrLfOYecs/wehgHGGDk7jiNSSvDe7zN9enqKxWIhNw4hwDmHlBKmacLFxcWN9PJba42LiwuklJBSwunpKZqmkT23bt1CKeUgm8YYpJQkyIZp4gMA6LoOKSV0XQdrrdyKURtjYK09SDt5QufGGOScAUBSTx+05ZyDJp5KqQOHWmvB0nt/gH8IAQAOeEFikqwMqg6wPquUQggBDdMxjiO890IwfteZ4UEymfhaa29kpJRyEGCddq31Hsbr62txFkIQPBnEy5cv5XbE0xgjKV+frLFer+V/ay1evXolwRljMAyD2IgxQmsNYwyUUjj57a13JwAYx1GM8KZt2+KTH7yUYZ1OpRSmacLi7XsCh7UWsBYlBCjnENsWv3+2xrF99onlcomGmHA552SDcw5aazjnJCPOOamSnLPczFo7p5k9YUe6EIIEXJ958nyGvCHONEom1zdmM6mblvBjd2soBXvUBwgtbWqtBWrabRg9mW+thdYa4zgihICu66RCSK6akEhp/pSCtAtUKYUyjgdEZhUopfDFH2f46ePMoDS6roP3Xphbs7VOfe2cRkspUMbIfliL1HWwzsE1DXKedeDJ8xGABrCVQPq+n/tAHR2dGGPQ9z1Y/mQuK4FQKOeAnAEGlzOs90DOCCFgz7EzCZ63l0bERaamlKTWmVIKTv1fjHFO/67+lTH7QHaX8t4j54yfH++7IIOfpgk6xoi+77HZbISMOWcMwwCttQhK0zSzQ8wiQyLGGPdB7WzQEUuZmU0pSUVw6b8+/0hwJgcYdc4Z792/j5NdBbBVA0BJCVPT4Nen3+9M9ZKxGYmCrlvjzacZ3rtdR3Q3VLVh+dX1zEXmswrYqusyZJnVJZpSQggBxhi5DBfVkHsbGqkZz2zQ4bEe1PtWqxWapsFyucRqtcJms0HbtthutwIPiVjrwUwTPQfAxsMN/GbKWXJ8XkN2fn6Os7Mz3L17F+fn52iaBovFAsYYbLdbCZj8Ov7d1CJzPHAw6uPOyHmB/3PE4qRDUtaZ4vk9RzK6rpsHEuJMHagj5eIzGqIzYnwMV60TddopWtQUCaAuk/qZiMz/9Hc+o4zzInxWDy7kWQhBLlFKgaZW83CMURqPcw7TNGGaJsQYRd+5J+eMy8tLKKVwfX19A75SCoYhS7+gL+pLKQX679t/7rW8ggO3d3V650PcrsYzChcANHcyzLdfIeeMBsCEechUu2bTti0+ePyOKGFdrjlnXF1doaEKkjyEoSYmCcPUllJwb/xS9L3G9GDk3tklvPVHpmLvPYwxovkkW91syIWaoDVx63U8pBIS7uX/7DO6Zi7JxSmmnoSBWaxKKXhQnuHSfAOdM8ZxOJiigbli6umXIkcfNZc0U8tDNSE3m42U04PybFcakPTWwybP1G9JV1dXEkgt5fUblJTh8VDKaI/VCwD+dd8JRLUG8GzXdcg5ixbUnOJeBqb50sFZzRgj0TIjpRT8o76WPXnXomcSNgfprec9Cg9vTLhrKdd8GeU8sN1uZRMwv0ITt7Zt4b1HjBExRjjnMAw9lFIwxmC5XAo87CU8w77S9730FwD4D21R8Ww5ESWbAAAAAElFTkSuQmCC"
+    }
+  ]
+}

@@ -38,5 +38,22 @@
   "message.zoldrax.lectern_book": "Положите книгу или письменную книгу.",
   "message.zoldrax.take_offering": "Shift + ПКМ — забрать подношение.",
   "message.zoldrax.chain_blocked": "Для длинной цепи не хватает свободного места снизу.",
-  "entity.zoldrax.decor_seat": "Сиденье трона"
+  "entity.zoldrax.decor_seat": "Сиденье трона",
+  "itemGroup.zoldrax.monkey_decor": "Двор Короля Обезьян",
+  "block.zoldrax.monkey_king_food_shelf": "Полка фруктовых даров",
+  "tooltip.zoldrax.monkey_king_food_shelf": "ПКМ — использовать или положить предмет; Shift + ПКМ пустой рукой — забрать.",
+  "block.zoldrax.monkey_king_preparation_table": "Разделочный стол добытчика",
+  "tooltip.zoldrax.monkey_king_preparation_table": "ПКМ — использовать или положить предмет; Shift + ПКМ пустой рукой — забрать.",
+  "block.zoldrax.monkey_king_supply_basket": "Корзина общих припасов",
+  "tooltip.zoldrax.monkey_king_supply_basket": "ПКМ — использовать или положить предмет; Shift + ПКМ пустой рукой — забрать.",
+  "block.zoldrax.monkey_king_drying_rack": "Бамбуковая сушилка",
+  "tooltip.zoldrax.monkey_king_drying_rack": "ПКМ — использовать или положить предмет; Shift + ПКМ пустой рукой — забрать.",
+  "block.zoldrax.monkey_king_courtyard_gong": "Гонг двора",
+  "tooltip.zoldrax.monkey_king_courtyard_gong": "ПКМ — использовать или положить предмет; Shift + ПКМ пустой рукой — забрать.",
+  "block.zoldrax.monkey_king_festival_bench": "Праздничная скамья",
+  "tooltip.zoldrax.monkey_king_festival_bench": "ПКМ — использовать или положить предмет; Shift + ПКМ пустой рукой — забрать.",
+  "block.zoldrax.monkey_king_notice_board": "Доска указов глашатая",
+  "tooltip.zoldrax.monkey_king_notice_board": "ПКМ — использовать или положить предмет; Shift + ПКМ пустой рукой — забрать.",
+  "block.zoldrax.monkey_king_festival_drum": "Барабан праздника",
+  "tooltip.zoldrax.monkey_king_festival_drum": "ПКМ — использовать или положить предмет; Shift + ПКМ пустой рукой — забрать."
 }
