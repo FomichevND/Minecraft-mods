@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "zoldrax:block/zoldrax_chain_lantern"
+    }
+  }
+}

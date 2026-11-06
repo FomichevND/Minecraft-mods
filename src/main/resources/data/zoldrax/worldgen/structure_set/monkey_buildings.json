@@ -1,0 +1,26 @@
+{
+  "structures": [
+    {
+      "structure": "zoldrax:monkey_kitchen",
+      "weight": 1
+    },
+    {
+      "structure": "zoldrax:monkey_storehouse",
+      "weight": 1
+    },
+    {
+      "structure": "zoldrax:monkey_herald_house",
+      "weight": 1
+    },
+    {
+      "structure": "zoldrax:monkey_pavilion",
+      "weight": 1
+    }
+  ],
+  "placement": {
+    "type": "minecraft:random_spread",
+    "spacing": 18,
+    "separation": 7,
+    "salt": 52611004
+  }
+}

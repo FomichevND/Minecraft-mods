@@ -1,0 +1,58 @@
+[
+  {
+    "template": "Single[Left[zoldrax:monkey/court_temple]]",
+    "x": 1920,
+    "y": 57,
+    "z": 1440,
+    "rotation": "NONE"
+  },
+  {
+    "template": "Single[Left[zoldrax:monkey/herald_hall]]",
+    "x": 1904,
+    "y": 56,
+    "z": 1450,
+    "rotation": "NONE"
+  },
+  {
+    "template": "Single[Left[zoldrax:monkey/storehouse]]",
+    "x": 1939,
+    "y": 58,
+    "z": 1427,
+    "rotation": "NONE"
+  },
+  {
+    "template": "Single[Left[zoldrax:monkey/kitchen]]",
+    "x": 1939,
+    "y": 54,
+    "z": 1450,
+    "rotation": "NONE"
+  },
+  {
+    "template": "Single[Left[zoldrax:monkey/watch]]",
+    "x": 1901,
+    "y": 57,
+    "z": 1432,
+    "rotation": "NONE"
+  },
+  {
+    "template": "Single[Left[zoldrax:monkey/festival]]",
+    "x": 1921,
+    "y": 55,
+    "z": 1459,
+    "rotation": "NONE"
+  },
+  {
+    "template": "Single[Left[zoldrax:monkey/garden]]",
+    "x": 1913,
+    "y": 59,
+    "z": 1426,
+    "rotation": "NONE"
+  },
+  {
+    "template": "Single[Left[zoldrax:monkey/rest]]",
+    "x": 1949,
+    "y": 54,
+    "z": 1471,
+    "rotation": "NONE"
+  }
+]

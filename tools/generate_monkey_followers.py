@@ -11,8 +11,31 @@ def paint(c,face,w,h,others):
  noise=rng.normal(0,1.5,(h,w));edge=np.minimum.reduce([x,w-1-x,y,h-1-y]);shade=np.where(edge<2,-6,np.where(edge<5,3,0));a=np.broadcast_to(color,(h,w,3)).copy()+(noise+shade)[...,None]
  kind=c['material']
  if kind=='wicker':a+=(((y//6)%2)*3+np.where((x+(y//8%2)*4)%16<2,-22,0)+np.where(y%8<2,-19,0))[...,None]
- if kind in ['ivory','red','cape']:a+=(np.sin(x/max(1,w)*20)*2+((x+y)%2)*1.2)[...,None]
+ if kind in ['ivory','red','cape']:
+  a+=(np.sin(x/max(1,w)*20)*3+((x+y)%3)*.7)[...,None]
+  seam=(x<3)|(x>w-4)|(y<3)|(y>h-4)
+  a[seam]=np.array(COL[kind])*.78
+  if kind in ['red','cape']:
+   embroidery=((y%24<2)&(x%12<7))|((x%24<2)&(y%12<7))
+   a[embroidery&((y<9)|(y>h-10))]=[232,181,51]
+ if kind=='gold':a+=(np.sin(y/max(1,h)*6.28)*14+np.cos(x*.3)*3)[...,None]
+ if kind=='brown':a+=(np.sin(y*.7)*3+np.sin(x*.19)*4)[...,None]
  if kind=='hair':a+=(np.sin(x*.4)*5)[...,None]
+ # All facial features belong to the front surface of the head cube.
+ # No raised eyes, teeth, cheeks, nose or beard geometry.
+ if c['name']=='face' and face=='north':
+  u=(x+.5)/w;v=(y+.5)/h
+  def mark(mask,col):a[mask]=col
+  mark(((u<.15)|(u>.85))&(v<.26),COL['hair'])
+  for center in [.28,.72]:
+   mark((abs(u-center)<.14)&(v>.37)&(v<.57),(250,246,225))
+   mark((abs(u-center)<.055)&(v>.39)&(v<.56),(83,54,31))
+   mark((abs(u-center)<.025)&(v>.40)&(v<.55),(28,22,20))
+   mark((abs(u-center+.025)<.017)&(v>.40)&(v<.44),(255,255,245))
+   mark((abs(u-center)<.15)&(v>.29)&(v<.33),COL['hair'])
+  mark((abs(u-.5)<.06)&(v>.57)&(v<.66),(193,123,85))
+  mark((abs(u-.5)<.21)&(v>.74)&(v<.86),(91,43,30))
+  mark((abs(u-.5)<.17)&(v>.74)&(v<.79),(251,241,216))
  if kind=='cape' and face in ['south','north']:
   u=(x+.5)/w;v=(y+.5)/h
   banana=((u-.47)**2/.27**2+(v-.44)**2/.27**2<1)&~((u-.55)**2/.25**2+(v-.33)**2/.27**2<1)
@@ -26,12 +49,6 @@ def make(herald):
  b('hair_cap',-4,30,-4,8,2,8,'hair','head');b('hair_back',-4,25,-4,8,6,1,'hair','head')
  for x in [-5,4]:b('ear'+str(x),x,26,-1,1,3,2,'skin','head')
  for x in [-4,3]:b('sideburn'+str(x),x,25,0,1,6,3,'hair','head')
- for x in [-3,1]:
-  b('eye_smile'+str(x),x,28,4,2,1,1,'dark','head');b('brow'+str(x),x,30,4,2,1,1,'hair','head')
- b('mouth',-2,25,4,4,2,1,'dark','head');b('teeth',-2,26,5,4,1,1,'white','head');b('nose',-1,27,4,2,1,2,'skin','head')
- if herald:
-  for x in [-4,3]:b('rosy_cheek'+str(x),x,26,4,1,1,1,'ruby','head')
- else:b('beard',-3,24,3,6,1,2,'hair','head')
  for side in [-1,1]:
   arm='rightArm' if side<0 else 'leftArm';leg='rightLeg' if side<0 else 'leftLeg';x=-8 if side<0 else 4
   b('sleeve'+arm,x,19,-2,4,5,4,'ivory',arm);b('arm'+arm,x,12,-2,4,7,4,'skin',arm);b('bracelet'+arm,x,14,-2,4,1,4,'gold',arm)
@@ -61,6 +78,8 @@ def make(herald):
  write_model(c,0,name+'_',paint,size=256,texel_scale=4)
  path=R/f'models/blockbench/{name}_stage_1.bbmodel';m=json.loads(path.read_text());path.unlink();(R/f'textures/entity/{name}_stage_1.png').replace(R/f'textures/entity/{name}.png')
  m['name']='Банановый глашатай' if herald else 'Храмовый добытчик';m['zoldrax_bones']=P;m['model_identifier']=name;m['textures'][0]['name']=name+'.png';groups={bone:[] for bone in P}
+ for e in m['elements']:
+  e['faces']['north'],e['faces']['south']=e['faces']['south'],e['faces']['north']
  for cube,e in zip(c,m['elements']):e['zoldrax_bone']=cube['bone'];groups[cube['bone']].append(e['uuid']);e['inflate']=.04 if cube['material']=='hair' else (.06 if cube['name'].startswith('short_hem') else (.03 if cube['name'].startswith(('shorts','sandal_strap')) else (.02 if cube['material'] in ['gold','cape'] else 0)))
  m['outliner']=[{'name':bone,'uuid':str(uuid.uuid5(uuid.NAMESPACE_URL,name+bone)),'origin':pivot,'rotation':[0,0,0],'children':groups[bone],'export':True} for bone,pivot in P.items()]
  (R/f'models/blockbench/{name}.bbmodel').write_text(json.dumps(m,ensure_ascii=False,indent=2))

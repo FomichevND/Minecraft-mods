@@ -1,0 +1,298 @@
+{
+  "meta": {
+    "format_version": "4.10",
+    "model_format": "free",
+    "box_uv": false
+  },
+  "name": "food_dried_kelp",
+  "resolution": {
+    "width": 32,
+    "height": 32
+  },
+  "elements": [
+    {
+      "name": "kelp_fold0",
+      "from": [
+        1.0,
+        0.0,
+        1.0
+      ],
+      "to": [
+        8.0,
+        1.0,
+        6.0
+      ],
+      "origin": [
+        4.5,
+        0.5,
+        3.5
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "type": "cube",
+      "uuid": "69582f85-e2f2-5958-b130-9341be010424",
+      "faces": {
+        "north": {
+          "uv": [
+            0.25,
+            0.25,
+            7.75,
+            7.75
+          ],
+          "texture": 0
+        },
+        "south": {
+          "uv": [
+            0.25,
+            0.25,
+            7.75,
+            7.75
+          ],
+          "texture": 0
+        },
+        "east": {
+          "uv": [
+            0.25,
+            0.25,
+            7.75,
+            7.75
+          ],
+          "texture": 0
+        },
+        "west": {
+          "uv": [
+            0.25,
+            0.25,
+            7.75,
+            7.75
+          ],
+          "texture": 0
+        },
+        "up": {
+          "uv": [
+            0.25,
+            0.25,
+            7.75,
+            7.75
+          ],
+          "texture": 0
+        },
+        "down": {
+          "uv": [
+            0.25,
+            0.25,
+            7.75,
+            7.75
+          ],
+          "texture": 0
+        }
+      },
+      "box_uv": false,
+      "zoldrax_group": "body",
+      "zoldrax_emissive": false
+    },
+    {
+      "name": "kelp_fold1",
+      "from": [
+        1.3,
+        0.7,
+        1.4
+      ],
+      "to": [
+        8.3,
+        1.7,
+        6.4
+      ],
+      "origin": [
+        4.8,
+        1.2,
+        3.9
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "type": "cube",
+      "uuid": "7768f0cc-c0dd-5c00-bd2c-dcaafe13256f",
+      "faces": {
+        "north": {
+          "uv": [
+            0.25,
+            0.25,
+            7.75,
+            7.75
+          ],
+          "texture": 0
+        },
+        "south": {
+          "uv": [
+            0.25,
+            0.25,
+            7.75,
+            7.75
+          ],
+          "texture": 0
+        },
+        "east": {
+          "uv": [
+            0.25,
+            0.25,
+            7.75,
+            7.75
+          ],
+          "texture": 0
+        },
+        "west": {
+          "uv": [
+            0.25,
+            0.25,
+            7.75,
+            7.75
+          ],
+          "texture": 0
+        },
+        "up": {
+          "uv": [
+            0.25,
+            0.25,
+            7.75,
+            7.75
+          ],
+          "texture": 0
+        },
+        "down": {
+          "uv": [
+            0.25,
+            0.25,
+            7.75,
+            7.75
+          ],
+          "texture": 0
+        }
+      },
+      "box_uv": false,
+      "zoldrax_group": "body",
+      "zoldrax_emissive": false
+    },
+    {
+      "name": "kelp_fold2",
+      "from": [
+        1.6,
+        1.4,
+        1.8
+      ],
+      "to": [
+        8.6,
+        2.4,
+        6.8
+      ],
+      "origin": [
+        5.1,
+        1.9,
+        4.3
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "type": "cube",
+      "uuid": "9adb70ca-2cf1-5406-bdf8-0c2a8a3928ca",
+      "faces": {
+        "north": {
+          "uv": [
+            0.25,
+            0.25,
+            7.75,
+            7.75
+          ],
+          "texture": 0
+        },
+        "south": {
+          "uv": [
+            0.25,
+            0.25,
+            7.75,
+            7.75
+          ],
+          "texture": 0
+        },
+        "east": {
+          "uv": [
+            0.25,
+            0.25,
+            7.75,
+            7.75
+          ],
+          "texture": 0
+        },
+        "west": {
+          "uv": [
+            0.25,
+            0.25,
+            7.75,
+            7.75
+          ],
+          "texture": 0
+        },
+        "up": {
+          "uv": [
+            0.25,
+            0.25,
+            7.75,
+            7.75
+          ],
+          "texture": 0
+        },
+        "down": {
+          "uv": [
+            0.25,
+            0.25,
+            7.75,
+            7.75
+          ],
+          "texture": 0
+        }
+      },
+      "box_uv": false,
+      "zoldrax_group": "body",
+      "zoldrax_emissive": false
+    }
+  ],
+  "outliner": [
+    {
+      "name": "body",
+      "uuid": "b8a09040-f96c-5278-ac7e-9a1470c537e4",
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "children": [
+        "69582f85-e2f2-5958-b130-9341be010424",
+        "7768f0cc-c0dd-5c00-bd2c-dcaafe13256f",
+        "9adb70ca-2cf1-5406-bdf8-0c2a8a3928ca"
+      ]
+    }
+  ],
+  "textures": [
+    {
+      "id": "0",
+      "name": "food_dried_kelp.png",
+      "width": 32,
+      "height": 32,
+      "uv_width": 32,
+      "uv_height": 32,
+      "source": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAFaklEQVR4nG1Xv6sdRRT+3s5kh4zPtYgk8sCIIPIsUliIhRY2FooQldjY2AX/Abuk085SsLcRQZHUgv+CYGk6ixSP6w072Z03Mztz12L3O2/25S1c7r278+Oc8/04s0eff3FnLqUAAHLOMMaAVwgBp6enAIAYI7TWsNbK2P1+j39e/Q/OOQBA13Xw3qNtWwDAOI74+f2PobWWNUopaNtWxjW8kXNG13USgFJKJnFxpRScc/Deo5QCYwycc7DWQmsN5xxyzvKcG+ac5TcAeO9hrYX3HjqlhPPzcwDA2dnZpgohBAzDgGEYZELXdTgcDhiGAdM0YcgDDocDSikopUjg0zRhGAapHBOMMUIphZQS2raFbtt2ky03N8ZgGAacnJwg5wytNY6PjyWIa9euIYSAGy/dkMwuV+7mzZswxjy3PpPs+x6aD5VSgiGzJdbee2itoZSSAAlBjHEznmNKKWia5rnAyBfyouFifJhzRs5ZJpRShHgcxzKyGikldF0HrbXwgryKMcJ7D2MMjDEyjutJiCklGGNgrZWNUkoSCABYa2VzpdQmWN5nmUspohoGxeBzzpKUfvbsmTBUKfXc95MnT9C2LUop2O12IiFmtdvtNpAQNs7f7/dyf7/fw1qLEIJU6Oj3196cUV2cyAw/+HFhcEpJFmeV+r7HG2+/dYGztUDOXAh93+OPLxf+eO+FH5Tufr9Hw2xrCVH7zjmpjrVWPsy2Ni1lLRAjUAqwYmyMQUpJiE3SAsC9RwdYa9GQvdbaDebMuOYAgzHGCARyrZnHGIEKUq7hvYdzbkNq7z2a+g/1WVsuF60/tNEY45I5sMkaq/aZBBOkm957dMCvd5tlLynhinvN1svkouVugnJueR4joBSi90CMMNYKX3LO+PQ3BnO0xqsXGTIbOhaxZSWIG7lCBTDbDQylwHTd8nOVNatbX798MgspNUvtnBNTySuejL6uEpvLxl4ruEA7VwrTNCHGiK7r8NOHTni2UGaFO4QAYGk8IQTJuG6pxhjRMG05hABrLeZ5xujcxoQIn9Yafd9v1pymSVqycw76r68+29guGd62LUIIeOf1U6RS8MLJAk9aK5VzxjiOePf+A6kE+wXhGYYB3399a62iAjDilRUi5xxenJvlPEDrrS01pbSRYr0wGxQv8qUe55xDSln0z4v9QWu9fHNTLkSdsstd8KtsMuy6DmdnZxiGc0zTBAA4P0+kAYwBQoBwyFTSJLwAFhlSWnWE7Ne0TkLDipCkx8fXZczx8XUxnaUqYSNjMp9raK2hmb10p7U0telQs2RuvSjL3a3YMluuy57C1l03PqUUGmqZGq+9oM62tmTCxspZa6Vv1JzguoSP1SUUxpiLExGz4v8alqvuLVgvG6aURON15pQ4A647ac4ZIQTocRwFD8qP0VLvNCAAaJpG7BoAnj49h9bAbpdQFQlKLY2R83mOoK/M8wxjDI4++u7OTJJdxrDvezy6/4MER0YT777v8effeSNRcoIueve9lyVzdlsS+nA4LEcyTmT5ai547zfOCCxKueW/kSMcS0we1Ou1bbs57HI+fzdke33IYKYMoj6AkljcgHNJuqsOOFd1WH43tQsyOjallJKooz6E3C4P8Dg/3ATDoOuNKV9WuZYn74kRXX5grcU0TXJ4vF0Wz8fqwCTqZfzZ/fjuaMztzTGepZeGRXO56u0oxrg51fB6nB8CyFjequaNamg8fFegX2itpaKsUozx4kTEyPmbPYEB/otvLyLIS5AhBJQyb9yyfk0jLDln1EpjFcZxhJ7nGeM4AlhkdRnHpmnEUOqXjqZpEGPENB0thrKeI9nvScZpmmT+PM9QSmGeZ4Hgf/b65F8k6RxOAAAAAElFTkSuQmCC"
+    }
+  ]
+}

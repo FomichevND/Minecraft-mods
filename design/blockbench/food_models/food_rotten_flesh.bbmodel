@@ -1,0 +1,298 @@
+{
+  "meta": {
+    "format_version": "4.10",
+    "model_format": "free",
+    "box_uv": false
+  },
+  "name": "food_rotten_flesh",
+  "resolution": {
+    "width": 32,
+    "height": 32
+  },
+  "elements": [
+    {
+      "name": "meat_cut",
+      "from": [
+        1,
+        0,
+        1
+      ],
+      "to": [
+        9,
+        2,
+        6
+      ],
+      "origin": [
+        5.0,
+        1.0,
+        3.5
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "type": "cube",
+      "uuid": "34ad15c4-0d5e-5efc-9252-dd3e38f76444",
+      "faces": {
+        "north": {
+          "uv": [
+            0.25,
+            0.25,
+            7.75,
+            7.75
+          ],
+          "texture": 0
+        },
+        "south": {
+          "uv": [
+            0.25,
+            0.25,
+            7.75,
+            7.75
+          ],
+          "texture": 0
+        },
+        "east": {
+          "uv": [
+            0.25,
+            0.25,
+            7.75,
+            7.75
+          ],
+          "texture": 0
+        },
+        "west": {
+          "uv": [
+            0.25,
+            0.25,
+            7.75,
+            7.75
+          ],
+          "texture": 0
+        },
+        "up": {
+          "uv": [
+            0.25,
+            0.25,
+            7.75,
+            7.75
+          ],
+          "texture": 0
+        },
+        "down": {
+          "uv": [
+            0.25,
+            0.25,
+            7.75,
+            7.75
+          ],
+          "texture": 0
+        }
+      },
+      "box_uv": false,
+      "zoldrax_group": "body",
+      "zoldrax_emissive": false
+    },
+    {
+      "name": "raised_flesh",
+      "from": [
+        2,
+        2,
+        2
+      ],
+      "to": [
+        8,
+        3.2,
+        5
+      ],
+      "origin": [
+        5.0,
+        2.6,
+        3.5
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "type": "cube",
+      "uuid": "01e9b8b3-ef01-5011-a7d2-6dc041a22d20",
+      "faces": {
+        "north": {
+          "uv": [
+            8.25,
+            0.25,
+            15.75,
+            7.75
+          ],
+          "texture": 0
+        },
+        "south": {
+          "uv": [
+            8.25,
+            0.25,
+            15.75,
+            7.75
+          ],
+          "texture": 0
+        },
+        "east": {
+          "uv": [
+            8.25,
+            0.25,
+            15.75,
+            7.75
+          ],
+          "texture": 0
+        },
+        "west": {
+          "uv": [
+            8.25,
+            0.25,
+            15.75,
+            7.75
+          ],
+          "texture": 0
+        },
+        "up": {
+          "uv": [
+            8.25,
+            0.25,
+            15.75,
+            7.75
+          ],
+          "texture": 0
+        },
+        "down": {
+          "uv": [
+            8.25,
+            0.25,
+            15.75,
+            7.75
+          ],
+          "texture": 0
+        }
+      },
+      "box_uv": false,
+      "zoldrax_group": "body",
+      "zoldrax_emissive": false
+    },
+    {
+      "name": "rotten_patch",
+      "from": [
+        2,
+        3,
+        2
+      ],
+      "to": [
+        4,
+        3.3,
+        4
+      ],
+      "origin": [
+        3.0,
+        3.15,
+        3.0
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "type": "cube",
+      "uuid": "83220bed-dff8-5896-9ef6-a3927bf15ef1",
+      "faces": {
+        "north": {
+          "uv": [
+            16.25,
+            0.25,
+            23.75,
+            7.75
+          ],
+          "texture": 0
+        },
+        "south": {
+          "uv": [
+            16.25,
+            0.25,
+            23.75,
+            7.75
+          ],
+          "texture": 0
+        },
+        "east": {
+          "uv": [
+            16.25,
+            0.25,
+            23.75,
+            7.75
+          ],
+          "texture": 0
+        },
+        "west": {
+          "uv": [
+            16.25,
+            0.25,
+            23.75,
+            7.75
+          ],
+          "texture": 0
+        },
+        "up": {
+          "uv": [
+            16.25,
+            0.25,
+            23.75,
+            7.75
+          ],
+          "texture": 0
+        },
+        "down": {
+          "uv": [
+            16.25,
+            0.25,
+            23.75,
+            7.75
+          ],
+          "texture": 0
+        }
+      },
+      "box_uv": false,
+      "zoldrax_group": "body",
+      "zoldrax_emissive": false
+    }
+  ],
+  "outliner": [
+    {
+      "name": "body",
+      "uuid": "916ade8c-9246-5eed-a772-cc5397ddedce",
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "children": [
+        "34ad15c4-0d5e-5efc-9252-dd3e38f76444",
+        "01e9b8b3-ef01-5011-a7d2-6dc041a22d20",
+        "83220bed-dff8-5896-9ef6-a3927bf15ef1"
+      ]
+    }
+  ],
+  "textures": [
+    {
+      "id": "0",
+      "name": "food_rotten_flesh.png",
+      "width": 32,
+      "height": 32,
+      "uv_width": 32,
+      "uv_height": 32,
+      "source": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAFjklEQVR4nG1XPaskRRQ901Vb9aZ49govUBBWV5PNDEVEEEHEL0zcRGH/gWYigpuJqZkmhiIKJoayP0HwD2xmtDu+fWw3PbVV1VXdBt3nvuq3Fgwz01X3o84996N3339wa1ZKwXsPay2UUiilAADmecbNmzdhrYX3Hs45xBjB1XUdfnjp340Mz+acMc8zfn79XTkfY4S1FqUUOOfQdR2aGKMIA4D3HkopMaSUQt/3AICc8+as1hoAUEoR5X3fQyklBuvzzjlYa8VOKQV6miY8evQI1lo0TYNxHNF1HUop8N7jcDjAWotpmjAMA5RSsNYi54wnT55gGAZYazEMA8ZxhLUWXddBKYUQApRSglBKCSkl5JwFbb3f77Hf7wW609PTZUNrdF2Hs7MzMVhKgbUWMUacnJxgt9thv9/DOYemaQSl69evw1orRlJKAABjDEopyDkLSk0dH0JE2Oh5jFHgruGnEi6iE2NE3/cCs3Nuo6ttW3Gq4UN+k0h934twHUfygft0nlDXDvJCOWfhCh3ks4bkqIlHJ2KMQkoabttW9gkrDROltm3FQK3PGCOhcc4tMufn5/In5yywWWsxjiMePHiAtm3R972cI4uttXj48KGgQAcYCgAIIUgKEznnHPq+h7UWu1+ff3GmV9wspUAphePxiLd+1BIKokE4Qwh45bVXgTWEdQhKKRiGAfc+9Rv4SWalFHLOaNq2FUFrLVJK8s2QsADlnBFjRIwRxpgF5vXMpkYoBeUcnHPQWm+4wt+f/DEtIaB3PEguMBUpyBjXCBBmrAiCcS8F0XvM8/wUrxgG4GQhYc1qrlhBWiswxsj/zTc/Wi8fALbKHhKadu7cO8FvH87IOUNz0/2PAGPPlVJC27ZCuBCC1A3FczECK0qLznN473Hn3gmAJDcnog2N1HBfLURaa2itYYwRItbFRRmzwE/ZVd57L/yo1y/vZUFD1ylIJCi4ILEYZNoZY+Q8mayMWYwqBbVyoqyOGmPgnMPvH2e5pDGNXFKHECT+1locj0dBIoSAeVbyrOs6IRKRM8YgrPvU0R8OglDf9zDGIKUkCDI8Wmvovz77SJT1fS8xLqVgmia8f+tVabV6/aaDxxDw+e2vJBRXm1YIAbe/eBk5Z6SkYIxCKW7VB4zj7pKEbBK8nVIK0zTBey/sr/sGa389jFA2xrwWolmeXx1ayBFdpx9vtsTJIISwqYBXux8AhBCF+MOQYS0wDAAww5hLfay0NfwAoLXWyDlfNoe1i9VC7AX1Xs4ZIQRcu6Zx7Rqdz5gm4PQU0HqHaZoFFZK4LvlaazRMKcJjjNm0XOecTDDMlLq9xng53SwX2MFavQ4iEJ1X60xKaRlkGIuriylZc6JeKSV5Roes1dv6sIporTfdlOGMMS4OsJrRkbZtN+nGffYLtlfeKKUE77dDzdKSL4dTrbXs1RfW4zg+dZucs4TheDwihCCzHDlD3ngPlDLDWuDx4xlKZQALGb1fagerKAfYhbxhceBv9yfUM9vOp5RCMQXH4xHm7G3knPHsSkTpgACG4xFvfvfTZtgg0WKM6LoOb7xzQ2RIQHbVcRzR1PCziNAZVjqttcBG2G+Ub8RwDenV9ls7zFAQbe/98mLCmHFm7/teilPdEZkJVFDXkDrNWDnr4lWTuEakYQrVh0jCuuezCQHAC+lr3M93JbZM1Xp578Fpq25wbGB0QNd/gG3K1BA+579cNK+vBzRaSnjqnYFIkWi1cYbTOYfD4bDMA3xJ4KpTjKN5vf5R38rMWJfauifUztDBej5g+DQLDp2oe3/9tnw/35V53645PY7jRjGhZgPjHispL8TfOWfopmk2TYKwcdy6uLhA27YwxshLJ0O1QD1It7y4uABw2ci01miaBvM8i15eqJQCYwz+AyjPvdXFUJiqAAAAAElFTkSuQmCC"
+    }
+  ]
+}

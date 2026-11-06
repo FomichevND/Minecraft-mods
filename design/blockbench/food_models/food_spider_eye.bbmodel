@@ -1,0 +1,213 @@
+{
+  "meta": {
+    "format_version": "4.10",
+    "model_format": "free",
+    "box_uv": false
+  },
+  "name": "food_spider_eye",
+  "resolution": {
+    "width": 32,
+    "height": 32
+  },
+  "elements": [
+    {
+      "name": "eye_body",
+      "from": [
+        2,
+        0,
+        2
+      ],
+      "to": [
+        7,
+        4,
+        6
+      ],
+      "origin": [
+        4.5,
+        2.0,
+        4.0
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "type": "cube",
+      "uuid": "74c6832b-3279-5e18-99bb-b40f274d92af",
+      "faces": {
+        "north": {
+          "uv": [
+            0.25,
+            0.25,
+            7.75,
+            7.75
+          ],
+          "texture": 0
+        },
+        "south": {
+          "uv": [
+            0.25,
+            0.25,
+            7.75,
+            7.75
+          ],
+          "texture": 0
+        },
+        "east": {
+          "uv": [
+            0.25,
+            0.25,
+            7.75,
+            7.75
+          ],
+          "texture": 0
+        },
+        "west": {
+          "uv": [
+            0.25,
+            0.25,
+            7.75,
+            7.75
+          ],
+          "texture": 0
+        },
+        "up": {
+          "uv": [
+            0.25,
+            0.25,
+            7.75,
+            7.75
+          ],
+          "texture": 0
+        },
+        "down": {
+          "uv": [
+            0.25,
+            0.25,
+            7.75,
+            7.75
+          ],
+          "texture": 0
+        }
+      },
+      "box_uv": false,
+      "zoldrax_group": "body",
+      "zoldrax_emissive": false
+    },
+    {
+      "name": "pupil",
+      "from": [
+        4,
+        1,
+        6
+      ],
+      "to": [
+        6,
+        3,
+        6.5
+      ],
+      "origin": [
+        5.0,
+        2.0,
+        6.25
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "type": "cube",
+      "uuid": "0e3ff552-471f-5aaa-bc9d-abafc44dc8df",
+      "faces": {
+        "north": {
+          "uv": [
+            16.25,
+            16.25,
+            23.75,
+            23.75
+          ],
+          "texture": 0
+        },
+        "south": {
+          "uv": [
+            16.25,
+            16.25,
+            23.75,
+            23.75
+          ],
+          "texture": 0
+        },
+        "east": {
+          "uv": [
+            16.25,
+            16.25,
+            23.75,
+            23.75
+          ],
+          "texture": 0
+        },
+        "west": {
+          "uv": [
+            16.25,
+            16.25,
+            23.75,
+            23.75
+          ],
+          "texture": 0
+        },
+        "up": {
+          "uv": [
+            16.25,
+            16.25,
+            23.75,
+            23.75
+          ],
+          "texture": 0
+        },
+        "down": {
+          "uv": [
+            16.25,
+            16.25,
+            23.75,
+            23.75
+          ],
+          "texture": 0
+        }
+      },
+      "box_uv": false,
+      "zoldrax_group": "body",
+      "zoldrax_emissive": false
+    }
+  ],
+  "outliner": [
+    {
+      "name": "body",
+      "uuid": "b3991188-d1d0-51cc-998c-d87c387a6c06",
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "children": [
+        "74c6832b-3279-5e18-99bb-b40f274d92af",
+        "0e3ff552-471f-5aaa-bc9d-abafc44dc8df"
+      ]
+    }
+  ],
+  "textures": [
+    {
+      "id": "0",
+      "name": "food_spider_eye.png",
+      "width": 32,
+      "height": 32,
+      "uv_width": 32,
+      "uv_height": 32,
+      "source": "data:image/png;base64,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"
+    }
+  ]
+}

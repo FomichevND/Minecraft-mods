@@ -1,0 +1,6 @@
+{
+  "parent": "builtin/entity",
+  "textures": {
+    "particle": "zoldrax:block/zoldrax/zoldrax_chain_lantern"
+  }
+}

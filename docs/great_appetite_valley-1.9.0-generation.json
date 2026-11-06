@@ -1,0 +1,72 @@
+[
+  {
+    "template": "Single[Left[zoldrax:monkey/valley_temple]]",
+    "x": 496,
+    "y": 59,
+    "z": 5296,
+    "rotation": "CLOCKWISE_180"
+  },
+  {
+    "template": "Single[Left[zoldrax:monkey/gatherer_hall]]",
+    "x": 514,
+    "y": 56,
+    "z": 5304,
+    "rotation": "CLOCKWISE_180"
+  },
+  {
+    "template": "Single[Left[zoldrax:monkey/storehouse]]",
+    "x": 478,
+    "y": 59,
+    "z": 5315,
+    "rotation": "CLOCKWISE_180"
+  },
+  {
+    "template": "Single[Left[zoldrax:monkey/kitchen]]",
+    "x": 475,
+    "y": 60,
+    "z": 5294,
+    "rotation": "CLOCKWISE_180"
+  },
+  {
+    "template": "Single[Left[zoldrax:monkey/market]]",
+    "x": 511,
+    "y": 57,
+    "z": 5287,
+    "rotation": "CLOCKWISE_180"
+  },
+  {
+    "template": "Single[Left[zoldrax:monkey/watch]]",
+    "x": 470,
+    "y": 56,
+    "z": 5272,
+    "rotation": "CLOCKWISE_180"
+  },
+  {
+    "template": "Single[Left[zoldrax:monkey/farm]]",
+    "x": 503,
+    "y": 58,
+    "z": 5273,
+    "rotation": "CLOCKWISE_180"
+  },
+  {
+    "template": "Single[Left[zoldrax:monkey/farm]]",
+    "x": 485,
+    "y": 59,
+    "z": 5276,
+    "rotation": "CLOCKWISE_180"
+  },
+  {
+    "template": "Single[Left[zoldrax:monkey/garden]]",
+    "x": 496,
+    "y": 57,
+    "z": 5317,
+    "rotation": "CLOCKWISE_180"
+  },
+  {
+    "template": "Single[Left[zoldrax:monkey/rest]]",
+    "x": 514,
+    "y": 58,
+    "z": 5272,
+    "rotation": "CLOCKWISE_180"
+  }
+]

@@ -52,6 +52,7 @@ faces={
  'up':([0,1,0],[1,1,0],[1,1,1],[0,1,1]),'down':([0,0,1],[1,0,1],[1,0,0],[0,0,0])}
 normals={'south':(0,0,1),'north':(0,0,-1),'east':(1,0,0),'west':(-1,0,0),'up':(0,1,0),'down':(0,-1,0)}
 font='/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf'
+SMALL={'kitchen':'Храмовая кухня','storehouse':'Склад подношений','herald_house':'Дом бананового глашатая','pavilion':'Ритуальная беседка'}
 def render(name,cutaway=False):
  W,H=1200,1020;pixels=np.empty((H,W,3),np.uint8);pixels[:]=(30,29,37);depth=np.full((H,W),-1e10)
  view=np.array([.8,.7,1.]);view/=np.linalg.norm(view);right=np.cross([0,1,0],view);right/=np.linalg.norm(right);up=np.cross(view,right)
@@ -60,7 +61,12 @@ def render(name,cutaway=False):
  blocks=data['blocks']
  if name in ['banana_court','great_appetite_valley']:
   center=np.array([data['size'][0]/2,6.5,data['size'][2]/2]);scale=22 if name=='banana_court' else 19
- if cutaway:
+ if name.startswith('monkey_buildings/'):
+  center=np.array([data['size'][0]/2,12,data['size'][2]/2-1]);scale=65
+  blocks=[b for b in blocks if b['pos'][1]>=7]
+  if cutaway:
+   blocks=[b for b in blocks if b['pos'][1]<12 and not (b['pos'][1]>=10 and (b['pos'][0]>=data['size'][0]-4 or b['pos'][2]>=data['size'][2]-7))]
+ if cutaway and not name.startswith('monkey_buildings/'):
   blocks=[b for b in blocks if 1<=b['pos'][0]<=13 and 17<=b['pos'][2]<=29 and b['pos'][1]<7]
   # Slice the front and right walls above the plinth to expose furnishing.
   xmax=11;zmax=25 if name=='blood_shrine' else 26
@@ -107,6 +113,34 @@ def render(name,cutaway=False):
     fs={f:{**d,'uv':[v*2 for v in d['uv']]} for f,d in fs.items()}
     cube(np.array(e['from']),np.array(e['to']),fs,{},np.eye(3),position+np.array([.5,0,.5]),e['name'].startswith('glow_'))
    continue
+  if name.startswith('monkey_buildings/') and n in ['chest','red_bed','red_wall_banner']:
+   def uniform(texture_name):return {f:{'uv':[0,0,16,16],'texture':texture_name} for f in faces}
+   props=state.get('Properties',{})
+   turns={'south':0,'west':90,'north':180,'east':270}.get(props.get('facing','south'),0)
+   transform=rotation('y',-turns)
+   if n=='chest':
+    def chest_faces(v,h):
+     u=0;d=14;w=14
+     uv={'east':[u,v+d,u+d,v+d+h],'north':[u+d,v+d,u+d+w,v+d+h],'west':[u+d+w,v+d,u+2*d+w,v+d+h],'south':[u+2*d+w,v+d,u+2*d+2*w,v+d+h],'up':[u+d,v,u+d+w,v+d],'down':[u+d+w,v,u+d+2*w,v+d]}
+     return {f:{'uv':[p/4 for p in a],'texture':'entity/chest/normal'} for f,a in uv.items()}
+    cube(np.array([1,0,1]),np.array([15,10,15]),chest_faces(19,10),{},transform,position)
+    cube(np.array([1,10,1]),np.array([15,14,15]),chest_faces(0,4),{},transform,position)
+    cube(np.array([7,8,15]),np.array([9,12,16]),uniform('block/gold_block'),{},transform,position)
+   elif n=='red_bed':
+    cube(np.array([0,3,0]),np.array([16,9,16]),uniform('block/red_wool'),{},transform,position)
+    if props.get('part')=='head':cube(np.array([0,9,0]),np.array([16,10,6]),uniform('block/white_wool'),{},transform,position)
+    for x in [0,13]:
+     for z in [0,13]:cube(np.array([x,0,z]),np.array([x+3,3,z+3]),uniform('block/jungle_planks'),{},transform,position)
+   else:
+    cube(np.array([1,-16,1]),np.array([15,12,2]),uniform('block/red_wool'),{},transform,position)
+    for lo,hi in [([1,-16,2],[3,12,3]),([13,-16,2],[15,12,3]),([1,-16,2],[15,-14,3])]:cube(np.array(lo),np.array(hi),uniform('block/yellow_wool'),{},transform,position)
+    # The exact custom banana motif, shown as a thin golden stencil on the cloth.
+    mask=Image.open(root/'textures/entity/banner/banana.png').convert('RGBA')
+    for by in range(2,18):
+     for bx in range(2,22):
+      if mask.getpixel((bx,by))[3]>127:
+       lo=np.array([2+(bx-2)*.6,8-(by-2)*1.15,2]);hi=lo+np.array([.65,1.2,.2]);cube(lo,hi,uniform('block/yellow_wool'),{},transform,position)
+   continue
   variants=block_models(n,tuple(sorted(state.get('Properties',{}).items())))
   for variant in variants:
    try:m=model(variant['model'])
@@ -116,16 +150,27 @@ def render(name,cutaway=False):
     # Current structural palette has axis-aligned elements; item-like rotated
     # candle flames etc. may be omitted by this illustrative renderer.
     cube(np.array(e['from']),np.array(e['to']),e['faces'],m.get('textures',{}),transform,position,'lantern' in n or 'candle' in n)
+ if name.startswith('monkey_buildings/'):
+  for entity in data.get('entities',[]):
+   variant=entity['nbt']['id'].split(':')[-1];position=np.array(entity['pos'])
+   if variant in ['banana_herald','temple_gatherer']:
+    mesh=json.loads((root/f'models/blockbench/{variant}.bbmodel').read_text());res=mesh['resolution']['width']
+    for e in mesh['elements']:
+     fs={f:{'uv':[v*16/res for v in desc['uv']],'texture':'zoldrax:textures/entity/'+variant} for f,desc in e['faces'].items()}
+     inflate=e.get('inflate',0);cube(np.array(e['from'])-inflate,np.array(e['to'])+inflate,fs,{},np.eye(3),position)
+   elif variant=='item_display':
+    fs={f:{'uv':[0,0,16,16],'texture':'zoldrax:textures/item/golden_banana'} for f in faces}
+    cube(np.array([-6,0,-6]),np.array([6,.1,6]),fs,{},np.eye(3),position)
  image=Image.fromarray(pixels);d=ImageDraw.Draw(image)
- title={'blood_shrine':'Кровавое капище','chain_camp':'Лагерь цепных карателей','banana_court':'Банановый двор','great_appetite_valley':'Долина Великого Аппетита'}[name]+(' — разрез зала' if cutaway else '')
+ title=({'blood_shrine':'Кровавое капище','chain_camp':'Лагерь цепных карателей','banana_court':'Банановый двор','great_appetite_valley':'Долина Великого Аппетита'}.get(name) or SMALL.get(name.split('/')[-1],name))+(' — разрез зала' if cutaway else '')
  d.text((30,25),title,font=ImageFont.truetype(font,28),fill='#edd1b6')
  d.text((30,68),'Модели и текстуры игровых блоков • программный предпросмотр',font=ImageFont.truetype(font,17),fill='#ada4ae')
- d.text((30,H-45),'Не скриншот игры. Кровати, сундуки и знамёна в превью скрыты.',font=ImageFont.truetype(font,16),fill='#ada4ae')
- version='1.8.0' if name in ['banana_court','great_appetite_valley'] else '1.7.1'
- path=f'docs/{name}-{version}'+('-interior' if cutaway else '-preview')+'.png';image.save(path);print(path,flush=True)
+ d.text((30,H-45),'Не скриншот игры. Сундуки, кровати и знамёна показаны условно.',font=ImageFont.truetype(font,16),fill='#ada4ae')
+ version='1.10.0' if name.startswith('monkey_buildings/') else '1.8.0' if name in ['banana_court','great_appetite_valley'] else '1.7.1'
+ path=f'docs/{name}-{version}'+('-interior' if cutaway else '-preview')+'.png';Path(path).parent.mkdir(parents=True,exist_ok=True);image.save(path);print(path,flush=True)
 if __name__=='__main__':
  import sys
  names=sys.argv[1:] or ['blood_shrine','chain_camp']
  for site in names:
   render(site)
-  if site in ['blood_shrine','chain_camp']:render(site,True)
+  if site in ['blood_shrine','chain_camp'] or site.startswith('monkey_buildings/'):render(site,True)

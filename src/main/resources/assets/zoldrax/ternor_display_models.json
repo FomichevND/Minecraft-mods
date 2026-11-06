@@ -1,0 +1,166 @@
+{
+  "minecraft:dandelion": {
+    "model": "plant_dandelion",
+    "plant": true
+  },
+  "minecraft:poppy": {
+    "model": "plant_poppy",
+    "plant": true
+  },
+  "minecraft:blue_orchid": {
+    "model": "plant_blue_orchid",
+    "plant": true
+  },
+  "minecraft:allium": {
+    "model": "plant_allium",
+    "plant": true
+  },
+  "minecraft:azure_bluet": {
+    "model": "plant_azure_bluet",
+    "plant": true
+  },
+  "minecraft:red_tulip": {
+    "model": "plant_red_tulip",
+    "plant": true
+  },
+  "minecraft:orange_tulip": {
+    "model": "plant_orange_tulip",
+    "plant": true
+  },
+  "minecraft:white_tulip": {
+    "model": "plant_white_tulip",
+    "plant": true
+  },
+  "minecraft:pink_tulip": {
+    "model": "plant_pink_tulip",
+    "plant": true
+  },
+  "minecraft:oxeye_daisy": {
+    "model": "plant_oxeye_daisy",
+    "plant": true
+  },
+  "minecraft:cornflower": {
+    "model": "plant_cornflower",
+    "plant": true
+  },
+  "minecraft:lily_of_the_valley": {
+    "model": "plant_lily_of_the_valley",
+    "plant": true
+  },
+  "minecraft:wither_rose": {
+    "model": "plant_wither_rose",
+    "plant": true
+  },
+  "minecraft:torchflower": {
+    "model": "plant_torchflower",
+    "plant": true
+  },
+  "minecraft:oak_sapling": {
+    "model": "plant_oak_sapling",
+    "plant": true
+  },
+  "minecraft:spruce_sapling": {
+    "model": "plant_spruce_sapling",
+    "plant": true
+  },
+  "minecraft:birch_sapling": {
+    "model": "plant_birch_sapling",
+    "plant": true
+  },
+  "minecraft:jungle_sapling": {
+    "model": "plant_jungle_sapling",
+    "plant": true
+  },
+  "minecraft:acacia_sapling": {
+    "model": "plant_acacia_sapling",
+    "plant": true
+  },
+  "minecraft:dark_oak_sapling": {
+    "model": "plant_dark_oak_sapling",
+    "plant": true
+  },
+  "minecraft:cherry_sapling": {
+    "model": "plant_cherry_sapling",
+    "plant": true
+  },
+  "minecraft:mangrove_propagule": {
+    "model": "plant_mangrove_propagule",
+    "plant": true
+  },
+  "minecraft:fern": {
+    "model": "plant_fern",
+    "plant": true
+  },
+  "minecraft:grass": {
+    "model": "plant_grass",
+    "plant": true
+  },
+  "minecraft:dead_bush": {
+    "model": "plant_dead_bush",
+    "plant": true
+  },
+  "minecraft:azalea": {
+    "model": "plant_azalea",
+    "plant": true
+  },
+  "minecraft:flowering_azalea": {
+    "model": "plant_flowering_azalea",
+    "plant": true
+  },
+  "minecraft:brown_mushroom": {
+    "model": "plant_brown_mushroom",
+    "plant": true
+  },
+  "minecraft:red_mushroom": {
+    "model": "plant_red_mushroom",
+    "plant": true
+  },
+  "minecraft:vine": {
+    "model": "plant_vine",
+    "plant": true
+  },
+  "minecraft:glow_berries": {
+    "model": "plant_glow_berries",
+    "plant": true
+  },
+  "minecraft:sweet_berries": {
+    "model": "plant_sweet_berries",
+    "plant": true
+  },
+  "minecraft:wheat": {
+    "model": "stored_wheat",
+    "plant": false
+  },
+  "minecraft:wheat_seeds": {
+    "model": "stored_wheat_seeds",
+    "plant": false
+  },
+  "minecraft:beetroot_seeds": {
+    "model": "stored_beetroot_seeds",
+    "plant": false
+  },
+  "minecraft:pumpkin_seeds": {
+    "model": "stored_pumpkin_seeds",
+    "plant": false
+  },
+  "minecraft:melon_seeds": {
+    "model": "stored_melon_seeds",
+    "plant": false
+  },
+  "minecraft:torchflower_seeds": {
+    "model": "stored_torchflower_seeds",
+    "plant": false
+  },
+  "minecraft:iron_ingot": {
+    "model": "stored_iron_ingot",
+    "plant": false
+  },
+  "minecraft:gold_ingot": {
+    "model": "stored_gold_ingot",
+    "plant": false
+  },
+  "minecraft:copper_ingot": {
+    "model": "stored_copper_ingot",
+    "plant": false
+  }
+}

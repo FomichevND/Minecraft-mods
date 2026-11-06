@@ -1,0 +1,553 @@
+{
+  "meta": {
+    "format_version": "4.10",
+    "model_format": "free",
+    "box_uv": false
+  },
+  "name": "food_cooked_salmon",
+  "resolution": {
+    "width": 32,
+    "height": 32
+  },
+  "elements": [
+    {
+      "name": "fish_body",
+      "from": [
+        1,
+        1,
+        2
+      ],
+      "to": [
+        9,
+        4,
+        5
+      ],
+      "origin": [
+        5.0,
+        2.5,
+        3.5
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "type": "cube",
+      "uuid": "5a7b3ae7-18f8-5b94-af49-4b549bb64041",
+      "faces": {
+        "north": {
+          "uv": [
+            0.25,
+            0.25,
+            7.75,
+            7.75
+          ],
+          "texture": 0
+        },
+        "south": {
+          "uv": [
+            0.25,
+            0.25,
+            7.75,
+            7.75
+          ],
+          "texture": 0
+        },
+        "east": {
+          "uv": [
+            0.25,
+            0.25,
+            7.75,
+            7.75
+          ],
+          "texture": 0
+        },
+        "west": {
+          "uv": [
+            0.25,
+            0.25,
+            7.75,
+            7.75
+          ],
+          "texture": 0
+        },
+        "up": {
+          "uv": [
+            0.25,
+            0.25,
+            7.75,
+            7.75
+          ],
+          "texture": 0
+        },
+        "down": {
+          "uv": [
+            0.25,
+            0.25,
+            7.75,
+            7.75
+          ],
+          "texture": 0
+        }
+      },
+      "box_uv": false,
+      "zoldrax_group": "body",
+      "zoldrax_emissive": false
+    },
+    {
+      "name": "fish_belly",
+      "from": [
+        2,
+        0,
+        2.5
+      ],
+      "to": [
+        8,
+        1,
+        4.5
+      ],
+      "origin": [
+        5.0,
+        0.5,
+        3.5
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "type": "cube",
+      "uuid": "e68cfcea-92a3-571a-8f9a-e4ca900f0a98",
+      "faces": {
+        "north": {
+          "uv": [
+            8.25,
+            16.25,
+            15.75,
+            23.75
+          ],
+          "texture": 0
+        },
+        "south": {
+          "uv": [
+            8.25,
+            16.25,
+            15.75,
+            23.75
+          ],
+          "texture": 0
+        },
+        "east": {
+          "uv": [
+            8.25,
+            16.25,
+            15.75,
+            23.75
+          ],
+          "texture": 0
+        },
+        "west": {
+          "uv": [
+            8.25,
+            16.25,
+            15.75,
+            23.75
+          ],
+          "texture": 0
+        },
+        "up": {
+          "uv": [
+            8.25,
+            16.25,
+            15.75,
+            23.75
+          ],
+          "texture": 0
+        },
+        "down": {
+          "uv": [
+            8.25,
+            16.25,
+            15.75,
+            23.75
+          ],
+          "texture": 0
+        }
+      },
+      "box_uv": false,
+      "zoldrax_group": "body",
+      "zoldrax_emissive": false
+    },
+    {
+      "name": "tail",
+      "from": [
+        9,
+        0,
+        1.5
+      ],
+      "to": [
+        11,
+        5,
+        5.5
+      ],
+      "origin": [
+        10.0,
+        2.5,
+        3.5
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "type": "cube",
+      "uuid": "404f3b24-2a06-5274-b648-e7a069ec9623",
+      "faces": {
+        "north": {
+          "uv": [
+            0.25,
+            0.25,
+            7.75,
+            7.75
+          ],
+          "texture": 0
+        },
+        "south": {
+          "uv": [
+            0.25,
+            0.25,
+            7.75,
+            7.75
+          ],
+          "texture": 0
+        },
+        "east": {
+          "uv": [
+            0.25,
+            0.25,
+            7.75,
+            7.75
+          ],
+          "texture": 0
+        },
+        "west": {
+          "uv": [
+            0.25,
+            0.25,
+            7.75,
+            7.75
+          ],
+          "texture": 0
+        },
+        "up": {
+          "uv": [
+            0.25,
+            0.25,
+            7.75,
+            7.75
+          ],
+          "texture": 0
+        },
+        "down": {
+          "uv": [
+            0.25,
+            0.25,
+            7.75,
+            7.75
+          ],
+          "texture": 0
+        }
+      },
+      "box_uv": false,
+      "zoldrax_group": "body",
+      "zoldrax_emissive": false
+    },
+    {
+      "name": "dorsal_fin",
+      "from": [
+        4,
+        4,
+        3
+      ],
+      "to": [
+        7,
+        5,
+        4
+      ],
+      "origin": [
+        5.5,
+        4.5,
+        3.5
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "type": "cube",
+      "uuid": "f6dc9c1b-18fc-51ed-92ef-453d8ef36bd5",
+      "faces": {
+        "north": {
+          "uv": [
+            8.25,
+            0.25,
+            15.75,
+            7.75
+          ],
+          "texture": 0
+        },
+        "south": {
+          "uv": [
+            8.25,
+            0.25,
+            15.75,
+            7.75
+          ],
+          "texture": 0
+        },
+        "east": {
+          "uv": [
+            8.25,
+            0.25,
+            15.75,
+            7.75
+          ],
+          "texture": 0
+        },
+        "west": {
+          "uv": [
+            8.25,
+            0.25,
+            15.75,
+            7.75
+          ],
+          "texture": 0
+        },
+        "up": {
+          "uv": [
+            8.25,
+            0.25,
+            15.75,
+            7.75
+          ],
+          "texture": 0
+        },
+        "down": {
+          "uv": [
+            8.25,
+            0.25,
+            15.75,
+            7.75
+          ],
+          "texture": 0
+        }
+      },
+      "box_uv": false,
+      "zoldrax_group": "body",
+      "zoldrax_emissive": false
+    },
+    {
+      "name": "fish_eye1.85",
+      "from": [
+        1.2,
+        2,
+        1.85
+      ],
+      "to": [
+        1.7999999999999998,
+        2.7,
+        2.0500000000000003
+      ],
+      "origin": [
+        1.5,
+        2.35,
+        1.9500000000000002
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "type": "cube",
+      "uuid": "cd07d578-38cd-503f-b62f-39b293473bd4",
+      "faces": {
+        "north": {
+          "uv": [
+            16.25,
+            16.25,
+            23.75,
+            23.75
+          ],
+          "texture": 0
+        },
+        "south": {
+          "uv": [
+            16.25,
+            16.25,
+            23.75,
+            23.75
+          ],
+          "texture": 0
+        },
+        "east": {
+          "uv": [
+            16.25,
+            16.25,
+            23.75,
+            23.75
+          ],
+          "texture": 0
+        },
+        "west": {
+          "uv": [
+            16.25,
+            16.25,
+            23.75,
+            23.75
+          ],
+          "texture": 0
+        },
+        "up": {
+          "uv": [
+            16.25,
+            16.25,
+            23.75,
+            23.75
+          ],
+          "texture": 0
+        },
+        "down": {
+          "uv": [
+            16.25,
+            16.25,
+            23.75,
+            23.75
+          ],
+          "texture": 0
+        }
+      },
+      "box_uv": false,
+      "zoldrax_group": "body",
+      "zoldrax_emissive": false
+    },
+    {
+      "name": "fish_eye5.05",
+      "from": [
+        1.2,
+        2,
+        5.05
+      ],
+      "to": [
+        1.7999999999999998,
+        2.7,
+        5.25
+      ],
+      "origin": [
+        1.5,
+        2.35,
+        5.1499999999999995
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "type": "cube",
+      "uuid": "2efb4a1a-edfd-5262-96be-f441d633e2fc",
+      "faces": {
+        "north": {
+          "uv": [
+            16.25,
+            16.25,
+            23.75,
+            23.75
+          ],
+          "texture": 0
+        },
+        "south": {
+          "uv": [
+            16.25,
+            16.25,
+            23.75,
+            23.75
+          ],
+          "texture": 0
+        },
+        "east": {
+          "uv": [
+            16.25,
+            16.25,
+            23.75,
+            23.75
+          ],
+          "texture": 0
+        },
+        "west": {
+          "uv": [
+            16.25,
+            16.25,
+            23.75,
+            23.75
+          ],
+          "texture": 0
+        },
+        "up": {
+          "uv": [
+            16.25,
+            16.25,
+            23.75,
+            23.75
+          ],
+          "texture": 0
+        },
+        "down": {
+          "uv": [
+            16.25,
+            16.25,
+            23.75,
+            23.75
+          ],
+          "texture": 0
+        }
+      },
+      "box_uv": false,
+      "zoldrax_group": "body",
+      "zoldrax_emissive": false
+    }
+  ],
+  "outliner": [
+    {
+      "name": "body",
+      "uuid": "10694a7f-9e09-56fd-b55e-92e7d58a32ca",
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "children": [
+        "5a7b3ae7-18f8-5b94-af49-4b549bb64041",
+        "e68cfcea-92a3-571a-8f9a-e4ca900f0a98",
+        "404f3b24-2a06-5274-b648-e7a069ec9623",
+        "f6dc9c1b-18fc-51ed-92ef-453d8ef36bd5",
+        "cd07d578-38cd-503f-b62f-39b293473bd4",
+        "2efb4a1a-edfd-5262-96be-f441d633e2fc"
+      ]
+    }
+  ],
+  "textures": [
+    {
+      "id": "0",
+      "name": "food_cooked_salmon.png",
+      "width": 32,
+      "height": 32,
+      "uv_width": 32,
+      "uv_height": 32,
+      "source": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAFdklEQVR4nHVXv4skRRT+tqu2ai3a5uQWlTvwwECDRUOTEzTQ7EBBQTA7/wUxONBANDAxMBLMNBM8LhFM/RsETQyEDQ457ga6p7u2qrtq2qDne1M9asMy2z39ftT3vve9NycP3nt9zjkDAJRSyDkj5wznHNq2xcXFBQDAe4+maZBSQs4Z1lpsNht88twfiDHCWosYIwDAOYecM0II+P61t6CUglIKADCOo8Sa5xkVgzMwnfAax1ECMniMETFGGGMQY4RzTuy01vDew1qLnLMEpx8mYq1d3u/7fhVUaw0AuLq6wjAMuLq6EoMnT56IYVVVePToEcLzAX3fi50xBjlnPHz4EMYYKKXgvZfvlVISL8YIfXp6irquDw+0lpfqusb169cluaqqBGLvPa5du4a6ruWedlVVoa5rhBBWkJclSinBWgtd1pVfdl0HrbVAzBqXjowx6PseSimklJBSAgA0TYMYo7zHYESX5YoxLhzouk5qo7VelaOsKwCklMS4dMbAZTDyIMYI770Qu/SZc4ZmsJyz1I9ItG0rp2aCZXI5ZzRNI8nRtvSplFp1CNFUSsE5B73dbrHdbgVivvT48WNYa7HdbtF1nSRFlGKMaJoGl5eXwuzjUwLAMAyw1mKeZ0zThBAC5nmWlj95cOsl0QEiwJZLKeHNb5e2ItEIs9Yafd/jxsu3oIzBHlfkPRlzzqiqCvfv/C3IWGvRdR2stbDWom1bVDFGCcYOYNuwfgyqlAI5E2MUhmd+7oOjEB76pA2Rfvf+YlM551bwl+TKOQupylOwrqXCYR8IvAfQdR26rpNDlMQmtzSJRXi01tKjrHvXdVL/koDHpMPeRpDY+yUJ+eyDn0/w0zvV0gXee8mmJBmdl7I6jqMkJ7JqLdSS1Yr5TB7YwnuPD3/RAHYAzlZ+KwbOOa/a7ODgAL8h2QApDWJE7LoFWmuhilYmR+iH1493ZpkZ2loLonCsePM8C4mYCJO11mIYhgP6TbMkQx/WQoWAnDO89/jh7VRM0xHOOex2O+i2bVe1DCGs1KqqDKZpWsFfJs33QwjSLfM8Q00TlFLY7XaCXt/3gso0TQvqv330/qp25UAKIeCNGxc42UPdFES0+6Df3P1qlRCDjeOIEAJu3z3fzwQFrS1iPKjuZrNZdICQE/5y7vOTkuu9l/qzNKUP1p7c4kDSWouiGmOgtV7+2CL8pA5QmEggJlXOC6012raV94/bchiu8Kq+KfdElmVIKaEClklGtTLGSHBgEZMSiXLKAcDZ2Rl2ux2MMeBuUdc1Tk9PcXZmpLxd14nKksgAlgTojNAca0Mpq03TiJOyNESqRJSsJ3F5WI5159xhHJckYlKlNjDjlJIMJtpxCSEZmdRms4G15/JduXs45zAMw4IAM+MJeHpCxgRIpmMYGYBTlM+4E5aDqBQ3pdSiAxyNTdNgGAYYYxD2IhJCwLTvaWoGl5WUErz3UsJyA/I+QWsgpacxTROqqkJKCSEEQVkpBf37M78ipYTmfL/ZPJXk1Ok04eNnv5agJGXlHEzO2IWAF7/4TpSxLJ1SCtM04ZXb5zI5yy7h4Soy3nsvNSKpSDRjzP5Uh8H0Qv5UJiLry8RL7Wdpy8Asr1IKVblwlrO+/JHC9uQp2BWlEJX7QTnzyfjSjj5zzodpSEda638lcBzw5ngPf6bPVsH+D2Z20mqEA3IgzbqWqsflwTknfXtzvIfjiyXh/2zR//oJdrwV86qstbIFcdulYbmSlddf+Hy1HbH9mqb5FwJd1602LF5ES/OGcFJU6JiD5VJ9eTDeO1/UbpFbEpl+mBQPyDj0z0PLPkDI+GOEz0IIqzFNR7xv23ZV+6qqEEKQeUIdGcdR9kv6dc7hH86k2J2VRTrjAAAAAElFTkSuQmCC"
+    }
+  ]
+}

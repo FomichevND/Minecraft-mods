@@ -1,0 +1,30 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "decorations",
+  "pattern": [
+    "PLI",
+    "BWB",
+    "PIP"
+  ],
+  "key": {
+    "P": {
+      "item": "minecraft:oak_planks"
+    },
+    "L": {
+      "item": "minecraft:lantern"
+    },
+    "B": {
+      "item": "minecraft:oak_log"
+    },
+    "W": {
+      "item": "minecraft:blue_wool"
+    },
+    "I": {
+      "item": "minecraft:iron_ingot"
+    }
+  },
+  "result": {
+    "item": "zoldrax:ternor_forge_bellows",
+    "count": 1
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "decorations",
+  "pattern": [
+    "PLP",
+    "BWB",
+    "SMS"
+  ],
+  "key": {
+    "P": {
+      "item": "minecraft:oak_planks"
+    },
+    "M": {
+      "item": "minecraft:mossy_stone_bricks"
+    },
+    "L": {
+      "item": "minecraft:lantern"
+    },
+    "B": {
+      "item": "minecraft:oak_log"
+    },
+    "W": {
+      "item": "minecraft:blue_wool"
+    },
+    "S": {
+      "item": "minecraft:stone_bricks"
+    }
+  },
+  "result": {
+    "item": "zoldrax:ternor_garden_canopy",
+    "count": 1
+  }
+}

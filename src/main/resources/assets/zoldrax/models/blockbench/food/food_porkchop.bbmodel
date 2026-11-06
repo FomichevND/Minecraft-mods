@@ -1,0 +1,383 @@
+{
+  "meta": {
+    "format_version": "4.10",
+    "model_format": "free",
+    "box_uv": false
+  },
+  "name": "food_porkchop",
+  "resolution": {
+    "width": 32,
+    "height": 32
+  },
+  "elements": [
+    {
+      "name": "meat_cut",
+      "from": [
+        1,
+        0,
+        1
+      ],
+      "to": [
+        9,
+        2,
+        6
+      ],
+      "origin": [
+        5.0,
+        1.0,
+        3.5
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "type": "cube",
+      "uuid": "7d68eaca-f597-521b-b22b-74a2a23c2ca8",
+      "faces": {
+        "north": {
+          "uv": [
+            0.25,
+            0.25,
+            7.75,
+            7.75
+          ],
+          "texture": 0
+        },
+        "south": {
+          "uv": [
+            0.25,
+            0.25,
+            7.75,
+            7.75
+          ],
+          "texture": 0
+        },
+        "east": {
+          "uv": [
+            0.25,
+            0.25,
+            7.75,
+            7.75
+          ],
+          "texture": 0
+        },
+        "west": {
+          "uv": [
+            0.25,
+            0.25,
+            7.75,
+            7.75
+          ],
+          "texture": 0
+        },
+        "up": {
+          "uv": [
+            0.25,
+            0.25,
+            7.75,
+            7.75
+          ],
+          "texture": 0
+        },
+        "down": {
+          "uv": [
+            0.25,
+            0.25,
+            7.75,
+            7.75
+          ],
+          "texture": 0
+        }
+      },
+      "box_uv": false,
+      "zoldrax_group": "body",
+      "zoldrax_emissive": false
+    },
+    {
+      "name": "raised_flesh",
+      "from": [
+        2,
+        2,
+        2
+      ],
+      "to": [
+        8,
+        3.2,
+        5
+      ],
+      "origin": [
+        5.0,
+        2.6,
+        3.5
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "type": "cube",
+      "uuid": "08672fcd-dc67-51cf-980f-8f87591c4f5f",
+      "faces": {
+        "north": {
+          "uv": [
+            8.25,
+            0.25,
+            15.75,
+            7.75
+          ],
+          "texture": 0
+        },
+        "south": {
+          "uv": [
+            8.25,
+            0.25,
+            15.75,
+            7.75
+          ],
+          "texture": 0
+        },
+        "east": {
+          "uv": [
+            8.25,
+            0.25,
+            15.75,
+            7.75
+          ],
+          "texture": 0
+        },
+        "west": {
+          "uv": [
+            8.25,
+            0.25,
+            15.75,
+            7.75
+          ],
+          "texture": 0
+        },
+        "up": {
+          "uv": [
+            8.25,
+            0.25,
+            15.75,
+            7.75
+          ],
+          "texture": 0
+        },
+        "down": {
+          "uv": [
+            8.25,
+            0.25,
+            15.75,
+            7.75
+          ],
+          "texture": 0
+        }
+      },
+      "box_uv": false,
+      "zoldrax_group": "body",
+      "zoldrax_emissive": false
+    },
+    {
+      "name": "chop_lobe",
+      "from": [
+        2,
+        0.5,
+        5
+      ],
+      "to": [
+        7,
+        2.0,
+        7
+      ],
+      "origin": [
+        4.5,
+        1.25,
+        6.0
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "type": "cube",
+      "uuid": "3334c9e1-9e2a-5d61-8fe7-da741c5a6f58",
+      "faces": {
+        "north": {
+          "uv": [
+            0.25,
+            0.25,
+            7.75,
+            7.75
+          ],
+          "texture": 0
+        },
+        "south": {
+          "uv": [
+            0.25,
+            0.25,
+            7.75,
+            7.75
+          ],
+          "texture": 0
+        },
+        "east": {
+          "uv": [
+            0.25,
+            0.25,
+            7.75,
+            7.75
+          ],
+          "texture": 0
+        },
+        "west": {
+          "uv": [
+            0.25,
+            0.25,
+            7.75,
+            7.75
+          ],
+          "texture": 0
+        },
+        "up": {
+          "uv": [
+            0.25,
+            0.25,
+            7.75,
+            7.75
+          ],
+          "texture": 0
+        },
+        "down": {
+          "uv": [
+            0.25,
+            0.25,
+            7.75,
+            7.75
+          ],
+          "texture": 0
+        }
+      },
+      "box_uv": false,
+      "zoldrax_group": "body",
+      "zoldrax_emissive": false
+    },
+    {
+      "name": "fat_rind",
+      "from": [
+        1,
+        1.8,
+        1
+      ],
+      "to": [
+        9,
+        2.2,
+        1.7
+      ],
+      "origin": [
+        5.0,
+        2.0,
+        1.35
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "type": "cube",
+      "uuid": "79763554-5600-5bf3-bd6d-119e0904b17c",
+      "faces": {
+        "north": {
+          "uv": [
+            8.25,
+            16.25,
+            15.75,
+            23.75
+          ],
+          "texture": 0
+        },
+        "south": {
+          "uv": [
+            8.25,
+            16.25,
+            15.75,
+            23.75
+          ],
+          "texture": 0
+        },
+        "east": {
+          "uv": [
+            8.25,
+            16.25,
+            15.75,
+            23.75
+          ],
+          "texture": 0
+        },
+        "west": {
+          "uv": [
+            8.25,
+            16.25,
+            15.75,
+            23.75
+          ],
+          "texture": 0
+        },
+        "up": {
+          "uv": [
+            8.25,
+            16.25,
+            15.75,
+            23.75
+          ],
+          "texture": 0
+        },
+        "down": {
+          "uv": [
+            8.25,
+            16.25,
+            15.75,
+            23.75
+          ],
+          "texture": 0
+        }
+      },
+      "box_uv": false,
+      "zoldrax_group": "body",
+      "zoldrax_emissive": false
+    }
+  ],
+  "outliner": [
+    {
+      "name": "body",
+      "uuid": "794f6e3e-8286-5c7d-85fb-a3359903eaa5",
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "children": [
+        "7d68eaca-f597-521b-b22b-74a2a23c2ca8",
+        "08672fcd-dc67-51cf-980f-8f87591c4f5f",
+        "3334c9e1-9e2a-5d61-8fe7-da741c5a6f58",
+        "79763554-5600-5bf3-bd6d-119e0904b17c"
+      ]
+    }
+  ],
+  "textures": [
+    {
+      "id": "0",
+      "name": "food_porkchop.png",
+      "width": 32,
+      "height": 32,
+      "uv_width": 32,
+      "uv_height": 32,
+      "source": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAFcUlEQVR4nG1XPYslRRQ907eoeq940wszGywsCILBpoIGIiaCgWggqCwaqb/AVHARjIT9A6YaiAYGwkb6DzQRU2E0fb07y77e92qrurumDbrPneq3Fgyvp7s+7j333HNvnfz5/kdj27ZwziGlhLquEULAMAwYxxF37txBSgnOOeScMQwDjDEQEfR9jw9v/YoQgn4XEYgIjDFomgY/vvEORETXOufA0fc9Km6Yc4b3Xg8vJ9Z1DQAQEdR1DWstcs7655zTg0UEANSZYRggIhiGQfegoTlnmMePH0NE4JxDjBEhBHjvsd/vcTgcsNvtdNPSw67r0Pc99vs9cs6w1uocOhNjBABFiChzfUoJ5uzsDDln9fbGjRsQEaxWK+ScsVqt4L2HMQYhBDUWAJqmwWaz0bU0hIYaY+C91/0ZSu5T1zWqEIJuQFhKL8rYE8ZhGNC2rXKB83loSknnlSPnjBACrLVIKSGlhIqwlCSixce/nBtCgDFG4bXWwnu/iH3OGcYYnUd0uD+RqUqSlTEiuXg442iMUdKRrDlntG2rBvCZ/9OxEm1jzJRR2+0W1lr96L3H06dP4ZxD27Y4PT1V4y4uLnQhDd9utxiGAd57PHr0SPny5MkTAECMUQmec0aMEXVdY7fbTQ7l5iE6EZjZy5OZYCfOIe12OLv3UJE5KxAyxmC32+HfV15Dnkk1EwnIGSklxBjx28d/KAIcFzOah8NhCkHXdRozkoOI8JnsLTkxT4AU8edwzqmo8Qz+Oudw98EJRGQioYjo4rqu4ZxTknjvNX6MOeOfZ095uKtr9Z5ZwEzifqVY5ZxhJtQEpSElcWg5F1K2nXPKhTSnJH/LDMk5L/ZwzuG9nzv89O44hZKHUUDIamstqqoC0C1Sp4SahuScIbMSighQyDhT/O6Dk/nNtTEpJVQkFSFp21bhYo4THc5h2pZ8SAURU9sCKSn8ZV0BgB/enupPXdcwnECylGlGz7uuW/CkzHm+d95r/EvxYUi/f2thA0II2O/3MDFGxBh1IcssoY1xMibG+FwlA4DD4QARwTjLs3MOfd+j73sAQFVVKtVlweIZ5q/PPlD5JHOJRNM0ePOlV7VCEh2m5RgjfvnkuxnBy7mc7zUUfd/j1qdAzoC1a/XemEnkqqqasoB9QFnLCWMZa3pPY8tyy3UlUdln0CGGjpJ+dXU1GfB/DOdEGliKDzUg54xnz54t0uzy8lLnj+OIm3P6Hhc8EZmUkC/phYjAe6+hKMtzmQk0ZL1e4+zsDKvVCufn59hsNliv19hsNtpTHFdEnuecu05D7/0C+mMmH9d9jlKsQgiLykojj4WN54UQUHHTkgPlIdZalWe+Y82g1vM9mxYWL+Ba2mksHeG6inCTA8c8KMlTan8pxSU/KGZ0DMBiPfegQ6ZpGi2t/MD6zd9hGMDmVURUN1ikyqaTPQGN3+8jxnFEjHHRd1hrp7rxz+3f0bYt6rpWGe66Dv6mR9M0+Pz8W4ybSc1OC62QrkNVVbDffA07wwsA6xBg5xDkqsLLr99cdMQlyuM4TiQs+8JSikkUPrdtq/3Bi/jqOcku7wjGGHRdh7quFwdzPsmqWcBcpZyGEJSxhJqblxCXpOQgwdg9l8aXXMo5TzrQdZ1Wp2MSlt+Zpre7L7D19xfFiXXk/7oiIsNU5xiGAYY9Py0HoFcq3pREBC/kLzE1jtdeToj0Or9cS0eomuQIv7M1q7z3GifWb8a5bL3LsfX39Zlpx5sTN6fXZSvOuewzRASmvG5xAxoyjqMa9/dwbxEi76csAewibOQNyUappxM8h2cZ1vnD4aBxqapKS/But1PreVEt834cr1BVFcZx1LAxlbkvL7ulgVTS/wCXxxxQwLsUJwAAAABJRU5ErkJggg=="
+    }
+  ]
+}
