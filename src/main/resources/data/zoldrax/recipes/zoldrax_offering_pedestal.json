@@ -1,0 +1,30 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "decorations",
+  "pattern": [
+    "BAB",
+    "NRN",
+    "PPP"
+  ],
+  "key": {
+    "B": {
+      "item": "minecraft:bone"
+    },
+    "A": {
+      "item": "minecraft:amethyst_shard"
+    },
+    "N": {
+      "item": "minecraft:red_nether_bricks"
+    },
+    "R": {
+      "item": "minecraft:redstone"
+    },
+    "P": {
+      "item": "minecraft:polished_blackstone"
+    }
+  },
+  "result": {
+    "item": "zoldrax:zoldrax_offering_pedestal",
+    "count": 1
+  }
+}

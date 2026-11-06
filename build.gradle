@@ -1,5 +1,5 @@
 plugins { id 'fabric-loom' version '1.6.12' }
-version = '1.10.0'
+version = '1.11.0'
 group = 'ru.zoldrax'
 base { archivesName = 'zoldrax-monument' }
 repositories { mavenCentral() }
@@ -24,6 +24,14 @@ loom {
   zoldrax_test { sourceSet sourceSets.gametest }
  }
  runs {
+  decorPreview {
+   client()
+   source sourceSets.gametest
+   vmArg "-Dzoldrax.decorPreview=true"
+   vmArg "-Dzoldrax.decorIconOnly=${project.hasProperty('decorIconOnly')}"
+   runDir "build/decor-client"
+   programArgs "--quickPlaySingleplayer", "DecorReview", "--width", "1280", "--height", "900"
+  }
   gametest {
    server()
    name 'Construction integration tests'
@@ -34,5 +42,14 @@ loom {
    programArg '--world'
    programArg "isolated-test-${System.currentTimeMillis()}"
   }
+ }
+}
+
+// Keep the earlier exhaustive terrain frequency benchmark available separately.
+tasks.named('processGametestResources') {
+ inputs.property('skipFrequency', project.hasProperty('skipFrequency'))
+ inputs.property('decorOnly', project.hasProperty('decorOnly'))
+ filesMatching('fabric.mod.json') {
+  filter { line -> (project.hasProperty('skipFrequency') && line.contains('ru.zoldrax.MonkeyGenerationTests')) || (project.hasProperty('decorOnly') && line.contains('ru.zoldrax.') && !line.contains('DecorTests') && !line.contains('DecorClientPreview')) ? null : line }
  }
 }

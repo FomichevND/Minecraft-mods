@@ -14,7 +14,11 @@
       "ru.zoldrax.CultSiteTests",
       "ru.zoldrax.MonkeyFollowerTests",
       "ru.zoldrax.MonkeyGenerationTests",
-      "ru.zoldrax.MonkeyBuildingTests"
+      "ru.zoldrax.MonkeyBuildingTests",
+      "ru.zoldrax.DecorTests"
+    ],
+    "client": [
+      "ru.zoldrax.DecorClientPreview"
     ]
   },
   "depends": {

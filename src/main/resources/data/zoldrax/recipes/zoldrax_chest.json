@@ -1,0 +1,33 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "decorations",
+  "pattern": [
+    "BIB",
+    "NWN",
+    "PCP"
+  ],
+  "key": {
+    "B": {
+      "item": "minecraft:bone"
+    },
+    "I": {
+      "item": "minecraft:iron_ingot"
+    },
+    "N": {
+      "item": "minecraft:red_nether_bricks"
+    },
+    "W": {
+      "item": "minecraft:chest"
+    },
+    "C": {
+      "item": "minecraft:chain"
+    },
+    "P": {
+      "item": "minecraft:polished_blackstone"
+    }
+  },
+  "result": {
+    "item": "zoldrax:zoldrax_chest",
+    "count": 1
+  }
+}

@@ -3,6 +3,7 @@ import net.fabricmc.api.ClientModInitializer;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactories;
 public class ZoldraxClient implements ClientModInitializer {
  public void onInitializeClient() {
+  DecorRenderer.register();
   net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry.register(Zoldrax.BANANA_HERALD,ctx->new MonkeyFollowerRenderer(ctx,"banana_herald"));
   net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry.register(Zoldrax.TEMPLE_GATHERER,ctx->new MonkeyFollowerRenderer(ctx,"temple_gatherer"));
   net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry.register(Zoldrax.CHAIN_PUNISHER,ctx->new CultistRenderer(ctx,"chain_punisher"));

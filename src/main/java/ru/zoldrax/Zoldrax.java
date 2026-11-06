@@ -28,6 +28,7 @@ public class Zoldrax implements ModInitializer {
  public static final Item HERALD_HORN=new Item(new Item.Settings().maxCount(1));
  public static final Item HARVEST_MACHETE=new Item(new Item.Settings().maxCount(1));
  public void onInitialize() {
+  DecorBlocks.register();
   Registry.register(Registries.STRUCTURE_TYPE,new Identifier("zoldrax","monkey_settlement"),MonkeySettlementStructure.TYPE);
   Registry.register(Registries.STRUCTURE_TYPE,new Identifier("zoldrax","monkey_building"),MonkeyBuildingStructure.TYPE);
   Registry.register(Registries.BANNER_PATTERN,new Identifier("zoldrax","banana"),new net.minecraft.block.entity.BannerPattern("zbanana"));

@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "decorations",
+  "pattern": [
+    " C ",
+    "BLB",
+    " N "
+  ],
+  "key": {
+    "C": {
+      "item": "minecraft:chain"
+    },
+    "B": {
+      "item": "minecraft:bone"
+    },
+    "L": {
+      "item": "minecraft:lantern"
+    },
+    "N": {
+      "item": "minecraft:red_nether_bricks"
+    }
+  },
+  "result": {
+    "item": "zoldrax:zoldrax_chain_lantern",
+    "count": 1
+  }
+}

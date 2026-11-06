@@ -1,0 +1,30 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "decorations",
+  "pattern": [
+    " B ",
+    "RCR",
+    "PAP"
+  ],
+  "key": {
+    "B": {
+      "item": "minecraft:bone_block"
+    },
+    "R": {
+      "item": "minecraft:redstone"
+    },
+    "C": {
+      "item": "minecraft:chain"
+    },
+    "P": {
+      "item": "minecraft:polished_blackstone"
+    },
+    "A": {
+      "item": "minecraft:amethyst_shard"
+    }
+  },
+  "result": {
+    "item": "zoldrax:zoldrax_skull_lamp",
+    "count": 1
+  }
+}

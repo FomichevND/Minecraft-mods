@@ -1,0 +1,33 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "decorations",
+  "pattern": [
+    "BCB",
+    "SWS",
+    "PIP"
+  ],
+  "key": {
+    "B": {
+      "item": "minecraft:bone_block"
+    },
+    "C": {
+      "item": "minecraft:chain"
+    },
+    "S": {
+      "item": "minecraft:polished_blackstone_bricks"
+    },
+    "W": {
+      "item": "minecraft:red_wool"
+    },
+    "P": {
+      "item": "minecraft:polished_blackstone"
+    },
+    "I": {
+      "item": "minecraft:iron_ingot"
+    }
+  },
+  "result": {
+    "item": "zoldrax:zoldrax_throne",
+    "count": 1
+  }
+}

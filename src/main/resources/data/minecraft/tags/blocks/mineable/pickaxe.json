@@ -1,0 +1,21 @@
+{
+  "replace": false,
+  "values": [
+    "zoldrax:zoldrax_throne",
+    "zoldrax:zoldrax_throne_part",
+    "zoldrax:zoldrax_brazier",
+    "zoldrax:zoldrax_brazier_part",
+    "zoldrax:zoldrax_skull_lamp",
+    "zoldrax:zoldrax_skull_lamp_part",
+    "zoldrax:zoldrax_chain_lantern",
+    "zoldrax:zoldrax_chain_lantern_part",
+    "zoldrax:zoldrax_weapon_rack",
+    "zoldrax:zoldrax_weapon_rack_part",
+    "zoldrax:zoldrax_chest",
+    "zoldrax:zoldrax_chest_part",
+    "zoldrax:zoldrax_lectern",
+    "zoldrax:zoldrax_lectern_part",
+    "zoldrax:zoldrax_offering_pedestal",
+    "zoldrax:zoldrax_offering_pedestal_part"
+  ]
+}

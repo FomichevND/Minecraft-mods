@@ -1,0 +1,12 @@
+{
+  "replace": false,
+  "values": [
+    "minecraft:book",
+    "minecraft:writable_book",
+    "minecraft:written_book",
+    {
+      "id": "#c:scrolls",
+      "required": false
+    }
+  ]
+}

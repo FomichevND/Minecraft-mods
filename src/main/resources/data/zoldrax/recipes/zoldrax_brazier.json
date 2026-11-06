@@ -1,0 +1,30 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "decorations",
+  "pattern": [
+    "BCB",
+    "NAN",
+    "PPP"
+  ],
+  "key": {
+    "B": {
+      "item": "minecraft:bone"
+    },
+    "C": {
+      "item": "minecraft:chain"
+    },
+    "N": {
+      "item": "minecraft:red_nether_bricks"
+    },
+    "A": {
+      "item": "minecraft:campfire"
+    },
+    "P": {
+      "item": "minecraft:polished_blackstone"
+    }
+  },
+  "result": {
+    "item": "zoldrax:zoldrax_brazier",
+    "count": 1
+  }
+}
