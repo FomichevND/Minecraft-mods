@@ -19,6 +19,13 @@ public final class FoodDisplayModelRegistry {
  public static void reload(){CACHE.clear();MODELS.keySet().removeIf(id->!CUSTOM.contains(id));loaded=false;}
  private static void load(){if(loaded)return;loaded=true;try(var reader=new java.io.InputStreamReader(MinecraftClient.getInstance().getResourceManager().getResource(DecorBlocks.id("food_models.json")).orElseThrow().getInputStream(),java.nio.charset.StandardCharsets.UTF_8)){var json=JsonParser.parseReader(reader).getAsJsonObject();for(var e:json.entrySet())MODELS.putIfAbsent(new Identifier(e.getKey()),e.getValue().getAsString());}catch(java.io.IOException e){throw new IllegalStateException(e);}}
  public static boolean hasModel(Item item){load();return MODELS.containsKey(Registries.ITEM.getId(item))||EXTERNAL.containsKey(Registries.ITEM.getId(item));}
+ public static void renderBasket(ItemStack stack,double x,double y,double z,float size,MatrixStack matrices,VertexConsumerProvider vertices,int light,int overlay,World world){
+  load();var name=MODELS.get(Registries.ITEM.getId(stack.getItem()));var external=EXTERNAL.get(Registries.ITEM.getId(stack.getItem()));
+  if(name==null&&external==null){render(stack,new FoodDisplaySlots.Slot(x,y,z,0,size,false),matrices,vertices,light,overlay,world);return;}
+  var mesh=external!=null?CACHE.computeIfAbsent(external[0].toString(),n->new DecorRenderer.Mesh(external[0],external[1])):CACHE.computeIfAbsent(name,n->new DecorRenderer.Mesh("food",n));
+  matrices.push();matrices.translate(x,y,z);float horizontal=size/Math.max(mesh.width,mesh.depth);float vertical=Math.min(horizontal*1.8f,.36f/(mesh.maxY-mesh.minY));matrices.scale(size/mesh.width,vertical,size/mesh.depth);matrices.translate(-mesh.cx,-mesh.minY,-mesh.cz);
+  for(var group:mesh.groups.keySet())mesh.render(group,matrices,vertices,light,overlay,false);matrices.pop();
+ }
  public static void render(ItemStack stack,FoodDisplaySlots.Slot slot,MatrixStack matrices,VertexConsumerProvider vertices,int light,int overlay,World world){
   load();matrices.push();matrices.translate(slot.x(),slot.y(),slot.z());var name=MODELS.get(Registries.ITEM.getId(stack.getItem()));
   var external=EXTERNAL.get(Registries.ITEM.getId(stack.getItem()));

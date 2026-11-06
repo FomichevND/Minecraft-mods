@@ -21,7 +21,8 @@
     ],
     "client": [
       "ru.zoldrax.DecorClientPreview",
-      "ru.zoldrax.MonkeyDecorClientPreview"
+      "ru.zoldrax.MonkeyDecorClientPreview",
+      "ru.zoldrax.DecorLightingPreview"
     ]
   },
   "depends": {
