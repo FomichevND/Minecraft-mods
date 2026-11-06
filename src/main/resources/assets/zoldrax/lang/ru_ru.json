@@ -55,5 +55,22 @@
   "block.zoldrax.monkey_king_notice_board": "Доска указов глашатая",
   "tooltip.zoldrax.monkey_king_notice_board": "ПКМ — использовать или положить предмет; Shift + ПКМ пустой рукой — забрать.",
   "block.zoldrax.monkey_king_festival_drum": "Барабан праздника",
-  "tooltip.zoldrax.monkey_king_festival_drum": "ПКМ — использовать или положить предмет; Shift + ПКМ пустой рукой — забрать."
+  "tooltip.zoldrax.monkey_king_festival_drum": "ПКМ — использовать или положить предмет; Shift + ПКМ пустой рукой — забрать.",
+  "itemGroup.zoldrax.ternor_decor": "Поселение Тернора",
+  "block.zoldrax.ternor_garden_canopy": "Садовый навес Тернора",
+  "tooltip.zoldrax.ternor_garden_canopy": "ПКМ растением — посадить; Shift+ПКМ пустой рукой — забрать.",
+  "block.zoldrax.ternor_storage_shelf": "Складской стеллаж Тернора",
+  "tooltip.zoldrax.ternor_storage_shelf": "ПКМ — 27 слотов хранения.",
+  "block.zoldrax.ternor_animal_feeder": "Кормушка Тернора",
+  "tooltip.zoldrax.ternor_animal_feeder": "ПКМ — 9 слотов корма; обслуживает коров, овец и свиней.",
+  "block.zoldrax.ternor_animal_trough": "Поилка Тернора",
+  "tooltip.zoldrax.ternor_animal_trough": "Ведро воды — наполнить. Животные пьют с ограничением частоты.",
+  "block.zoldrax.ternor_stone_forge": "Каменный очаг-кузня",
+  "tooltip.zoldrax.ternor_stone_forge": "ПКМ — ремонт за материалы и опыт; Shift+ПКМ — плавка.",
+  "block.zoldrax.ternor_forge_bellows": "Кузнечные меха Тернора",
+  "tooltip.zoldrax.ternor_forge_bellows": "ПКМ — один цикл и 10 секунд ускорения ближайшей кузни.",
+  "block.zoldrax.ternor_quenching_tub": "Закалочная бадья",
+  "tooltip.zoldrax.ternor_quenching_tub": "Ведро — наполнить; ПКМ горячим слитком — закалить.",
+  "tooltip.zoldrax.hot_blank": "Горячая заготовка: закалите в бадье до остывания.",
+  "tooltip.zoldrax.tempered": "Закалено в бадье Тернора."
 }

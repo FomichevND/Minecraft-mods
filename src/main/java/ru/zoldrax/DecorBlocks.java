@@ -33,6 +33,7 @@ public final class DecorBlocks {
  private static final Map<String,VoxelShape> SHAPES=new java.util.concurrent.ConcurrentHashMap<>();
  public static Identifier id(String path){return new Identifier("zoldrax",path);}
  public static void register(){
+  QuenchingRecipe.register();
   for(var kind:DecorKind.values()){
    var block=Registry.register(Registries.BLOCK,id(kind.id),new DecorBlock(kind));BLOCKS.put(kind,block);
    PARTS.put(kind,Registry.register(Registries.BLOCK,id(kind.id+"_part"),new DecorBaseBlock(kind)));
@@ -41,13 +42,14 @@ public final class DecorBlocks {
   ENTITY=Registry.register(Registries.BLOCK_ENTITY_TYPE,id("cult_decor"),FabricBlockEntityTypeBuilder.create(DecorBlockEntity::new,BLOCKS.values().toArray(Block[]::new)).build());
   Registry.register(Registries.ENTITY_TYPE,id("decor_seat"),SEAT);
   Registry.register(Registries.SOUND_EVENT,CHEST_OPEN.getId(),CHEST_OPEN);Registry.register(Registries.SOUND_EVENT,CHEST_CLOSE.getId(),CHEST_CLOSE);
-  Registry.register(Registries.ITEM_GROUP,GROUP,FabricItemGroup.builder().displayName(Text.translatable("itemGroup.zoldrax.cult_decor")).icon(()->new ItemStack(BLOCKS.get(DecorKind.THRONE))).entries((context,entries)->{for(var kind:DecorKind.values())if(!kind.monkey())entries.add(BLOCKS.get(kind));}).build());
+  Registry.register(Registries.ITEM_GROUP,GROUP,FabricItemGroup.builder().displayName(Text.translatable("itemGroup.zoldrax.cult_decor")).icon(()->new ItemStack(BLOCKS.get(DecorKind.THRONE))).entries((context,entries)->{for(var kind:DecorKind.values())if(!kind.monkey()&&!kind.ternor())entries.add(BLOCKS.get(kind));}).build());
   Registry.register(Registries.ITEM_GROUP,RegistryKey.of(RegistryKeys.ITEM_GROUP,id("monkey_decor")),FabricItemGroup.builder().displayName(Text.translatable("itemGroup.zoldrax.monkey_decor")).icon(()->new ItemStack(BLOCKS.get(DecorKind.FOOD_SHELF))).entries((context,entries)->{for(var kind:DecorKind.values())if(kind.monkey())entries.add(BLOCKS.get(kind));}).build());
+  Registry.register(Registries.ITEM_GROUP,RegistryKey.of(RegistryKeys.ITEM_GROUP,id("ternor_decor")),FabricItemGroup.builder().displayName(Text.translatable("itemGroup.zoldrax.ternor_decor")).icon(()->new ItemStack(BLOCKS.get(DecorKind.STONE_FORGE))).entries((context,entries)->{for(var kind:DecorKind.values())if(kind.ternor())entries.add(BLOCKS.get(kind));}).build());
   // Vanilla bypasses block use while sneaking with an item. These retrieval actions
   // must still work with a nonempty hand, without swapping a player's hand stack.
   UseBlockCallback.EVENT.register((player,world,hand,hit)->{
    var state=world.getBlockState(hit.getBlockPos());
-   if(player.isSneaking()&&state.getBlock() instanceof DecorBaseBlock block&&(block.kind==DecorKind.LECTERN||block.kind==DecorKind.OFFERING_PEDESTAL||block.kind==DecorKind.CHAIN_LANTERN||block.kind==DecorKind.THRONE||block.kind.monkey()))return block.onUse(state,world,hit.getBlockPos(),player,hand,hit);
+   if(player.isSneaking()&&state.getBlock() instanceof DecorBaseBlock block&&(block.kind==DecorKind.LECTERN||block.kind==DecorKind.OFFERING_PEDESTAL||block.kind==DecorKind.CHAIN_LANTERN||block.kind==DecorKind.THRONE||block.kind.monkey()||block.kind.ternor()))return block.onUse(state,world,hit.getBlockPos(),player,hand,hit);
    return ActionResult.PASS;
   });
  }
@@ -74,7 +76,7 @@ public final class DecorBlocks {
     for(var b:collision?DecorGeometry.LANTERN_STATIC_COLLISION:DecorGeometry.LANTERN_STATIC)boxes.add(b);
     for(var b:collision?DecorGeometry.LANTERN_CAGE_COLLISION:DecorGeometry.LANTERN_CAGE){var c=b.clone();c[1]-=16*(length-1);c[4]-=16*(length-1);boxes.add(c);}
     if(!collision&&length==2)for(var b:DecorGeometry.LANTERN_EXTENSION)boxes.add(b);
-   }else Collections.addAll(boxes,kind.monkey()?(collision?MonkeyDecorGeometry.COLLISION[kind.ordinal()-8]:MonkeyDecorGeometry.OUTLINE[kind.ordinal()-8]):(collision?DecorGeometry.COLLISION[kind.ordinal()]:DecorGeometry.OUTLINE[kind.ordinal()]));
+   }else Collections.addAll(boxes,kind.ternor()?(collision?TernorDecorGeometry.COLLISION[kind.ordinal()-16]:TernorDecorGeometry.OUTLINE[kind.ordinal()-16]):kind.monkey()?(collision?MonkeyDecorGeometry.COLLISION[kind.ordinal()-8]:MonkeyDecorGeometry.OUTLINE[kind.ordinal()-8]):(collision?DecorGeometry.COLLISION[kind.ordinal()]:DecorGeometry.OUTLINE[kind.ordinal()]));
    for(var b:boxes){double minX=99,minZ=99,maxX=-99,maxZ=-99;
     for(double x:new double[]{b[0]/16,b[3]/16})for(double z:new double[]{b[2]/16,b[5]/16}){var p=point(BlockPos.ORIGIN,facing,x,0,z);minX=Math.min(minX,p.x);maxX=Math.max(maxX,p.x);minZ=Math.min(minZ,p.z);maxZ=Math.max(maxZ,p.z);}
     double x0=Math.max(0,minX-offset.getX()),x1=Math.min(1,maxX-offset.getX()),y0=Math.max(0,b[1]/16-offset.getY()),y1=Math.min(1,b[4]/16-offset.getY()),z0=Math.max(0,minZ-offset.getZ()),z1=Math.min(1,maxZ-offset.getZ());

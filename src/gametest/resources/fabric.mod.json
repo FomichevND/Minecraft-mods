@@ -17,12 +17,14 @@
       "ru.zoldrax.MonkeyBuildingTests",
       "ru.zoldrax.DecorTests",
       "ru.zoldrax.MonkeyDecorTests",
-      "ru.zoldrax.MonkeyFoodCatalogTests"
+      "ru.zoldrax.MonkeyFoodCatalogTests",
+      "ru.zoldrax.TernorDecorTests"
     ],
     "client": [
       "ru.zoldrax.DecorClientPreview",
       "ru.zoldrax.MonkeyDecorClientPreview",
-      "ru.zoldrax.DecorLightingPreview"
+      "ru.zoldrax.DecorLightingPreview",
+      "ru.zoldrax.TernorDecorClientPreview"
     ]
   },
   "depends": {

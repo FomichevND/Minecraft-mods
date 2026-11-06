@@ -1,0 +1,13 @@
+{
+  "type": "zoldrax:quenching",
+  "ingredient": {
+    "item": "minecraft:copper_ingot"
+  },
+  "result": {
+    "item": "minecraft:copper_ingot",
+    "count": 1
+  },
+  "water": 1,
+  "require_hot": true,
+  "tempered": true
+}

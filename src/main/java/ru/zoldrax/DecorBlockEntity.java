@@ -20,6 +20,7 @@ import net.minecraft.util.math.*;
 public final class DecorBlockEntity extends BlockEntity implements SidedInventory,NamedScreenHandlerFactory {
  public final DecorKind kind;
  private final DefaultedList<ItemStack> inventory;
+ public final TernorDecorLogic ternor=new TernorDecorLogic(this);
  private DecorSeatEntity seatAnchor;
  private final DecorSeatEntity[] benchSeats=new DecorSeatEntity[2];
  private final Map<UUID,Map<Integer,Integer>> mapViewers=new HashMap<>();
@@ -32,6 +33,7 @@ public final class DecorBlockEntity extends BlockEntity implements SidedInventor
   if(world==null||world.isClient)return ActionResult.SUCCESS;
   if(player.isSpectator())return ActionResult.CONSUME;
   var held=player.getStackInHand(hand);
+  if(kind.ternor())return ternor.use(player,hand);
   if(kind.monkey())return useMonkey(player,hand);
   switch(kind){
    case THRONE->{
@@ -119,16 +121,16 @@ public final class DecorBlockEntity extends BlockEntity implements SidedInventor
  @Override public ItemStack removeStack(int slot,int amount){var stack=Inventories.splitStack(inventory,slot,amount);if(!stack.isEmpty())changed();return stack;}
  @Override public ItemStack removeStack(int slot){var stack=Inventories.removeStack(inventory,slot);if(!stack.isEmpty())changed();return stack;}
  @Override public void setStack(int slot,ItemStack stack){inventory.set(slot,stack);if(stack.getCount()>getMaxCountPerStack())stack.setCount(getMaxCountPerStack());changed();}
- @Override public int getMaxCountPerStack(){return kind==DecorKind.CHEST||kind==DecorKind.SUPPLY_BASKET?64:1;}
+ @Override public int getMaxCountPerStack(){return kind==DecorKind.CHEST||kind==DecorKind.SUPPLY_BASKET||kind==DecorKind.STORAGE_SHELF||kind==DecorKind.ANIMAL_FEEDER||kind==DecorKind.STONE_FORGE?64:1;}
  @Override public boolean canPlayerUse(PlayerEntity player){return world!=null&&world.getBlockEntity(pos)==this&&player.squaredDistanceTo(pos.getX()+.5,pos.getY()+.5,pos.getZ()+.5)<64;}
- @Override public boolean isValid(int slot,ItemStack stack){return switch(kind){case WEAPON_RACK->stack.isIn(DecorBlocks.WEAPONS);case LECTERN->stack.isIn(DecorBlocks.BOOKS);case OFFERING_PEDESTAL,CHEST->true;case FOOD_SHELF,PREPARATION_TABLE,DRYING_RACK,SUPPLY_BASKET->FoodDisplaySlots.acceptsFood(stack);case NOTICE_BOARD->isDocument(stack);default->false;};}
+ @Override public boolean isValid(int slot,ItemStack stack){if(kind.ternor())return ternor.accepts(slot,stack);return switch(kind){case WEAPON_RACK->stack.isIn(DecorBlocks.WEAPONS);case LECTERN->stack.isIn(DecorBlocks.BOOKS);case OFFERING_PEDESTAL,CHEST->true;case FOOD_SHELF,PREPARATION_TABLE,DRYING_RACK,SUPPLY_BASKET->FoodDisplaySlots.acceptsFood(stack);case NOTICE_BOARD->isDocument(stack);default->false;};}
  @Override public void clear(){inventory.clear();page=0;changed();}
- @Override public int[] getAvailableSlots(Direction side){if(kind!=DecorKind.CHEST)return new int[0];int[] slots=new int[27];for(int i=0;i<27;i++)slots[i]=i;return slots;}
- @Override public boolean canInsert(int slot,ItemStack stack,Direction dir){return kind==DecorKind.CHEST;}
- @Override public boolean canExtract(int slot,ItemStack stack,Direction dir){return kind==DecorKind.CHEST;}
+ @Override public int[] getAvailableSlots(Direction side){if(kind!=DecorKind.CHEST&&kind!=DecorKind.STORAGE_SHELF&&kind!=DecorKind.ANIMAL_FEEDER&&kind!=DecorKind.STONE_FORGE)return new int[0];int[] slots=new int[size()];for(int i=0;i<slots.length;i++)slots[i]=i;return slots;}
+ @Override public boolean canInsert(int slot,ItemStack stack,Direction dir){return kind==DecorKind.CHEST||kind==DecorKind.STORAGE_SHELF||kind==DecorKind.ANIMAL_FEEDER&&isValid(slot,stack)||kind==DecorKind.STONE_FORGE&&slot!=2&&isValid(slot,stack);}
+ @Override public boolean canExtract(int slot,ItemStack stack,Direction dir){return kind==DecorKind.CHEST||kind==DecorKind.STORAGE_SHELF||kind==DecorKind.ANIMAL_FEEDER||kind==DecorKind.STONE_FORGE&&slot==2;}
  private int pageCount(){var tag=size()==0?null:getStack(bookSlot).getNbt();return tag==null?1:Math.max(1,tag.getList("pages",8).size());}
  @Override public Text getDisplayName(){return Text.translatable("block.zoldrax."+kind.id);}
- @Override public ScreenHandler createMenu(int syncId,PlayerInventory playerInventory,PlayerEntity player){return kind==DecorKind.CHEST?GenericContainerScreenHandler.createGeneric9x3(syncId,playerInventory,this):kind==DecorKind.SUPPLY_BASKET?new Generic3x3ContainerScreenHandler(syncId,playerInventory,this):kind==DecorKind.NOTICE_BOARD?new LecternScreenHandler(syncId,documentInventory(),pages):kind==DecorKind.LECTERN?new LecternScreenHandler(syncId,this,pages):null;}
+ @Override public ScreenHandler createMenu(int syncId,PlayerInventory playerInventory,PlayerEntity player){if(kind.ternor())return ternor.menu(syncId,playerInventory,player);return kind==DecorKind.CHEST?GenericContainerScreenHandler.createGeneric9x3(syncId,playerInventory,this):kind==DecorKind.SUPPLY_BASKET?new Generic3x3ContainerScreenHandler(syncId,playerInventory,this):kind==DecorKind.NOTICE_BOARD?new LecternScreenHandler(syncId,documentInventory(),pages):kind==DecorKind.LECTERN?new LecternScreenHandler(syncId,this,pages):null;}
  @Override public void onOpen(PlayerEntity player){if(kind==DecorKind.CHEST&&world!=null&&!world.isClient&&!player.isSpectator()){boolean wasEmpty=viewers.isEmpty();if(viewers.add(player.getUuid())){sendViewers();if(wasEmpty)world.playSound(null,pos,DecorBlocks.CHEST_OPEN,SoundCategory.BLOCKS,.6f,.85f);}}}
  @Override public void onClose(PlayerEntity player){if(kind==DecorKind.CHEST&&world!=null&&!world.isClient&&viewers.remove(player.getUuid())){sendViewers();if(viewers.isEmpty())world.playSound(null,pos,DecorBlocks.CHEST_CLOSE,SoundCategory.BLOCKS,.5f,.85f);}}
  private void sendViewers(){world.addSyncedBlockEvent(pos,getCachedState().getBlock(),1,viewers.size());}
@@ -137,15 +139,15 @@ public final class DecorBlockEntity extends BlockEntity implements SidedInventor
   var nearby=sw.getPlayers(p->p.squaredDistanceTo(Vec3d.ofCenter(pos))<4096);mapViewers.keySet().removeIf(id->nearby.stream().noneMatch(p->p.getUuid().equals(id)));
   for(var stack:inventory)if(stack.isOf(Items.FILLED_MAP)){var id=FilledMapItem.getMapId(stack);var map=id==null?null:FilledMapItem.getMapState(id,world);if(map==null)continue;var icons=new ArrayList<net.minecraft.item.map.MapIcon>();map.getIcons().forEach(icons::add);int hash=31*Arrays.hashCode(map.colors)+icons.hashCode();for(var player:nearby){var sent=mapViewers.computeIfAbsent(player.getUuid(),key->new HashMap<>());if(!Objects.equals(sent.put(id,hash),hash))player.networkHandler.sendPacket(new net.minecraft.network.packet.s2c.play.MapUpdateS2CPacket(id,map.scale,map.locked,icons,new net.minecraft.item.map.MapState.UpdateData(0,0,128,128,map.colors.clone())));}}
  }
- public void serverTick(){if(world.getTime()%20==0)syncNoticeMaps();
+ public void serverTick(){if(kind.ternor())ternor.tick();if(world.getTime()%20==0)syncNoticeMaps();
  if(world.getTime()%20==0&&!viewers.isEmpty()&&world instanceof ServerWorld sw){boolean changed=viewers.removeIf(id->{var p=sw.getServer().getPlayerManager().getPlayer(id);return p==null||!p.isAlive()||!(p.currentScreenHandler instanceof GenericContainerScreenHandler handler)||handler.getInventory()!=this;});if(changed)sendViewers();}}
  public void clientTick(){if(strikeTicks>0)strikeTicks--;previousLid=lid;float target=clientViewers>0?1:0;lid=net.minecraft.util.math.MathHelper.clamp(lid+(target>lid?.12f:-.12f),0,1);}
- @Override public boolean onSyncedBlockEvent(int type,int data){if(type==2){strikeTicks=12;return true;}if(type==1){clientViewers=data;return true;}return super.onSyncedBlockEvent(type,data);}
+ @Override public boolean onSyncedBlockEvent(int type,int data){if(type==3){strikeTicks=16;return true;}if(type==4){strikeTicks=12;return true;}if(type==2){strikeTicks=12;return true;}if(type==1){clientViewers=data;return true;}return super.onSyncedBlockEvent(type,data);}
  public int viewerCount(){return world!=null&&world.isClient?clientViewers:viewers.size();}
  public void changed(){markDirty();syncNoticeMaps();if(world!=null){world.updateListeners(pos,getCachedState(),getCachedState(),Block.NOTIFY_LISTENERS);for(int i=0;i<kind.cells(getCachedState().get(DecorBaseBlock.LENGTH));i++){var cell=pos.add(DecorBlocks.offset(kind,i,getCachedState().get(DecorBaseBlock.FACING)));world.updateComparators(cell,world.getBlockState(cell).getBlock());}}}
  public void dropContents(){if(world==null||world.isClient)return;for(var seat:benchSeats)if(seat!=null)seat.discard();if(seatAnchor!=null){seatAnchor.discard();seatAnchor=null;}ItemScatterer.spawn(world,pos,this);inventory.clear();viewers.clear();}
- @Override protected void writeNbt(NbtCompound n){super.writeNbt(n);Inventories.writeNbt(n,inventory);n.putInt("Page",page);n.putInt("BookSlot",bookSlot);}
- @Override public void readNbt(NbtCompound n){super.readNbt(n);inventory.clear();Inventories.readNbt(n,inventory);bookSlot=Math.max(0,Math.min(Math.max(0,size()-1),n.getInt("BookSlot")));page=Math.max(0,Math.min(n.getInt("Page"),pageCount()-1));if(n.contains("Viewers"))clientViewers=n.getInt("Viewers");}
+ @Override protected void writeNbt(NbtCompound n){super.writeNbt(n);Inventories.writeNbt(n,inventory);if(kind.ternor())ternor.write(n);n.putInt("Page",page);n.putInt("BookSlot",bookSlot);}
+ @Override public void readNbt(NbtCompound n){super.readNbt(n);inventory.clear();Inventories.readNbt(n,inventory);if(kind.ternor())ternor.read(n);bookSlot=Math.max(0,Math.min(Math.max(0,size()-1),n.getInt("BookSlot")));page=Math.max(0,Math.min(n.getInt("Page"),pageCount()-1));if(n.contains("Viewers"))clientViewers=n.getInt("Viewers");}
  @Override public NbtCompound toInitialChunkDataNbt(){var n=createNbt();if(kind==DecorKind.CHEST)n.remove("Items");n.putInt("Viewers",viewerCount());return n;}
  @Override public BlockEntityUpdateS2CPacket toUpdatePacket(){return BlockEntityUpdateS2CPacket.create(this,entity->toInitialChunkDataNbt());}
 }

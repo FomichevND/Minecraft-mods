@@ -1,0 +1,13 @@
+{
+  "type": "zoldrax:quenching",
+  "ingredient": {
+    "item": "minecraft:iron_ingot"
+  },
+  "result": {
+    "item": "minecraft:iron_ingot",
+    "count": 1
+  },
+  "water": 1,
+  "require_hot": true,
+  "tempered": true
+}

@@ -21,11 +21,11 @@ import net.minecraft.sound.*;
 public class DecorBaseBlock extends Block implements InventoryProvider {
  public static final DirectionProperty FACING=Properties.HORIZONTAL_FACING;
  public static final BooleanProperty LIT=Properties.LIT;
- public static final IntProperty PART=IntProperty.of("part",0,15),LENGTH=IntProperty.of("chain_length",1,2);
+ public static final IntProperty PART=IntProperty.of("part",0,31),LENGTH=IntProperty.of("chain_length",1,2);
  public final DecorKind kind;
  public DecorBaseBlock(DecorKind kind){
   super(AbstractBlock.Settings.create().strength(3.5f,9).pistonBehavior(net.minecraft.block.piston.PistonBehavior.BLOCK).nonOpaque().dynamicBounds().sounds(kind.monkey()?BlockSoundGroup.WOOD:BlockSoundGroup.DEEPSLATE_TILES).luminance(s->s.get(LIT)&&s.get(PART)==kind.emitter(s.get(LENGTH))?kind.light:0));
-  this.kind=kind;setDefaultState(getStateManager().getDefaultState().with(FACING,Direction.SOUTH).with(PART,0).with(LENGTH,1).with(LIT,true));
+  this.kind=kind;setDefaultState(getStateManager().getDefaultState().with(FACING,Direction.SOUTH).with(PART,0).with(LENGTH,1).with(LIT,kind!=DecorKind.STONE_FORGE&&kind!=DecorKind.BELLOWS));
  }
  @Override protected void appendProperties(StateManager.Builder<Block,BlockState> builder){builder.add(FACING,LIT,PART,LENGTH);}
  @Override public BlockRenderType getRenderType(BlockState state){return BlockRenderType.INVISIBLE;}
@@ -57,11 +57,13 @@ public class DecorBaseBlock extends Block implements InventoryProvider {
  @Override public BlockState getStateForNeighborUpdate(BlockState state,Direction direction,BlockState neighbor,WorldAccess world,BlockPos pos,BlockPos neighborPos){
   var root=DecorBlocks.root(pos,state);
   if(state.get(PART)>0){
-   if(world.isChunkLoaded(root)){var master=world.getBlockState(root);if(master.getBlock()!=DecorBlocks.BLOCKS.get(kind))return Blocks.AIR.getDefaultState();}
+   // Structure templates load ordinary part blocks before the root block entity.
+   // Defer orphan validation by one tick so generated multiblocks can link up.
+   if(world.isChunkLoaded(root)&&world.getBlockState(root).getBlock()!=DecorBlocks.BLOCKS.get(kind))world.scheduleBlockTick(pos,this,1);
   }else if(!canPlaceAt(state,world,pos))world.scheduleBlockTick(pos,this,1);
   return state;
  }
- @Override public void scheduledTick(BlockState state,ServerWorld world,BlockPos pos,Random random){if(state.get(PART)==0&&!canPlaceAt(state,world,pos))world.breakBlock(pos,true);}
+ @Override public void scheduledTick(BlockState state,ServerWorld world,BlockPos pos,Random random){if(state.get(PART)==0){if(!canPlaceAt(state,world,pos))world.breakBlock(pos,true);}else{var root=DecorBlocks.root(pos,state);if(world.getBlockState(root).getBlock()!=DecorBlocks.BLOCKS.get(kind))world.removeBlock(pos,false);}}
  @Override public void onBreak(World world,BlockPos pos,BlockState state,PlayerEntity player){
   if(!world.isClient&&state.get(PART)>0){var root=DecorBlocks.root(pos,state);if(world.getBlockState(root).getBlock()==DecorBlocks.BLOCKS.get(kind))world.breakBlock(root,!player.isCreative(),player);}
   super.onBreak(world,pos,state,player);
@@ -86,7 +88,7 @@ public class DecorBaseBlock extends Block implements InventoryProvider {
  }
  @Override public net.minecraft.inventory.SidedInventory getInventory(BlockState state,WorldAccess world,BlockPos pos){
   var root=DecorBlocks.root(pos,state);
-  return kind==DecorKind.CHEST&&world.getBlockEntity(root) instanceof DecorBlockEntity entity?entity:EMPTY_INVENTORY;
+  return (kind==DecorKind.CHEST||kind==DecorKind.STORAGE_SHELF||kind==DecorKind.ANIMAL_FEEDER||kind==DecorKind.STONE_FORGE)&&world.getBlockEntity(root) instanceof DecorBlockEntity entity?entity:EMPTY_INVENTORY;
  }
  private static final net.minecraft.inventory.SidedInventory EMPTY_INVENTORY=new net.minecraft.inventory.SidedInventory(){
   public int size(){return 0;}public boolean isEmpty(){return true;}public ItemStack getStack(int slot){return ItemStack.EMPTY;}public ItemStack removeStack(int slot,int amount){return ItemStack.EMPTY;}public ItemStack removeStack(int slot){return ItemStack.EMPTY;}public void setStack(int slot,ItemStack stack){}public void markDirty(){}public boolean canPlayerUse(PlayerEntity p){return false;}public void clear(){}public int[] getAvailableSlots(Direction side){return new int[0];}public boolean canInsert(int slot,ItemStack stack,Direction side){return false;}public boolean canExtract(int slot,ItemStack stack,Direction side){return false;}
@@ -94,6 +96,7 @@ public class DecorBaseBlock extends Block implements InventoryProvider {
  @Override public boolean hasComparatorOutput(BlockState state){return kind.slots>0;}
  @Override public int getComparatorOutput(BlockState state,World world,BlockPos pos){var entity=DecorBlocks.entity(world,pos,state);return entity==null?0:net.minecraft.screen.ScreenHandler.calculateComparatorOutput((net.minecraft.inventory.Inventory)entity);}
  @Override public void randomDisplayTick(BlockState state,World world,BlockPos pos,Random random){
+  if(kind.ternor()){TernorDecorLogic.particles(kind,state,world,pos,random);return;}
   if(state.get(PART)!=0)return;boolean lit=state.get(LIT);double y=kind==DecorKind.CHAIN_LANTERN?-.5-(state.get(LENGTH)-1):kind==DecorKind.SKULL_LAMP?1.7:1.25;
   var dust=new DustParticleEffect(new org.joml.Vector3f(1,.06f,.015f),.7f);
   if(lit&&kind.light>0){

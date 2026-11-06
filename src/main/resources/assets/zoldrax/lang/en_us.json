@@ -55,5 +55,22 @@
   "block.zoldrax.monkey_king_notice_board": "Herald Notice Board",
   "tooltip.zoldrax.monkey_king_notice_board": "Use to interact or place one item; sneak-use with an empty hand to retrieve.",
   "block.zoldrax.monkey_king_festival_drum": "Festival Drum",
-  "tooltip.zoldrax.monkey_king_festival_drum": "Use to interact or place one item; sneak-use with an empty hand to retrieve."
+  "tooltip.zoldrax.monkey_king_festival_drum": "Use to interact or place one item; sneak-use with an empty hand to retrieve.",
+  "itemGroup.zoldrax.ternor_decor": "Ternor Settlement",
+  "block.zoldrax.ternor_garden_canopy": "Ternor Garden Canopy",
+  "tooltip.zoldrax.ternor_garden_canopy": "Use a plant to insert; sneak-use empty-handed to retrieve.",
+  "block.zoldrax.ternor_storage_shelf": "Ternor Storage Shelf",
+  "tooltip.zoldrax.ternor_storage_shelf": "Use to open 27 storage slots.",
+  "block.zoldrax.ternor_animal_feeder": "Ternor Animal Feeder",
+  "tooltip.zoldrax.ternor_animal_feeder": "Use for 9 feed slots; supports cows, sheep and pigs.",
+  "block.zoldrax.ternor_animal_trough": "Ternor Animal Trough",
+  "tooltip.zoldrax.ternor_animal_trough": "Use a water bucket to fill; animals drink on cooldown.",
+  "block.zoldrax.ternor_stone_forge": "Ternor Stone Forge",
+  "tooltip.zoldrax.ternor_stone_forge": "Use for material/XP repair; sneak-use for smelting.",
+  "block.zoldrax.ternor_forge_bellows": "Ternor Forge Bellows",
+  "tooltip.zoldrax.ternor_forge_bellows": "Use for one cycle and 10 seconds of nearby forge boost.",
+  "block.zoldrax.ternor_quenching_tub": "Ternor Quenching Tub",
+  "tooltip.zoldrax.ternor_quenching_tub": "Bucket to fill; use a hot ingot to quench.",
+  "tooltip.zoldrax.hot_blank": "Hot blank: quench in a tub before it cools.",
+  "tooltip.zoldrax.tempered": "Quenched in a Ternor tub."
 }

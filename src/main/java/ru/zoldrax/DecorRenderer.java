@@ -29,8 +29,8 @@ public final class DecorRenderer implements BlockEntityRenderer<DecorBlockEntity
   BlockEntityRendererFactories.register(DecorBlocks.ENTITY,DecorRenderer::new);
   net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry.register(DecorBlocks.SEAT,net.minecraft.client.render.entity.EmptyEntityRenderer::new);
   for(var kind:DecorKind.values())BuiltinItemRendererRegistry.INSTANCE.register(DecorBlocks.BLOCKS.get(kind).asItem(),(stack,mode,matrices,vertices,light,overlay)->renderItem(kind,matrices,vertices,light,overlay));
-  ItemTooltipCallback.EVENT.register((stack,context,lines)->{if(stack.getItem() instanceof BlockItem item&&item.getBlock() instanceof DecorBlock block)lines.add(Text.translatable("tooltip.zoldrax."+block.kind.id).formatted(Formatting.GRAY));});
-  ResourceManagerHelper.get(ResourceType.CLIENT_RESOURCES).registerReloadListener(new SimpleSynchronousResourceReloadListener(){public Identifier getFabricId(){return DecorBlocks.id("decor_meshes");}public void reload(ResourceManager manager){CACHE.clear();FoodDisplayModelRegistry.reload();}});
+  ItemTooltipCallback.EVENT.register((stack,context,lines)->{if(stack.hasNbt()&&stack.getNbt().contains("TernorHotUntil")&&MinecraftClient.getInstance().world!=null&&stack.getNbt().getLong("TernorHotUntil")>MinecraftClient.getInstance().world.getTime())lines.add(Text.translatable("tooltip.zoldrax.hot_blank").formatted(Formatting.GOLD));if(stack.hasNbt()&&stack.getNbt().getBoolean("TernorTempered"))lines.add(Text.translatable("tooltip.zoldrax.tempered").formatted(Formatting.GRAY));if(stack.getItem() instanceof BlockItem item&&item.getBlock() instanceof DecorBlock block)lines.add(Text.translatable("tooltip.zoldrax."+block.kind.id).formatted(Formatting.GRAY));});
+  ResourceManagerHelper.get(ResourceType.CLIENT_RESOURCES).registerReloadListener(new SimpleSynchronousResourceReloadListener(){public Identifier getFabricId(){return DecorBlocks.id("decor_meshes");}public void reload(ResourceManager manager){CACHE.clear();FoodDisplayModelRegistry.reload();TernorDecorRenderer.registerModels();}});
  }
  private static Mesh mesh(DecorKind kind){return CACHE.computeIfAbsent(kind,Mesh::new);}
  private static void renderItem(DecorKind kind,MatrixStack matrices,VertexConsumerProvider vertices,int light,int overlay){
@@ -43,7 +43,8 @@ public final class DecorRenderer implements BlockEntityRenderer<DecorBlockEntity
   float open=MathHelper.lerp(tickDelta,entity.previousLid,entity.lid);open=1-(1-open)*(1-open)*(1-open);
   matrices.push();matrices.translate(.5,0,.5);matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(-DecorBlocks.degrees(state.get(DecorBaseBlock.FACING))));matrices.translate(-.5,0,-.5);
   boolean vanillaBook=kind==DecorKind.LECTERN&&!entity.getStack(0).isEmpty()&&(entity.getStack(0).isOf(Items.BOOK)||entity.getStack(0).isOf(Items.WRITTEN_BOOK)||entity.getStack(0).isOf(Items.WRITABLE_BOOK));
-  drawModel(kind,model,matrices,vertices,light,overlay,kind.light==0||state.get(DecorBaseBlock.LIT),state.get(DecorBaseBlock.LENGTH),open,vanillaBook,kind!=DecorKind.OFFERING_PEDESTAL||entity.getStack(0).isEmpty(),kind==DecorKind.COURTYARD_GONG||kind==DecorKind.FESTIVAL_DRUM?entity.strikeTicks:time);
+  drawModel(kind,model,matrices,vertices,light,overlay,kind.light==0||state.get(DecorBaseBlock.LIT),state.get(DecorBaseBlock.LENGTH),open,vanillaBook,kind!=DecorKind.OFFERING_PEDESTAL||entity.getStack(0).isEmpty(),kind==DecorKind.COURTYARD_GONG||kind==DecorKind.FESTIVAL_DRUM||kind==DecorKind.BELLOWS?entity.strikeTicks:time);
+  if(kind.ternor())TernorDecorRenderer.render(entity,model,matrices,vertices,light,overlay,time);
   if(kind==DecorKind.SUPPLY_BASKET){for(var display:BasketDisplayLayout.create(entity))FoodDisplayModelRegistry.renderBasket(display.stack(),display.x(),display.y(),display.z(),display.size(),matrices,vertices,light,overlay,entity.getWorld());}
   else if(kind.foodDisplay()){var slots=FoodDisplaySlots.forKind(kind);for(int i=0;i<Math.min(slots.size(),entity.size());i++)if(!entity.getStack(i).isEmpty())FoodDisplayModelRegistry.render(entity.getStack(i),slots.get(i),matrices,vertices,light,overlay,entity.getWorld());}
   if(kind==DecorKind.NOTICE_BOARD)renderDocuments(entity,matrices,vertices,light,overlay);
@@ -69,9 +70,10 @@ public final class DecorRenderer implements BlockEntityRenderer<DecorBlockEntity
  }
  private static void drawModel(DecorKind kind,Mesh model,MatrixStack matrices,VertexConsumerProvider vertices,int light,int overlay,boolean lit,int length,float open,boolean book,boolean crystal,float time){
   for(String group:model.groups.keySet()){
-   if(group.startsWith("paper"))continue;
+   if(group.startsWith("paper")||group.equals("water")||group.equals("greenery"))continue;
    if(group.equals("book")&&!book||group.equals("crystal")&&!crystal||group.equals("flame")&&!lit||group.equals("extension")&&length==1)continue;
    matrices.push();
+   if(group.equals("pump")){float compression=time>0?1-.4f*(float)Math.sin(Math.PI*(1-time/16f)):1;matrices.translate(0,.25,0);matrices.scale(1,compression,1);matrices.translate(0,-.25,0);}
    if(group.equals("gong")){matrices.translate(1.5,2.5,.5);matrices.multiply(RotationAxis.POSITIVE_Z.rotationDegrees((float)Math.sin(time*1.7)*Math.min(7,time)));matrices.translate(-1.5,-2.5,-.5);}
    if(group.equals("drum"))matrices.translate(0,0,Math.sin(time*2)*Math.min(.045,time*.004));
    if(group.equals("lid")){matrices.translate(.5,14/16f,3/16f);matrices.multiply(RotationAxis.POSITIVE_X.rotationDegrees(-90*open));matrices.translate(-.5,-14/16f,-3/16f);}
@@ -130,7 +132,7 @@ public final class DecorRenderer implements BlockEntityRenderer<DecorBlockEntity
   }
 
   private static void indexGroups(JsonArray nodes,String group,Map<String,String> byUuid){
-   if(nodes==null)return;for(var node:nodes){if(node.isJsonPrimitive())byUuid.put(node.getAsString(),group);else if(node.isJsonObject()){var object=node.getAsJsonObject();String name=object.get("name").getAsString();String animated=Set.of("body","lid","flame","cage","chain","extension","book","crystal").contains(name)?name:group;indexGroups(object.getAsJsonArray("children"),animated,byUuid);}}
+   if(nodes==null)return;for(var node:nodes){if(node.isJsonPrimitive())byUuid.put(node.getAsString(),group);else if(node.isJsonObject()){var object=node.getAsJsonObject();String name=object.get("name").getAsString();String animated=Set.of("body","lid","flame","cage","chain","extension","book","crystal","pump","greenery","water").contains(name)?name:group;indexGroups(object.getAsJsonArray("children"),animated,byUuid);}}
   }
   private static float[] vector(JsonArray a){if(a==null)return new float[]{0,0,0};return new float[]{a.get(0).getAsFloat(),a.get(1).getAsFloat(),a.get(2).getAsFloat()};}
  }
